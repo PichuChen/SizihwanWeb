@@ -6,6 +6,29 @@
 /*
  * Pichu
  */
+ 
+/*
+ * 語系檔讀取
+ */
+var _LANGLoader = function(data){
+	this.language = {};
+	
+	$.ajax({async:false,
+			dataType:'json',
+			url:"http://140.117.182.94/sw/lang_zh_TW.json?",
+			success:function(data){
+				alert(data);
+				alert(typeof(language));
+			},
+			statusCode:{
+				302:function(){alert('xd');}
+				
+			}
+			});
+
+}
+ 
+ 
 var _SWClient = function(data){
 	this.init = function(){
 		//alert('init');
@@ -44,7 +67,7 @@ var _SWClient = function(data){
 };
 
 $(document).ready(function(){
-
+	var LANGLoader = new _LANGLoader;
 	var SWClient = new _SWClient;
 	SWClient.init();
 	$(".threads").css('background','#ACACFF');
