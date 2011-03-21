@@ -1,7 +1,9 @@
 <?php 
 include_once('./config.php'); // 引入設定檔
 include_once('./lib/lib_language.php'); // 引入語系
+include_once('./lib/lib_common.php'); // 引入共通函式檔案
 
+LoadLanguage('zh_TW');
 /*
 {$ADDITION_INFO} - (發文表單用) config.php 中的表單下額外文字
 {$ADMIN} - (BODYHEAD用) 「管理」連結
@@ -84,6 +86,36 @@ include_once('./lib/lib_language.php'); // 引入語系
 
 $TITLE = TITLE;
 $SELF  = PHP_SELF;
+$MAX_FILE_SIZE = MAX_KB * 1024;
+$RESTO = $resno ? '<input type="hidden" name="resto" value="'.$resno.'" />' : '';
+$FORM_NAME_TEXT = _T('form_name');
+$FORM_NAME_FIELD = '<input class="hide" type="text" name="name" value="spammer" /><input type="text" name="'.FT_NAME.'" id="fname" size="28" value="'.$name.'" />';
+$FORM_EMAIL_TEXT = _T('form_email');
+$FORM_EMAIL_FIELD = '<input type="text" name="'.FT_EMAIL.'" id="femail" size="28" value="'.$mail.'" /><input type="text" class="hide" name="email" value="foo@foo.bar" />';
+$FORM_TOPIC_TEXT = _T('form_topic');
+$FORM_TOPIC_FIELD = '<input class="hide" value="DO NOT FIX THIS" type="text" name="sub" /><input type="text" name="'.FT_SUBJECT.'" id="fsub" size="28" value="'.$sub.'" />';
+$FORM_SUBMIT = '<input type="submit" name="sendbtn" value="'._T('form_submit_btn').'" />';
+$FORM_COMMENT_TEXT = _T('form_comment');
+$FORM_COMMENT_FIELD = '<textarea name="'.FT_COMMENT.'" id="fcom" cols="48" rows="4" style="width: 400px; height: 80px;">'.$com.'</textarea><textarea name="com" class="hide" cols="48" rows="4">EID OG SMAPS</textarea>';
+$FORM_DELETE_PASSWORD_FIELD = '<input type="password" name="pwd" size="8" maxlength="8" value="" />';
+$FORM_DELETE_PASSWORD_TEXT = _T('form_delete_password');
+$FORM_DELETE_PASSWORD_NOTICE = _T('form_delete_password_notice');
+$FORM_EXTRA_COLUMN = '';
+$FORM_NOTICE   = _T('form_notice',str_replace('|',',',ALLOW_UPLOAD_EXT),MAX_KB,($resno ? MAX_RW : MAX_W),($resno ? MAX_RH : MAX_H));
+$HOOKPOSTINFO  = '';
+$ADDITION_INFO = $ADDITION_INFO;
+$FORM_NOTICE_NOSCRIPT = _T('form_notice_noscript');
+//$PMS->useModuleMethods('PostForm', array(&$pte_vals['{$FORM_EXTRA_COLUMN}'])); // "PostForm" Hook Point
+	if(!$isedit && (RESIMG || !$resno)){
+		$FORM_ATTECHMENT_TEXT = _T('form_attechment');
+		$FORM_ATTECHMENT_FIELD = '<input type="file" name="upfile" id="fupfile" size="25" /><input class="hide" type="checkbox" name="reply" value="yes" />';
+		$FORM_NOATTECHMENT_TEXT = _T('form_noattechment');
+		$FORM_NOATTECHMENT_FIELD = '<input type="checkbox" name="noimg" id="noimg" value="on" />';
+		if(USE_UPSERIES) { // 啟動連貼機能
+			$FORM_CONTPOST_FIELD = '<input type="checkbox" name="up_series" id="up_series" value="on"'.((isset($_GET["upseries"]) && $resno)?' checked="checked"':'').' />';
+			$FORM_CONTPOST_TEXT  = _T('form_contpost');
+		}
+	}
 
 ?><!DOCTYP HTML>
 <html>
@@ -115,30 +147,38 @@ $(document).ready(function(){
 <form action="<?php echo $SELF?>" method="post" enctype="multipart/form-data" onsubmit="return c();" id="postform_main">
 <div id="postform">
 <!--&IF($FORMTOP,'{$FORMTOP}','')-->
-<input type="hidden" name="mode" value="{$MODE}" />
-<input type="hidden" name="MAX_FILE_SIZE" value="{$MAX_FILE_SIZE}" />
+<input type="hidden" name="mode" value="<?php echo $MODE?>" />
+<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $MAX_FILE_SIZE?>" />
 <input type="hidden" name="upfile_path" value="" />
 <!--&IF($RESTO,'{$RESTO}','')-->
 <div style="text-align: center;">
 <table cellpadding="1" cellspacing="1" id="postform_tbl" style="margin: 0px auto; text-align: left;">
-<tr><td class="Form_bg"><b><?php echo $language['form_name']?>   </b></td><td>{$FORM_NAME_FIELD}</td></tr>
-<tr><td class="Form_bg"><b><?php echo $language['form_email']?>  </b></td><td>{$FORM_EMAIL_FIELD}</td></tr>
-<tr><td class="Form_bg"><b><?php echo $language['form_topic']?>  </b></td><td>{$FORM_TOPIC_FIELD}{$FORM_SUBMIT}</td></tr>
-<tr><td class="Form_bg"><b><?php echo $language['form_comment']?></b></td><td>{$FORM_COMMENT_FIELD}</td></tr>
-<!--&IF($FORM_ATTECHMENT_FIELD,'<tr><td class="Form_bg"><b>{$FORM_ATTECHMENT_TEXT}</b></td><td>{$FORM_ATTECHMENT_FIELD}[{$FORM_NOATTECHMENT_FIELD}<label for="noimg">{$FORM_NOATTECHMENT_TEXT}</label>]','')-->
-<!--&IF($FORM_CONTPOST_FIELD,'[{$FORM_CONTPOST_FIELD}<label for="up_series">{$FORM_CONTPOST_TEXT}</label>]','')-->
-<!--&IF($FORM_ATTECHMENT_FIELD,'</td></tr>','')-->
+<tr><td class="Form_bg"><b><?php echo $FORM_NAME_TEXT?>   </b></td><td><?php echo $FORM_NAME_FIELD?></td></tr>
+<tr><td class="Form_bg"><b><?php echo $FORM_EMAIL_TEXT?>  </b></td><td><?php echo $FORM_EMAIL_FIELD?></td></tr>
+<tr><td class="Form_bg"><b><?php echo $FORM_TOPIC_TEXT?>  </b></td><td><?php echo $FORM_TOPIC_FIELD . $FORM_SUBMIT?></td></tr>
+<tr><td class="Form_bg"><b><?php echo $FORM_COMMENT_TEXT?></b></td><td><?php echo $FORM_COMMENT_FIELD?></td></tr>
+<?php if(isset($FORM_ATTECHMENT_FIELD) ){?>
+	<tr><td class="Form_bg"><b><?php echo $FORM_ATTECHMENT_TEXT ?> </b></td>
+	    <td><?php echo $FORM_ATTECHMENT_FIELD . '[' . $FORM_NOATTECHMENT_FIELD . '<label for="noimg">' . $FORM_NOATTECHMENT_TEXT ?> </label>]
+<?php } ?>
+<?php if(isset($FORM_CONTPOST_FIELD) ){?>
+	[<?php echo $FORM_CONTPOST_FIELD?><label for="up_series"><?php echo $FORM_CONTPOST_TEXT?></label>]
+
+<?php } ?>
+
+<?php if(isset($FORM_ATTECHMENT_FIELD) ){?></td></tr>
+<?php } ?>
 <!--&IF($FORM_CATEGORY_FIELD,'<tr><td class="Form_bg"><b>{$FORM_CATEGORY_TEXT}</b></td><td>{$FORM_CATEGORY_FIELD}<small>{$FORM_CATEGORY_NOTICE}</small></td></tr>','')-->
-<tr><td class="Form_bg"><b>{$FORM_DELETE_PASSWORD_TEXT}</b></td><td>{$FORM_DELETE_PASSWORD_FIELD}<small>{$FORM_DELETE_PASSWORD_NOTICE}</small></td></tr>
-{$FORM_EXTRA_COLUMN}
+<tr><td class="Form_bg"><b><?php echo $FORM_DELETE_PASSWORD_TEXT?></b></td><td><?php echo $FORM_DELETE_PASSWORD_FIELD?><small><?php echo $FORM_DELETE_PASSWORD_NOTICE?></small></td></tr>
+<?php echo $FORM_EXTRA_COLUMN?>
 <tr><td colspan="2">
 <div id="postinfo">
-<ul>{$FORM_NOTICE}
+<ul><?php echo $FORM_NOTICE?>
 <!--&IF($FORM_NOTICE_STORAGE_LIMIT,'{$FORM_NOTICE_STORAGE_LIMIT}','')-->
-{$HOOKPOSTINFO}
-{$ADDITION_INFO}
+<?php echo $HOOKPOSTINFO?>
+<?php echo $ADDITION_INFO?>
 </ul>
-<noscript><div>{$FORM_NOTICE_NOSCRIPT}</div></noscript>
+<noscript><div><?php echo $FORM_NOTICE_NOSCRIPT?></div></noscript>
 </div>
 </td></tr>
 </table>
