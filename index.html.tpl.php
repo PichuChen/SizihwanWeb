@@ -82,15 +82,15 @@ include_once('./lib/lib_language.php'); // 引入語系
 */
 
 
-
-
+$TITLE = TITLE;
+$SELF  = PHP_SELF;
 
 ?><!DOCTYP HTML>
 <html>
 <head>
 <script type="text/javascript">
 var DEFINES = {};
-DEFINES['PHP_SELF'] = "main.php";
+DEFINES['PHP_SELF'] = <?php echo $SELF?>;
 </script>
 <script type="text/javascript" src="resource/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="resource/SWClient.js?<?=time();?>"></script>
@@ -109,10 +109,10 @@ $(document).ready(function(){
 
 <header>
 
-<h1><?php=$TITLE?></h1>
+<h1><?php echo $TITLE?></h1>
 </header>
 <!--&POSTFORM-->
-<form action="{$SELF}" method="post" enctype="multipart/form-data" onsubmit="return c();" id="postform_main">
+<form action="<?php echo $SELF?>" method="post" enctype="multipart/form-data" onsubmit="return c();" id="postform_main">
 <div id="postform">
 <!--&IF($FORMTOP,'{$FORMTOP}','')-->
 <input type="hidden" name="mode" value="{$MODE}" />
@@ -121,10 +121,10 @@ $(document).ready(function(){
 <!--&IF($RESTO,'{$RESTO}','')-->
 <div style="text-align: center;">
 <table cellpadding="1" cellspacing="1" id="postform_tbl" style="margin: 0px auto; text-align: left;">
-<tr><td class="Form_bg"><b>{$FORM_NAME_TEXT}</b></td><td>{$FORM_NAME_FIELD}</td></tr>
-<tr><td class="Form_bg"><b>{$FORM_EMAIL_TEXT}</b></td><td>{$FORM_EMAIL_FIELD}</td></tr>
-<tr><td class="Form_bg"><b>{$FORM_TOPIC_TEXT}</b></td><td>{$FORM_TOPIC_FIELD}{$FORM_SUBMIT}</td></tr>
-<tr><td class="Form_bg"><b>{$FORM_COMMENT_TEXT}</b></td><td>{$FORM_COMMENT_FIELD}</td></tr>
+<tr><td class="Form_bg"><b><?php echo $language['form_name']?>   </b></td><td>{$FORM_NAME_FIELD}</td></tr>
+<tr><td class="Form_bg"><b><?php echo $language['form_email']?>  </b></td><td>{$FORM_EMAIL_FIELD}</td></tr>
+<tr><td class="Form_bg"><b><?php echo $language['form_topic']?>  </b></td><td>{$FORM_TOPIC_FIELD}{$FORM_SUBMIT}</td></tr>
+<tr><td class="Form_bg"><b><?php echo $language['form_comment']?></b></td><td>{$FORM_COMMENT_FIELD}</td></tr>
 <!--&IF($FORM_ATTECHMENT_FIELD,'<tr><td class="Form_bg"><b>{$FORM_ATTECHMENT_TEXT}</b></td><td>{$FORM_ATTECHMENT_FIELD}[{$FORM_NOATTECHMENT_FIELD}<label for="noimg">{$FORM_NOATTECHMENT_TEXT}</label>]','')-->
 <!--&IF($FORM_CONTPOST_FIELD,'[{$FORM_CONTPOST_FIELD}<label for="up_series">{$FORM_CONTPOST_TEXT}</label>]','')-->
 <!--&IF($FORM_ATTECHMENT_FIELD,'</td></tr>','')-->
