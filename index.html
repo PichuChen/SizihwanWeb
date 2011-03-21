@@ -25,7 +25,14 @@ var _SWClient = function(data){
 		return _THREAD;
 	}
 	
-	var _mkREPLY = function(data={}){
+	var _mkREPLY = function(data){
+	    if('undefined' == typeof(data)){data ={};}
+	    if('undefined' == typeof(data.NO)){data.NO = 0 ;}
+		if('undefined' == typeof(data.SUB)){data.SUB = "" ;}
+		if('undefined' == typeof(data.SUB)){data.SUB = "" ;}
+		if('undefined' == typeof(data.SUB)){data.SUB = "" ;}
+		
+
 		_THREAD = '<li class="reply" id="r{$NO}"><input type="checkbox" name="{$NO}" value="delete" /><span class="title">{$SUB}</span> {$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}<div class="quote">{$COM}</div>{$WARN_BEKILL}</li>';
 		_THREAD = _THREAD.replace(/{\$NO}/g,data.NO)
 						 .replace(/{\$SUB}/g,data.SUB);

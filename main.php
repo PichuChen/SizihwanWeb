@@ -1,23 +1,23 @@
 <?php
 define("PIXMICAT_VER", 'Pixmicat!-PIO 5th.Release (v100521)'); 
-define("SIZIHWANWEB_VER", '0.01'); // ª©¥»¸ê°T¤å¦r
+define("SIZIHWANWEB_VER", '0.01'); // ç‰ˆæœ¬è³‡è¨Šæ–‡å­—
 
 
+include_once('./config.php'); // å¼•å…¥è¨­å®šæª”
+include_once('./lib/lib_pio.php'); // å¼•å…¥PIO
 
-include_once('./lib/lib_pio.php'); // ¤Þ¤JPIO
 
+/*-----------ç¨‹å¼å„é …åŠŸèƒ½ä¸»è¦åˆ¤æ–·-------------*/
+if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // æ”¯æ´ä¸”é–‹å•ŸGzipå£“ç¸®å°±è¨­ç·©è¡å€
+$mode = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''); // ç›®å‰åŸ·è¡Œæ¨¡å¼ (GET, POST)
 
-/*-----------µ{¦¡¦U¶µ¥\¯à¥D­n§PÂ_-------------*/
-if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // ¤ä´©¥B¶}±ÒGzipÀ£ÁY´N³]½w½Ä°Ï
-$mode = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''); // ¥Ø«e°õ¦æ¼Ò¦¡ (GET, POST)
-
-init(); // ¡ö¡½¡½¡Iµ{¦¡Àô¹Òªì©l¤Æ¡A¶]¹L¤@¦¸«á½Ð§R°£¦¹¦æ¡I¡½¡½
+//init(); // â†â– â– ï¼ç¨‹å¼ç’°å¢ƒåˆå§‹åŒ–ï¼Œè·‘éŽä¸€æ¬¡å¾Œè«‹åˆªé™¤æ­¤è¡Œï¼â– â– 
 switch($mode){
 //	case 'regist':
 		// regist();
 		// break;
 	// case 'admin':
-		// $admin = isset($_REQUEST['admin']) ? $_REQUEST['admin'] : ''; // ºÞ²zªÌ°õ¦æ¼Ò¦¡
+		// $admin = isset($_REQUEST['admin']) ? $_REQUEST['admin'] : ''; // ç®¡ç†è€…åŸ·è¡Œæ¨¡å¼
 		// valid();
 		// switch($admin){
 			// case 'del': admindel(); break;
@@ -73,27 +73,27 @@ switch($mode){
 		header('Location: '.fullURL().'lang_zh_TW.json'.'?'.time());
 		break;
 	default:
-		// ¦pªGÂsÄý¾¹¤ä´©XHTML¼Ð·ÇMIME´N¿é¥X
+		// å¦‚æžœç€è¦½å™¨æ”¯æ´XHTMLæ¨™æº–MIMEå°±è¼¸å‡º
 		header('Content-Type: '.((USE_XHTML && strpos($_SERVER['HTTP_ACCEPT'],'application/xhtml+xml')!==FALSE) ? 'application/xhtml+xml' : 'text/html').'; charset=utf-8');
-		$res = isset($_GET['res']) ? $_GET['res'] : 0; // ±ý¦^À³½s¸¹
-		if($res){ // ¦^À³¼Ò¦¡¿é¥X
+		$res = isset($_GET['res']) ? $_GET['res'] : 0; // æ¬²å›žæ‡‰ç·¨è™Ÿ
+		if($res){ // å›žæ‡‰æ¨¡å¼è¼¸å‡º
 			$page = isset($_GET['page_num']) ? $_GET['page_num'] : 'RE_PAGE_MAX';
 			if(!($page=='all' || $page=='RE_PAGE_MAX')) $page = intval($_GET['page_num']);
-			updatelog($res, $page); // ¹ê¦æ¤À­¶
-		}elseif(isset($_GET['page_num']) && intval($_GET['page_num']) > -1){ // PHP°ÊºA¿é¥X¤@­¶
+			updatelog($res, $page); // å¯¦è¡Œåˆ†é 
+		}elseif(isset($_GET['page_num']) && intval($_GET['page_num']) > -1){ // PHPå‹•æ…‹è¼¸å‡ºä¸€é 
 			updatelog(0, intval($_GET['page_num']));
-		}else{ // ¾É¦ÜÀRºA®w¦s­¶
+		}else{ // å°Žè‡³éœæ…‹åº«å­˜é 
 			if(!is_file(PHP_SELF2)) updatelog();
 			header('HTTP/1.1 302 Moved Temporarily');
 			header('Location: '.fullURL().PHP_SELF2.'?'.time());
 		}
 }
-if(GZIP_COMPRESS_LEVEL && $Encoding){ // ¦³±Ò°ÊGzip
-	if(!ob_get_length()) exit; // ¨S¤º®e¤£¥²À£ÁY
+if(GZIP_COMPRESS_LEVEL && $Encoding){ // æœ‰å•Ÿå‹•Gzip
+	if(!ob_get_length()) exit; // æ²’å…§å®¹ä¸å¿…å£“ç¸®
 	header('Content-Encoding: '.$Encoding);
 	header('X-Content-Encoding-Level: '.GZIP_COMPRESS_LEVEL);
 	header('Vary: Accept-Encoding');
-	print gzencode(ob_get_clean(), GZIP_COMPRESS_LEVEL); // À£ÁY¤º®e
+	print gzencode(ob_get_clean(), GZIP_COMPRESS_LEVEL); // å£“ç¸®å…§å®¹
 }
 
 ?>
