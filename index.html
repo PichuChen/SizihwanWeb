@@ -3,13 +3,38 @@
 <head>
 <script type="text/javascript" src="resource/jquery-1.5.1.min.js"></script>
 <script type="text/javascript">
-var SWClient = (function(){
+var _SWClient = function(data){
+	this.init = function(){
+		//alert('init');
+		$(".threads").append(_mkTHREAD({NO:3}));
+		$(".threads > li#r3").css('background','#ACAC0F');
+		$(".threads > li#r3").append(_mkREPLY({NO:3}));
+	}
+
+
+	var _mkTHREAD = function(data){
+		_THREAD = '<li class="threadpost" id="r{$NO}"><ul class="reply"></ul></li>';
+		_THREAD = _THREAD.replace(/{\$NO}/g,data.NO);
+		alert(_THREAD);
+		return _THREAD;
+	}
+	
+	var _mkREPLY = function(data){
+		_THREAD = '<li class="reply" id="r{$NO}"><input type="checkbox" name="{$NO}" value="delete" /><span class="title">{$SUB}</span> {$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN} &nbsp;<div class="quote">{$COM}</div>{$WARN_BEKILL}</li>';
+		return _THREAD;
+	}
+	
 	
 
+};
 
-})();
+$(document).ready(function(){
 
-
+	var SWClient = new _SWClient;
+	SWClient.init();
+	$(".threads").css('background','#ACACFF');
+	
+});
 </script>
 </head>
 
@@ -17,6 +42,10 @@ var SWClient = (function(){
 
 test
 <ul class="threads">
+<li>
+
+XD
+</li>
 </ul>
 </body>
 </html>
