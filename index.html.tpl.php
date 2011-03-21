@@ -95,6 +95,7 @@ DEFINES['PHP_SELF'] = "main.php";
 <script type="text/javascript" src="resource/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="resource/SWClient.js?<?=time();?>"></script>
 <script type="text/javascript">
+
 $(document).ready(function(){
 	var SWClient = new _SWClient;
 	SWClient.init();
