@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 define("PIXMICAT_VER", 'Pixmicat!-PIO 5th.Release (v100521)'); 
 define("SIZIHWANWEB_VER", '0.01'); // 版本資訊文字
 
@@ -11,17 +11,13 @@ include_once('./lib/lib_pio.php'); // 引入PIO
 if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
 $mode = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''); // 目前執行模式 (GET, POST)
 
-/*-----------程式各項功能主要判斷-------------*/
-if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
-$mode = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''); // 目前執行模式 (GET, POST)
-
 //init(); // ←■■！程式環境初始化，跑過一次後請刪除此行！■■
 switch($mode){
 //	case 'regist':
 		// regist();
 		// break;
 	// case 'admin':
-		// $admin = isset($_REQUEST['admin']) ? $_REQUEST['admin'] : ''; // 管理者執行模式
+		// $admin = isset($_REQUEST['admin']) ? $_REQUEST['admin'] : ''; 
 		// valid();
 		// switch($admin){
 			// case 'del': admindel(); break;
@@ -99,5 +95,4 @@ if(GZIP_COMPRESS_LEVEL && $Encoding){ // 有啟動Gzip
 	header('Vary: Accept-Encoding');
 	print gzencode(ob_get_clean(), GZIP_COMPRESS_LEVEL); // 壓縮內容
 }
-
 ?>
