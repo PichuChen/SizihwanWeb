@@ -129,7 +129,7 @@ define("DEFAULT_NOCOMMENT", '無內文'); // 預設文章內文
 另設名稱怪異的欄位為正確欄位，以避免直接的攻擊。
 防止機器人學習的可能，請隔一段時間修改底下欄位值，建議英數大小寫隨機6～10個 (避免特殊符號、第一位不能為數字)。
 */
-zdefine("FT_NAME", 'bvUFbdrIC'); // 名稱欄位
+define("FT_NAME", 'bvUFbdrIC'); // 名稱欄位
 define("FT_EMAIL", 'ObHGyhdTR'); // E-mail欄位
 define("FT_SUBJECT", 'SJBgiFbhj'); // 標題欄位
 define("FT_COMMENT", 'pOBvrtyJK'); // 內文欄位
