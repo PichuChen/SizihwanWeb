@@ -4,6 +4,7 @@ define("SIZIHWANWEB_VER", '0.01'); // 版本資訊文字
 
 
 include_once('./config.php'); // 引入設定檔
+include_once('./lib/lib_common.php'); // 引入共通函式檔案
 include_once('./lib/lib_pio.php'); // 引入PIO
 
 
@@ -63,14 +64,14 @@ switch($mode){
 		// break;
 	case 'lang':
 		if(!is_file('lang_zh_TW.json')){
-			require("/lib/lang/zh_TW.php");
+			require("./lib/lang/zh_TW.php");
 			$fp = fopen('lang_zh_TW.json', 'w');
 			stream_set_write_buffer($fp, 0);
 			fwrite($fp,json_encode($language));
 			fclose($fp);
 			@chmod($logfilename, 0666);
 		}
-		header('Location: '.fullURL().'lang_zh_TW.json'.'?'.time());
+		header('Location: '.fullURL().'/lang_zh_TW.json'.'?'.time());
 		break;
 	default:
 		// 如果瀏覽器支援XHTML標準MIME就輸出
