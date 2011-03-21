@@ -71,7 +71,7 @@ switch($mode){
 			fclose($fp);
 			@chmod($logfilename, 0666);
 		}
-		header('Location: '.fullURL().'/lang_zh_TW.json'.'?'.time());
+		header('Location: '.fullURL().'lang_zh_TW.json'.'?');
 		break;
 	default:
 		// 如果瀏覽器支援XHTML標準MIME就輸出
