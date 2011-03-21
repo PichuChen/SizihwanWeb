@@ -11,7 +11,7 @@ include_once('./lib/lib_pio.php'); // 引入PIO
 if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
 $mode = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''); // 目前執行模式 (GET, POST)
 
-init(); // ←■■！程式環境初始化，跑過一次後請刪除此行！■■
+//init(); // ←■■！程式環境初始化，跑過一次後請刪除此行！■■
 switch($mode){
 //	case 'regist':
 		// regist();
