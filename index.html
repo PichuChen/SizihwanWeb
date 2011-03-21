@@ -3,24 +3,31 @@
 <head>
 <script type="text/javascript" src="resource/jquery-1.5.1.min.js"></script>
 <script type="text/javascript">
+/*
+ * Pichu
+ */
 var _SWClient = function(data){
 	this.init = function(){
 		//alert('init');
 		$(".threads").append(_mkTHREAD({NO:3}));
 		$(".threads > li#r3").css('background','#ACAC0F');
 		$(".threads > li#r3").append(_mkREPLY({NO:3}));
+		
+		$(".threads").append(_mkTHREAD({NO:4}));
 	}
 
 
 	var _mkTHREAD = function(data){
-		_THREAD = '<li class="threadpost" id="r{$NO}"><ul class="reply"></ul></li>';
+		_THREAD = '<li class="threadpost" id="r{$NO}">{$IMG_BAR}($IMG_SRC}<input type="checkbox" name="{$NO}" value="delete" /><span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}&nbsp;{$REPLYBTN}<div class="quote">{$COM}</div>{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul></li>';
+		
 		_THREAD = _THREAD.replace(/{\$NO}/g,data.NO);
-		alert(_THREAD);
+	//	alert(_THREAD);
 		return _THREAD;
 	}
 	
 	var _mkREPLY = function(data){
-		_THREAD = '<li class="reply" id="r{$NO}"><input type="checkbox" name="{$NO}" value="delete" /><span class="title">{$SUB}</span> {$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN} &nbsp;<div class="quote">{$COM}</div>{$WARN_BEKILL}</li>';
+		_THREAD = '<li class="reply" id="r{$NO}"><input type="checkbox" name="{$NO}" value="delete" /><span class="title">{$SUB}</span> {$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}<div class="quote">{$COM}</div>{$WARN_BEKILL}</li>';
+		_THREAD = _THREAD.replace(/{\$NO}/g,data.NO);
 		return _THREAD;
 	}
 	
@@ -42,10 +49,6 @@ $(document).ready(function(){
 
 test
 <ul class="threads">
-<li>
-
-XD
-</li>
 </ul>
 </body>
 </html>
