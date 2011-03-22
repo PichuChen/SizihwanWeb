@@ -55,7 +55,7 @@ var _SWClient = function(data){
 						};
 		$.each(_replaceArray,function(i,v){
 			alert(i + "," + v);
-			_THREAD = _THREAD.replace(new RegExp("{\\" + i + "}","g");
+			_THREAD = _THREAD.replace(new RegExp("{\\" + i + "}","g"),v);
 		});
 		// _THREAD = _THREAD.replace(/{\$NO}/g,data.NO)
 				 // .replace(/{\$NAME_TEXT}/g,language['post_name'])

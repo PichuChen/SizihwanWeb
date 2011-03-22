@@ -130,7 +130,7 @@ $FORM_NOTICE_NOSCRIPT = _T('form_notice_noscript');
 
 <script type="text/javascript">
 var DEFINES = {};
-DEFINES['PHP_SELF'] = <?php echo $SELF?>;
+DEFINES['PHP_SELF'] = "<?php echo $SELF?>";
 </script>
 <script type="text/javascript" src="resource/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="resource/SWClient.js?<?=time();?>"></script>
@@ -199,7 +199,7 @@ $(document).ready(function(){
 </td></tr>
 </table>
 </div>
-<script type="text/javascript">l1();</script>
+<script type="text/javascript">//l1();</script>
 <hr />
 </div>
 </form>
@@ -214,7 +214,7 @@ $(document).ready(function(){
 <!--&FOOTER-->
 <footer id="footer">
 {$FOOTER}
-<script type="text/javascript">preset();</script>
+<script type="text/javascript">//preset();</script>
 </footer>
 <!--/&FOOTER-->
 </body>
