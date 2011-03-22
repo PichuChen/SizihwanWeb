@@ -40,6 +40,16 @@ switch($mode){
 
 
 switch($ACTION){ 
+	case '':
+		if(!is_file('./board/' . $ARG[1] . '/index.html')){
+			//require("./lib/lang/zh_TW.php");
+			//$fp = fopen('lang_zh_TW.json', 'w');
+			//stream_set_write_buffer($fp, 0);
+			//fwrite($fp,json_encode($language));
+			//fclose($fp);
+		}
+		header('Location: '.fullURL().'board/' . $ARG[1] . '/index.html');
+		break;
 	case 'SHOW':
 		{
 			require(PATH_ACTION_SHOW);
