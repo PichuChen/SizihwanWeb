@@ -10,7 +10,36 @@ include_once('./lib/lib_pio.php'); // 引入PIO
 
 /*-----------程式各項功能主要判斷-------------*/
 if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
-$mode = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''); // 目前執行模式 (GET, POST)
+//$mode = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''); // 目前執行模式 (GET, POST)
+
+function sendStatusCode($code = "200"){
+	$codeList = array("200" => "OK",
+			  "405" => "Method Not Allowed");
+
+	header("HTTP/1.0 {$code} {$codeList[$code]}");
+
+}
+
+function methodGET(){
+
+
+
+}
+
+
+switch ($_SERVER['REQUEST_METHOD']){
+	case 'GET' :
+		methodGET();
+		sendStatusCode("200");
+		break;
+	default:
+		sendStatusCode("405");
+
+	exit;
+
+}
+exit;
+
 
 //init(); // ←■■！程式環境初始化，跑過一次後請刪除此行！■■
 switch($mode){

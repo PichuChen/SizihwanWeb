@@ -139,7 +139,7 @@ DEFINES['PHP_SELF'] = "<?php echo $SELF?>";
 $(document).ready(function(){
 	var SWClient = new _SWClient;
 	SWClient.init();
-	$(".threads").css('background','#ACACFF');
+//	$(".threads").css('background','#ACACFF');
 	
 });
 </script>
