@@ -21,17 +21,34 @@ function sendStatusCode($code = "200"){
 }
 
 function methodGET(){
-
-
-
-}
-
-
-switch ($_SERVER['REQUEST_METHOD']){
+switch($mode){
+	case 'lang':
+		if(!is_file('lang_zh_TW.json')){
+			require("./lib/lang/zh_TW.php");
+			$fp = fopen('lang_zh_TW.json', 'w');
+			stream_set_write_buffer($fp, 0);
+			fwrite($fp,json_encode($language));
+			fclose($fp);
+			@chmod($logfilename, 0666);
+		}
+		header('Location: '.fullURL().'lang_zh_TW.json'.'?');
+		break;
 	case 'GET' :
 		methodGET();
 		sendStatusCode("200");
 		break;
+	}
+}
+
+echo $_SERVER['PATH_INFO'];
+switch ($_SERVER['REQUEST_METHOD']){
+	case 'GET' :
+	
+		methodGET();
+		sendStatusCode("200");
+		break;
+		
+		
 	default:
 		sendStatusCode("405");
 
@@ -91,17 +108,7 @@ switch($mode){
 		// header('HTTP/1.1 302 Moved Temporarily');
 		// header('Location: '.fullURL().PHP_SELF2.'?'.time());
 		// break;
-	case 'lang':
-		if(!is_file('lang_zh_TW.json')){
-			require("./lib/lang/zh_TW.php");
-			$fp = fopen('lang_zh_TW.json', 'w');
-			stream_set_write_buffer($fp, 0);
-			fwrite($fp,json_encode($language));
-			fclose($fp);
-			@chmod($logfilename, 0666);
-		}
-		header('Location: '.fullURL().'lang_zh_TW.json'.'?');
-		break;
+
 	default:
 		// 如果瀏覽器支援XHTML標準MIME就輸出
 		header('Content-Type: '.((USE_XHTML && strpos($_SERVER['HTTP_ACCEPT'],'application/xhtml+xml')!==FALSE) ? 'application/xhtml+xml' : 'text/html').'; charset=utf-8');

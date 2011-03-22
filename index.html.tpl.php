@@ -166,10 +166,10 @@ $(document).ready(function(){
 <?php if(isset($RESTO) ){echo $RESTO;}?>
 <div style="text-align: center;">
 <table cellpadding="1" cellspacing="1" id="postform_tbl" style="margin: 0px auto; text-align: left;">
-<tr><td class="Form_bg"><b><?php echo $FORM_NAME_TEXT?>   </b></td><td><?php echo $FORM_NAME_FIELD?></td></tr>
-<tr><td class="Form_bg"><b><?php echo $FORM_EMAIL_TEXT?>  </b></td><td><?php echo $FORM_EMAIL_FIELD?></td></tr>
-<tr><td class="Form_bg"><b><?php echo $FORM_TOPIC_TEXT?>  </b></td><td><?php echo $FORM_TOPIC_FIELD . $FORM_SUBMIT?></td></tr>
-<tr><td class="Form_bg"><b><?php echo $FORM_COMMENT_TEXT?></b></td><td><?php echo $FORM_COMMENT_FIELD?></td></tr>
+	<tr><td class="Form_bg"><b><?php echo $FORM_NAME_TEXT?>   </b></td><td><?php echo $FORM_NAME_FIELD?></td></tr>
+	<tr><td class="Form_bg"><b><?php echo $FORM_EMAIL_TEXT?>  </b></td><td><?php echo $FORM_EMAIL_FIELD?></td></tr>
+	<tr><td class="Form_bg"><b><?php echo $FORM_TOPIC_TEXT?>  </b></td><td><?php echo $FORM_TOPIC_FIELD . $FORM_SUBMIT?></td></tr>
+	<tr><td class="Form_bg"><b><?php echo $FORM_COMMENT_TEXT?></b></td><td><?php echo $FORM_COMMENT_FIELD?></td></tr>
 <?php if(isset($FORM_ATTECHMENT_FIELD) ){?>
 	<tr><td class="Form_bg"><b><?php echo $FORM_ATTECHMENT_TEXT ?> </b></td>
 	    <td><?php echo $FORM_ATTECHMENT_FIELD . '[' . $FORM_NOATTECHMENT_FIELD . '<label for="noimg">' . $FORM_NOATTECHMENT_TEXT ?> </label>]
