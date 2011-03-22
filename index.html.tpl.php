@@ -120,6 +120,14 @@ $FORM_NOTICE_NOSCRIPT = _T('form_notice_noscript');
 ?><!DOCTYP HTML>
 <html>
 <head>
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="Sat, 1 Jan 2000 00:00:00 GMT" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="zh-tw" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title><?php echo $TITLE?></title>
+<link rel="stylesheet" type="text/css" href="resource/mainstyle.css" />
+
 <script type="text/javascript">
 var DEFINES = {};
 DEFINES['PHP_SELF'] = <?php echo $SELF?>;
@@ -142,7 +150,12 @@ $(document).ready(function(){
 <header>
 
 <h1><?php echo $TITLE?></h1>
-</header>
+<!--&TOPLINKS-->
+<div id="toplink">
+{$HOME} {$SEARCH} {$HOOKLINKS} {$TOP_LINKS} {$STATUS} {$ADMIN} {$REFRESH}
+</div>
+<!--/&TOPLINKS-->
+
 <!--&POSTFORM-->
 <form action="<?php echo $SELF?>" method="post" enctype="multipart/form-data" onsubmit="return c();" id="postform_main">
 <div id="postform">
@@ -192,8 +205,17 @@ $(document).ready(function(){
 </form>
 <?php if(isset($FORMBOTTOM) ){echo $FORMBOTTOM;}?>
 <!--/&POSTFORM-->
-<?php echo "123"?>
+</header>
+
 <ul class="threads">
 </ul>
+
+
+<!--&FOOTER-->
+<footer id="footer">
+{$FOOTER}
+<script type="text/javascript">preset();</script>
+</footer>
+<!--/&FOOTER-->
 </body>
 </html>
