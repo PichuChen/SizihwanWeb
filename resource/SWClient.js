@@ -33,7 +33,7 @@ var _SWClient = function(data){
 	this.init = function(){
 		//alert('init');
 		$(".threads").append(_mkTHREAD({NO:3}));
-		$(".threads > li#r3").css('background','#ACAC0F');
+	//	$(".threads > li#r3").css('background','#ACAC0F');
 		$(".threads > li#r3").append(_mkREPLY({NO:3}));
 		
 		$(".threads").append(_mkTHREAD({NO:4}));
@@ -54,7 +54,7 @@ var _SWClient = function(data){
 						$REPLYBTN :language['reply_btn']
 						};
 		$.each(_replaceArray,function(i,v){
-			alert(i + "," + v);
+	//		alert(i + "," + v);
 			_THREAD = _THREAD.replace(new RegExp("{\\" + i + "}","g"),v);
 		});
 		// _THREAD = _THREAD.replace(/{\$NO}/g,data.NO)
