@@ -1,9 +1,5 @@
 <?php 
-include_once('./config.php'); // 引入設定檔
-include_once('./lib/lib_language.php'); // 引入語系
-include_once('./lib/lib_common.php'); // 引入共通函式檔案
 
-LoadLanguage('zh_TW');
 /*
 {$ADDITION_INFO} - (發文表單用) config.php 中的表單下額外文字
 {$ADMIN} - (BODYHEAD用) 「管理」連結

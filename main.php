@@ -17,8 +17,9 @@ if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_impl
 //echo $_SERVER['PATH_INFO'];
 $ARG = explode("/",$_SERVER['PATH_INFO']); 
 if(!isset($ARG[1])){sendStatusCode(400);exit;}//如果沒有要求看板名稱
-if(!is_dir('./board/' . $ARG[1])){sendStatusCode(404);exit;}//檢查看板是否存在
-include_once('./board/' . $ARG[1] . '/config.php'); // 引入設定檔
+define("PATH_BOARD", 'board/' . $ARG[1]);//設定看板位置
+if(!is_dir(PATH_BOARD)){sendStatusCode(404);exit;}//檢查看板是否存在
+include_once(PATH_BOARD . '/config.php'); // 引入設定檔
 
 //print_r($ARG);
 $BOARD  = $ARG[1];
@@ -41,14 +42,22 @@ switch($mode){
 
 switch($ACTION){ 
 	case '':
-		if(!is_file('./board/' . $ARG[1] . '/index.html')){
-			//require("./lib/lang/zh_TW.php");
-			//$fp = fopen('lang_zh_TW.json', 'w');
-			//stream_set_write_buffer($fp, 0);
-			//fwrite($fp,json_encode($language));
-			//fclose($fp);
+		if(!is_file(PATH_BOARD. '/index.html')){
+			include_once(PATH_BOARD . '/config.php'); // 引入設定檔
+			include_once('./lib/lib_language.php'); // 引入語系
+			include_once('./lib/lib_common.php'); // 引入共通函式檔案
+
+			LoadLanguage('zh_TW');
+			ob_start ();
+			require('./index.html.tpl.php');
+			$buf = ob_get_contents();
+			ob_end_clean();
+			$fp = fopen(PATH_BOARD . '/index.html', 'w');
+			stream_set_write_buffer($fp, 0);
+			fwrite($fp,$buf);
+			fclose($fp);
 		}
-		header('Location: '.fullURL().'board/' . $ARG[1] . '/index.html');
+		header('Location: '.fullURL().PATH_BOARD. '/index.html');
 		break;
 	case 'SHOW':
 		{
