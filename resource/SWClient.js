@@ -11,7 +11,7 @@ var _LANGLoader = function(data){
 	
 	$.ajax({async:false,
 			dataType:'json',
-			url:DEFINES['PHP_SELF'] + "?mode=lang",
+			url:"/sw/main.php/" + DEFINES['BOARD'] + "/LANG",
 			success:function(data){
 			//	alert(data);
 			//	alert(typeof(language));
