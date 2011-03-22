@@ -257,7 +257,7 @@ function getREMOTE_ADDR(){
 
 
 /*送出狀態碼*/
-function sendStatusCode($code = "200"){
+function sendStatusCode($code = 200){
 	$codesList = array(
 		    100 => 'Continue',
 		    101 => 'Switching Protocols',
