@@ -5,7 +5,6 @@ define("SIZIHWANWEB_VER", '0.01'); // 版本資訊文字
 
 define("PATH_ACTION_SHOW", './action/show.php');//SHOW 模組
 
-include_once('./config.php'); // 引入設定檔
 include_once('./lib/lib_common.php'); // 引入共通函式檔案
 //include_once('./lib/lib_pio.php'); // 引入PIO
 
@@ -14,6 +13,16 @@ include_once('./lib/lib_common.php'); // 引入共通函式檔案
 if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
 //$mode = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''); // 目前執行模式 (GET, POST)
 
+//echo $_SERVER['HTTP_ACCEPT'];
+//echo $_SERVER['PATH_INFO'];
+$ARG = explode("/",$_SERVER['PATH_INFO']); 
+if(!isset($ARG[1])){sendStatusCode(400);exit;}//如果沒有要求看板名稱
+if(!is_dir('./board/' . $ARG[1])){sendStatusCode(404);exit;}//檢查看板是否存在
+include_once('./board/' . $ARG[1] . '/config.php'); // 引入設定檔
+
+//print_r($ARG);
+$BOARD  = $ARG[1];
+$ACTION = $ARG[2];
 
 
 function methodGET(){
@@ -34,12 +43,7 @@ switch($mode){
 		break;
 	}
 }
-echo $_SERVER['HTTP_ACCEPT'];
-echo $_SERVER['PATH_INFO'];
-$ARG = explode("/",$_SERVER['PATH_INFO']); 
-print_r($ARG);
-$BOARD  = $ARG[1];
-$ACTION = $ARG[2];
+
 
 
 
