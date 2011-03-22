@@ -28,15 +28,7 @@ $ACTION = $ARG[2];
 function methodGET(){
 switch($mode){
 	case 'lang':
-		if(!is_file('lang_zh_TW.json')){
-			require("./lib/lang/zh_TW.php");
-			$fp = fopen('lang_zh_TW.json', 'w');
-			stream_set_write_buffer($fp, 0);
-			fwrite($fp,json_encode($language));
-			fclose($fp);
-		}
-		header('Location: '.fullURL().'lang_zh_TW.json'.'?');
-		break;
+
 	case 'GET' :
 		methodGET();
 		sendStatusCode("200");
@@ -54,7 +46,26 @@ switch($ACTION){
 			actSHOW();
 		}
 		break;	
-
+	case 'LANG':
+		{
+		if(!is_file('lang_zh_TW.json')){
+			require("./lib/lang/zh_TW.php");
+			$fp = fopen('lang_zh_TW.json', 'w');
+			stream_set_write_buffer($fp, 0);
+			fwrite($fp,json_encode($language));
+			fclose($fp);
+		}
+		header('Location: '.fullURL().'lang_zh_TW.json'.'?');
+		break;
+		}
+	case 'THREADS'://取得討論串
+	case 'POSTS'  ://投稿,刪除,修改
+	case 'STATUS' ://顯示系統狀態
+	case 'REMAKE' ://重新生成快取
+	case 'SEARCH' ://搜尋
+	case 'ADMIN'  ://後台
+		sendStatusCode(501);
+		break;
 	default:
 		sendStatusCode("400");
 }
