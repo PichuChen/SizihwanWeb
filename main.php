@@ -91,7 +91,7 @@ $ACTION = $ARG[2];
 
 
 
-switch($ACTION){
+switch($ACTION){ 
 	case 'SHOW':
 		{
 			require(PATH_LIB_SHOW);
