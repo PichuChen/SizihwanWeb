@@ -122,14 +122,14 @@ $FORM_NOTICE_NOSCRIPT = _T('form_notice_noscript');
 <meta http-equiv="Content-Language" content="zh-tw" />
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title><?php echo $TITLE?></title>
-<link rel="stylesheet" type="text/css" href="resource/mainstyle.css" />
+<link rel="stylesheet" type="text/css" href="../../resource/mainstyle.css" />
 
 <script type="text/javascript">
 var DEFINES = {};
 DEFINES['PHP_SELF'] = "<?php echo $SELF?>";
 </script>
-<script type="text/javascript" src="resource/jquery-1.5.1.min.js"></script>
-<script type="text/javascript" src="resource/SWClient.js?<?=time();?>"></script>
+<script type="text/javascript" src="../../resource/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="../../resource/SWClient.js?<?=time();?>"></script>
 <script type="text/javascript">
 
 $(document).ready(function(){
