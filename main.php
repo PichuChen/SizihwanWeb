@@ -3,6 +3,8 @@ define("PIXMICAT_VER", 'Pixmicat!-PIO 5th.Release (v100521)');
 define("SIZIHWANWEB_VER", '0.01'); // 版本資訊文字
 
 
+define("PATH_LIB_SHOW", './lib/lib_show.php');//SHOW 模組
+
 include_once('./config.php'); // 引入設定檔
 include_once('./lib/lib_common.php'); // 引入共通函式檔案
 include_once('./lib/lib_pio.php'); // 引入PIO
@@ -91,7 +93,10 @@ $ACTION = $ARG[2];
 
 switch($ACTION){
 	case 'SHOW':
-		actSHOW();
+		{
+			require(PATH_LIB_SHOW);
+			actSHOW();
+		}
 		break;	
 
 	default:
