@@ -146,11 +146,11 @@ $(document).ready(function(){
 <!--&POSTFORM-->
 <form action="<?php echo $SELF?>" method="post" enctype="multipart/form-data" onsubmit="return c();" id="postform_main">
 <div id="postform">
-<!--&IF($FORMTOP,'{$FORMTOP}','')-->
-<input type="hidden" name="mode" value="<?php echo $MODE?>" />
+<?php if(isset($FORMTOP) ){echo $FORMTOP;}?>
+<input type="hidden" name="mode" value="<?php echo $MODE;?>" />
 <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $MAX_FILE_SIZE?>" />
 <input type="hidden" name="upfile_path" value="" />
-<!--&IF($RESTO,'{$RESTO}','')-->
+<?php if(isset($RESTO) ){echo $RESTO;}?>
 <div style="text-align: center;">
 <table cellpadding="1" cellspacing="1" id="postform_tbl" style="margin: 0px auto; text-align: left;">
 <tr><td class="Form_bg"><b><?php echo $FORM_NAME_TEXT?>   </b></td><td><?php echo $FORM_NAME_FIELD?></td></tr>
@@ -168,13 +168,16 @@ $(document).ready(function(){
 
 <?php if(isset($FORM_ATTECHMENT_FIELD) ){?></td></tr>
 <?php } ?>
-<!--&IF($FORM_CATEGORY_FIELD,'<tr><td class="Form_bg"><b>{$FORM_CATEGORY_TEXT}</b></td><td>{$FORM_CATEGORY_FIELD}<small>{$FORM_CATEGORY_NOTICE}</small></td></tr>','')-->
+<?php if(isset($FORM_CATEGORY_FIELD) ){?>
+	<tr><td class="Form_bg"><b><?php echo $FORM_CATEGORY_TEXT?>
+	</b></td><td><?php echo $FORM_CATEGORY_FIELD?><small><?php echo FORM_CATEGORY_NOTICE?></small></td></tr>
+<?php } ?>
 <tr><td class="Form_bg"><b><?php echo $FORM_DELETE_PASSWORD_TEXT?></b></td><td><?php echo $FORM_DELETE_PASSWORD_FIELD?><small><?php echo $FORM_DELETE_PASSWORD_NOTICE?></small></td></tr>
 <?php echo $FORM_EXTRA_COLUMN?>
 <tr><td colspan="2">
 <div id="postinfo">
 <ul><?php echo $FORM_NOTICE?>
-<!--&IF($FORM_NOTICE_STORAGE_LIMIT,'{$FORM_NOTICE_STORAGE_LIMIT}','')-->
+<?php if(isset($FORM_NOTICE_STORAGE_LIMIT) ){echo $FORM_NOTICE_STORAGE_LIMIT;} ?>
 <?php echo $HOOKPOSTINFO?>
 <?php echo $ADDITION_INFO?>
 </ul>
@@ -187,7 +190,7 @@ $(document).ready(function(){
 <hr />
 </div>
 </form>
-<!--&IF($FORMBOTTOM,'{$FORMBOTTOM}','')-->
+<?php if(isset($FORMBOTTOM) ){echo $FORMBOTTOM;}?>
 <!--/&POSTFORM-->
 <?php echo "123"?>
 <ul class="threads">
