@@ -87,9 +87,7 @@ print_r($ARG);
 $BOARD  = $ARG[1];
 $ACTION = $ARG[2];
 
-function actSHOW(){
-//	require("")
-}
+
 
 switch($ACTION){
 	case 'SHOW':
