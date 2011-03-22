@@ -83,32 +83,32 @@
 $TITLE = TITLE;
 $SELF  = PHP_SELF;
 $MAX_FILE_SIZE = MAX_KB * 1024;
-$RESTO = $resno ? '<input type="hidden" name="resto" value="'.$resno.'" />' : '';
+//$RESTO = $resno ? '<input type="hidden" name="resto" value="'.$resno.'" />' : '';
 $FORM_NAME_TEXT = _T('form_name');
-$FORM_NAME_FIELD = '<input class="hide" type="text" name="name" value="spammer" /><input type="text" name="'.FT_NAME.'" id="fname" size="28" value="'.$name.'" />';
+$FORM_NAME_FIELD = '<input class="hide" type="text" name="name" value="spammer" /><input type="text" name="'.FT_NAME.'" id="fname" size="28" value="'./*$name.*/'" />';
 $FORM_EMAIL_TEXT = _T('form_email');
-$FORM_EMAIL_FIELD = '<input type="text" name="'.FT_EMAIL.'" id="femail" size="28" value="'.$mail.'" /><input type="text" class="hide" name="email" value="foo@foo.bar" />';
+$FORM_EMAIL_FIELD = '<input type="text" name="'.FT_EMAIL.'" id="femail" size="28" value="'./*$mail.*/'" /><input type="text" class="hide" name="email" value="foo@foo.bar" />';
 $FORM_TOPIC_TEXT = _T('form_topic');
-$FORM_TOPIC_FIELD = '<input class="hide" value="DO NOT FIX THIS" type="text" name="sub" /><input type="text" name="'.FT_SUBJECT.'" id="fsub" size="28" value="'.$sub.'" />';
+$FORM_TOPIC_FIELD = '<input class="hide" value="DO NOT FIX THIS" type="text" name="sub" /><input type="text" name="'.FT_SUBJECT.'" id="fsub" size="28" value="'./*$sub.*/'" />';
 $FORM_SUBMIT = '<input type="submit" name="sendbtn" value="'._T('form_submit_btn').'" />';
 $FORM_COMMENT_TEXT = _T('form_comment');
-$FORM_COMMENT_FIELD = '<textarea name="'.FT_COMMENT.'" id="fcom" cols="48" rows="4" style="width: 400px; height: 80px;">'.$com.'</textarea><textarea name="com" class="hide" cols="48" rows="4">EID OG SMAPS</textarea>';
+$FORM_COMMENT_FIELD = '<textarea name="'.FT_COMMENT.'" id="fcom" cols="48" rows="4" style="width: 400px; height: 80px;"></textarea><textarea name="com" class="hide" cols="48" rows="4">EID OG SMAPS</textarea>';
 $FORM_DELETE_PASSWORD_FIELD = '<input type="password" name="pwd" size="8" maxlength="8" value="" />';
 $FORM_DELETE_PASSWORD_TEXT = _T('form_delete_password');
 $FORM_DELETE_PASSWORD_NOTICE = _T('form_delete_password_notice');
 $FORM_EXTRA_COLUMN = '';
-$FORM_NOTICE   = _T('form_notice',str_replace('|',',',ALLOW_UPLOAD_EXT),MAX_KB,($resno ? MAX_RW : MAX_W),($resno ? MAX_RH : MAX_H));
+$FORM_NOTICE   = _T('form_notice',str_replace('|',',',ALLOW_UPLOAD_EXT),MAX_KB,(/*$resno*/1? MAX_RW : MAX_W),(/*$resno*/1 ? MAX_RH : MAX_H));
 $HOOKPOSTINFO  = '';
 $ADDITION_INFO = $ADDITION_INFO;
 $FORM_NOTICE_NOSCRIPT = _T('form_notice_noscript');
 //$PMS->useModuleMethods('PostForm', array(&$pte_vals['{$FORM_EXTRA_COLUMN}'])); // "PostForm" Hook Point
-	if(!$isedit && (RESIMG || !$resno)){
+	if((RESIMG || !$resno)){
 		$FORM_ATTECHMENT_TEXT = _T('form_attechment');
 		$FORM_ATTECHMENT_FIELD = '<input type="file" name="upfile" id="fupfile" size="25" /><input class="hide" type="checkbox" name="reply" value="yes" />';
 		$FORM_NOATTECHMENT_TEXT = _T('form_noattechment');
 		$FORM_NOATTECHMENT_FIELD = '<input type="checkbox" name="noimg" id="noimg" value="on" />';
 		if(USE_UPSERIES) { // 啟動連貼機能
-			$FORM_CONTPOST_FIELD = '<input type="checkbox" name="up_series" id="up_series" value="on"'.((isset($_GET["upseries"]) && $resno)?' checked="checked"':'').' />';
+			$FORM_CONTPOST_FIELD = '<input type="checkbox" name="up_series" id="up_series" value="on"'.((isset($_GET["upseries"]) && 1 /*$resno*/)?' checked="checked"':'').' />';
 			$FORM_CONTPOST_TEXT  = _T('form_contpost');
 		}
 	}
@@ -156,7 +156,7 @@ $(document).ready(function(){
 <form action="<?php echo $SELF?>" method="post" enctype="multipart/form-data" onsubmit="return c();" id="postform_main">
 <div id="postform">
 <?php if(isset($FORMTOP) ){echo $FORMTOP;}?>
-<input type="hidden" name="mode" value="<?php echo $MODE;?>" />
+<input type="hidden" name="mode" value="<?php //echo $MODE;?>" />
 <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $MAX_FILE_SIZE?>" />
 <input type="hidden" name="upfile_path" value="" />
 <?php if(isset($RESTO) ){echo $RESTO;}?>
