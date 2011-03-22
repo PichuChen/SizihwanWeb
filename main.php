@@ -13,8 +13,50 @@ if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_impl
 //$mode = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''); // 目前執行模式 (GET, POST)
 
 function sendStatusCode($code = "200"){
-	$codeList = array("200" => "OK",
-			  "405" => "Method Not Allowed");
+	$codesList = array(
+		    100 => 'Continue',
+		    101 => 'Switching Protocols',
+		    200 => 'OK',
+		    201 => 'Created',
+		    202 => 'Accepted',
+		    203 => 'Non-Authoritative Information',
+		    204 => 'No Content',
+		    205 => 'Reset Content',
+		    206 => 'Partial Content',
+		    300 => 'Multiple Choices',
+		    301 => 'Moved Permanently',
+		    302 => 'Found',
+		    303 => 'See Other',
+		    304 => 'Not Modified',
+		    305 => 'Use Proxy',
+		    306 => '(Unused)',
+		    307 => 'Temporary Redirect',
+		    400 => 'Bad Request',
+		    401 => 'Unauthorized',
+		    402 => 'Payment Required',
+		    403 => 'Forbidden',
+		    404 => 'Not Found',
+		    405 => 'Method Not Allowed',
+		    406 => 'Not Acceptable',
+		    407 => 'Proxy Authentication Required',
+		    408 => 'Request Timeout',
+		    409 => 'Conflict',
+		    410 => 'Gone',
+		    411 => 'Length Required',
+		    412 => 'Precondition Failed',
+		    413 => 'Request Entity Too Large',
+		    414 => 'Request-URI Too Long',
+		    415 => 'Unsupported Media Type',
+		    416 => 'Requested Range Not Satisfiable',
+		    417 => 'Expectation Failed',
+		    500 => 'Internal Server Error',
+		    501 => 'Not Implemented',
+		    502 => 'Bad Gateway',
+		    503 => 'Service Unavailable',
+		    504 => 'Gateway Timeout',
+		    505 => 'HTTP Version Not Supported'
+		);
+
 
 	header("HTTP/1.0 {$code} {$codeList[$code]}");
 
@@ -29,7 +71,6 @@ switch($mode){
 			stream_set_write_buffer($fp, 0);
 			fwrite($fp,json_encode($language));
 			fclose($fp);
-			@chmod($logfilename, 0666);
 		}
 		header('Location: '.fullURL().'lang_zh_TW.json'.'?');
 		break;
@@ -39,12 +80,32 @@ switch($mode){
 		break;
 	}
 }
-
+echo $_SERVER['HTTP_ACCEPT'];
 echo $_SERVER['PATH_INFO'];
+$ARG = explode("/",$_SERVER['PATH_INFO']); 
+print_r($ARG);
+$BOARD  = $ARG[1];
+$ACTION = $ARG[2];
+
+function actSHOW(){
+//	require("")
+}
+
+switch($ACTION){
+	case 'SHOW':
+		actSHOW();
+		break;	
+
+	default:
+		sendStatusCode("400");
+}
+
+exit;
+
 switch ($_SERVER['REQUEST_METHOD']){
 	case 'GET' :
 	
-		methodGET();
+//		methodGET();
 		sendStatusCode("200");
 		break;
 		
