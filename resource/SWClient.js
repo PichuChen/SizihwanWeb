@@ -42,25 +42,43 @@ var _SWClient = function(data){
 		$('#POSTFORM').attr('action',DEFINES['PHP_SELF']);
 
 	}
-
+	var _STEReplace = function(replaceArray,data){
+		$.each(replaceArray,function(i,v){
+			data = data.replace(new RegExp("{\\" + i + "}","g"),v);
+		});
+		return data;
+	}
+	
+	
 	var _mkTHREAD = function(data){
+	    if('undefined' == typeof(data)){data ={};}
+	    if('undefined' == typeof(data.NO)){data.NO = 0 ;}
+		if('undefined' == typeof(data.SUB)){data.SUB = "" ;}
+		if('undefined' == typeof(data.NAME)){data.NAME = "" ;}
+		if('undefined' == typeof(data.NOW)){data.NOW = "" ;}
+		if('undefined' == typeof(data.CATEGORY)){data.CATEGORY = "" ;}
+		if('undefined' == typeof(data.IMG_BAR)){data.IMG_BAR = "" ;}
+		if('undefined' == typeof(data.IMG_SRC)){data.IMG_SRC = "" ;}
+		if('undefined' == typeof(data.WARN_BEKILL)){data.WARN_BEKILL = "" ;}
+		if('undefined' == typeof(data.NAME_TEXT)){data.NAME_TEXT = "" ;}
+		if('undefined' == typeof(data.NOW)){data.NOW = "" ;}
+		if('undefined' == typeof(data.NOW)){data.NOW = "" ;}
 		_THREAD = '<li class="threadpost" id="r{$NO}">{$IMG_BAR}($IMG_SRC}' +
 				'<input type="checkbox" name="{$NO}" value="delete" />' +
 				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}&nbsp;{$REPLYBTN}' +
 				'<div class="quote">{$COM}</div>{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul></li>';
-		_replaceArray = {
-						$NO 	  :data.NO,
-						$NAME_TEXT:language['post_name'],
-						$REPLYBTN :language['reply_btn']
-						};
-		$.each(_replaceArray,function(i,v){
-	//		alert(i + "," + v);
-			_THREAD = _THREAD.replace(new RegExp("{\\" + i + "}","g"),v);
-		});
-		// _THREAD = _THREAD.replace(/{\$NO}/g,data.NO)
-				 // .replace(/{\$NAME_TEXT}/g,language['post_name'])
-				 // .replace(/{\$REPLYBTN}/g,language['reply_btn']);
-	//	alert(_THREAD);
+		/*
+		array('{$NO}'=>$no, '{$SUB}'=>$sub, '{$NAME}'=>$name, '{$NOW}'=>$now, '{$CATEGORY}'=>$category, '{/li}'=>/li, '{$IMG_BAR}'=>$IMG_BAR, '{$IMG_SRC}'=>$imgsrc, '{$WARN_BEKILL}'=>$WARN_BEKILL, '{$NAME_TEXT}'=>_T('post_name'), '{$CATEGORY_TEXT}'=>_T('post_category'), '{$SELF}'=>PHP_SELF, '{$COM}'=>$com);
+		*/
+		_THREAD = _STEReplace({
+								$NO 	  :data.NO,
+								$SUB	  :data.SUB,
+								$NAME     :data.NAME,
+								
+								$NAME_TEXT:language['post_name'],
+								$REPLYBTN :language['reply_btn']
+								},
+								_THREAD);
 		return _THREAD;
 	}
 	
@@ -73,9 +91,14 @@ var _SWClient = function(data){
 		
 
 		_THREAD = '<li class="reply" id="r{$NO}"><input type="checkbox" name="{$NO}" value="delete" /><span class="title">{$SUB}</span> {$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}<div class="quote">{$COM}</div>{$WARN_BEKILL}</li>';
-		_THREAD = _THREAD.replace(/{\$NO}/g,data.NO)
-				 .replace(/{\$SUB}/g,language['post_name']);
-
+		
+		_THREAD = _STEReplace({
+								$NO 	  :data.NO,
+								
+								$NAME_TEXT:language['post_name'],
+								$REPLYBTN :language['reply_btn']
+								},
+								_THREAD);
 		return _THREAD;
 	}
 	
