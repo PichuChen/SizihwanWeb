@@ -7,7 +7,7 @@ define("PATH_LIB_SHOW", './lib/lib_show.php');//SHOW 模組
 
 include_once('./config.php'); // 引入設定檔
 include_once('./lib/lib_common.php'); // 引入共通函式檔案
-include_once('./lib/lib_pio.php'); // 引入PIO
+//include_once('./lib/lib_pio.php'); // 引入PIO
 
 
 /*-----------程式各項功能主要判斷-------------*/
