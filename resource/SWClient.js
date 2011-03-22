@@ -4,7 +4,7 @@
  
 
 /*
- * ªy®t¿…≈™®˙
+ * Ë™ûÁ≥ªÊ™îËÆÄÂèñ
  */
 var _LANGLoader = function(data){
 	language = {};
@@ -48,10 +48,18 @@ var _SWClient = function(data){
 				'<input type="checkbox" name="{$NO}" value="delete" />' +
 				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}&nbsp;{$REPLYBTN}' +
 				'<div class="quote">{$COM}</div>{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul></li>';
-		
-		_THREAD = _THREAD.replace(/{\$NO}/g,data.NO)
-				 .replace(/{\$NAME_TEXT}/g,language['post_name'])
-				 .replace(/{\$REPLYBTN}/g,language['reply_btn']);
+		_replaceArray = {
+						$NO 	  :data.NO,
+						$NAME_TEXT:language['post_name'],
+						$REPLYBTN :language['reply_btn']
+						};
+		$.each(_replaceArray,function(i,v){
+			alert(i + "," + v);
+			_THREAD = _THREAD.replace(new RegExp("{\\" + i + "}","g");
+		});
+		// _THREAD = _THREAD.replace(/{\$NO}/g,data.NO)
+				 // .replace(/{\$NAME_TEXT}/g,language['post_name'])
+				 // .replace(/{\$REPLYBTN}/g,language['reply_btn']);
 	//	alert(_THREAD);
 		return _THREAD;
 	}
