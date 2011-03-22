@@ -10,7 +10,6 @@ include_once('./lib/lib_common.php'); // 引入共通函式檔案
 
 
 /*-----------程式各項功能主要判斷-------------*/
-if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
 //$mode = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''); // 目前執行模式 (GET, POST)
 
 //echo $_SERVER['HTTP_ACCEPT'];
@@ -21,6 +20,7 @@ define("PATH_BOARD", 'board/' . $ARG[1]);//設定看板位置
 if(!is_dir(PATH_BOARD)){sendStatusCode(404);exit;}//檢查看板是否存在
 include_once(PATH_BOARD . '/config.php'); // 引入設定檔
 
+if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
 //print_r($ARG);
 $BOARD  = $ARG[1];
 $ACTION = $ARG[2];
