@@ -62,7 +62,7 @@ switch($ACTION){
 	case 'POSTS'  ://投稿,刪除,修改
 	case 'STATUS' ://顯示系統狀態
 	case 'REMAKE' ://重新生成快取
-	case 'SEARCH' ://搜尋
+	case 'SEARCH' ://搜尋 
 	case 'ADMIN'  ://後台
 		sendStatusCode(501);
 		break;
