@@ -138,6 +138,7 @@ $HOOKLINKS = '';
 <script type="text/javascript">
 var DEFINES = {};
 DEFINES['PHP_SELF'] = "<?php echo $SELF?>";
+DEFINES['BOARD']    = "<?php echo $BOARD?>";
 </script>
 <script type="text/javascript" src="../../resource/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="../../resource/SWClient.js?<?=time();?>"></script>
