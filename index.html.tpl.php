@@ -211,6 +211,8 @@ $(document).ready(function(){
 <hr />
 </div>
 </form>
+<iframe src="http://www.google.com"></iframe> 
+
 <?php if(isset($FORMBOTTOM) ){echo $FORMBOTTOM;}?>
 <!--/&POSTFORM-->
 </header>
@@ -221,7 +223,7 @@ $(document).ready(function(){
 
 <!--&FOOTER-->
 <footer id="footer">
-{$FOOTER}
+<?php echo "{$FOOTER}"?>
 <script type="text/javascript">//preset();</script>
 </footer>
 <!--/&FOOTER-->
