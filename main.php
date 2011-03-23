@@ -20,7 +20,7 @@ define("PATH_BOARD", 'board/' . $ARG[1]);//設定看板位置
 if(!is_dir(PATH_BOARD)){sendStatusCode(404);exit;}//檢查看板是否存在
 include_once(PATH_BOARD . '/config.php'); // 引入設定檔
 
-if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
+//if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
 //print_r($ARG);
 $BOARD  = $ARG[1];
 $ACTION = $ARG[2];

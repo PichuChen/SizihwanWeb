@@ -34,11 +34,12 @@ var _SWClient = function(data){
 	this.init = function(){
 		//alert('init');
 		$threads = $(".threads");
-		$threads.append(_mkTHREAD({NO:3}));
+//		$threads.append(_mkTHREAD({NO:3}));
 	//	$(".threads > li#r3").css('background','#ACAC0F');
-		$(".threads > li#r3").append(_mkREPLY({NO:3}));
+//		$(".threads > li#r3").append(_mkREPLY({NO:3}));
 		
-		$threads.append(_mkTHREAD({NO:4}));
+//		$threads.append(_mkTHREAD({NO:4}));
+		this.getPage();
 	}
 	var _mkForm = function(){
 		$('#POSTFORM').attr('action',DEFINES['PHP_SELF']);
@@ -86,14 +87,14 @@ var _SWClient = function(data){
 		if('undefined' == typeof(data.name_text)){data.name_text = "" ;}
 		if('undefined' == typeof(data.now)){data.now = "" ;}
 		if('undefined' == typeof(data.now)){data.now = "" ;}
-		_THREAD = '<li class="threadpost" id="r{$NO}">{$IMG_BAR}($IMG_SRC}' +
+		_THREAD = '<li class="threadpost" id="r{$NO}">{$IMG_BAR}{$IMG_SRC}' +
 				'<input type="checkbox" name="{$NO}" value="delete" />' +
 				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}&nbsp;{$REPLYBTN}' +
 				'<div class="quote">{$COM}</div>{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul></li>';
 		/*
 		array('{$NO}'=>$no, '{$SUB}'=>$sub, '{$NAME}'=>$name, '{$NOW}'=>$now, '{$CATEGORY}'=>$category, '{/li}'=>/li, '{$IMG_BAR}'=>$IMG_BAR, '{$IMG_SRC}'=>$imgsrc, '{$WARN_BEKILL}'=>$WARN_BEKILL, '{$NAME_TEXT}'=>_T('post_name'), '{$CATEGORY_TEXT}'=>_T('post_category'), '{$SELF}'=>PHP_SELF, '{$COM}'=>$com);
 		*/
-		_IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}{$EXT}"></a>';
+		_IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s{$EXT}"></a>';
 		_IMG_SRC = _STEReplace({
 								$TIM	  :data.tim,
 								$EXT	  :data.ext,
@@ -123,7 +124,10 @@ var _SWClient = function(data){
 								$NO 	  :data.no,
 								$SUB	  :data.sub,
 								$NAME     :data.name,
-								$IMG_BAR  :_IMG_SRC,
+								$NOW      :data.now,
+								$IMG_SRC  :(data.ext == '' ? '': _IMG_SRC),
+								$IMG_BAR  :(data.ext == '' ? '': _IMG_BAR),
+								$COM	  :data.com,	
 								$NAME_TEXT:language['post_name'],
 								$REPLYBTN :language['reply_btn']
 								},
