@@ -165,7 +165,7 @@ $(document).ready(function(){
 <!--/&TOPLINKS-->
 
 <!--&POSTFORM-->
-<form action="<?php echo $SELF?>" method="post" enctype="multipart/form-data" onsubmit="return c();" id="postform_main">
+<form target="uploader" action="../../main.php/<?php echo $BOARD?>/POSTS" method="post" enctype="multipart/form-data"  id="postform_main">
 <div id="postform">
 <?php if(isset($FORMTOP) ){echo $FORMTOP;}?>
 <input type="hidden" name="mode" value="<?php //echo $MODE;?>" />
@@ -211,7 +211,7 @@ $(document).ready(function(){
 <hr />
 </div>
 </form>
-<iframe src="http://www.google.com"></iframe> 
+<iframe name="uploader" src="http://www.google.com"></iframe> 
 
 <?php if(isset($FORMBOTTOM) ){echo $FORMBOTTOM;}?>
 <!--/&POSTFORM-->
