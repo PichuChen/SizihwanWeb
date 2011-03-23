@@ -11,7 +11,7 @@ var _LANGLoader = function(data){
 	
 	$.ajax({async:false,
 			dataType:'json',
-			url:"/sw/main.php/" + DEFINES['BOARD'] + "/LANG",
+			url:"../../main.php/" + DEFINES['BOARD'] + "/LANG",
 			success:function(data){
 			//	alert(data);
 			//	alert(typeof(language));
@@ -55,7 +55,7 @@ var _SWClient = function(data){
 	    if('undefined' == typeof(data.pageNo)){data.pageNo = 1 ;}
 		$.ajax({
 				dataType:'json',
-				url:"../../main/" + DEFINES['BOARD'] + "/SHOW/" + data.pageNo,
+				url:"../../main.php/" + DEFINES['BOARD'] + "/SHOW/" + data.pageNo,
 				statusCode:{
 					200:function(data){
 						$.each(data,function(i,v){
