@@ -113,6 +113,17 @@ $FORM_NOTICE_NOSCRIPT = _T('form_notice_noscript');
 		}
 	}
 
+$ALLOW_UPLOAD_EXT = ALLOW_UPLOAD_EXT;
+$JS_REGIST_WITHOUTCOMMENT = str_replace('\'', '\\\'', _T('regist_withoutcomment'));
+$JS_REGIST_UPLOAD_NOTSUPPORT = str_replace('\'', '\\\'', _T('regist_upload_notsupport'));
+$JS_CONVERT_SAKURA = str_replace('\'', '\\\'', _T('js_convert_sakura'));
+$TOP_LINKS = TOP_LINKS;
+$HOME = '<li>[<a href="'.HOME.'" rel="_top">'._T('head_home').'</a>]</li>';
+$STATUS = '<li>[<a href="'.PHP_SELF.'?mode=status">'._T('head_info').'</a>]</li>';
+$ADMIN = '<li>[<a href="'.PHP_SELF.'?mode=admin">'._T('head_admin').'</a>]</li>';
+$REFRESH = '<li>[<a href="'.PHP_SELF2.'?">'._T('head_refresh').'</a>]</li>';
+$SEARCH = (USE_SEARCH) ? '<li>[<a href="'.PHP_SELF.'?mode=search">'._T('head_search').'</a>]</li>' : '';
+$HOOKLINKS = '';
 ?><!DOCTYP HTML>
 <html>
 <head>
@@ -147,9 +158,9 @@ $(document).ready(function(){
 
 <h1><?php echo $TITLE?></h1>
 <!--&TOPLINKS-->
-<div id="toplink">
-{$HOME} {$SEARCH} {$HOOKLINKS} {$TOP_LINKS} {$STATUS} {$ADMIN} {$REFRESH}
-</div>
+<ul id="toplink">
+<?php echo "{$HOME} {$SEARCH} {$HOOKLINKS} {$TOP_LINKS} {$STATUS} {$ADMIN} {$REFRESH}"?>
+</ul>
 <!--/&TOPLINKS-->
 
 <!--&POSTFORM-->
