@@ -194,7 +194,11 @@ function actPOSTS(){
 	// 內文修整
 	if((strlen($com) > COMM_MAX) && !$is_admin) error(_T('regist_commenttoolong'), $dest);
 	$com = CleanStr($com, $is_admin); // 引入$is_admin參數是因為當管理員????啟動時，允許管理員依config設定是否使用HTML
-	if(!$com && $upfile_status==4) error(_T('regist_withoutcomment'));
+	if(!$com && $upfile_status==4) {
+		echo json_encode('regist_withoutcomment');
+		sendStatusCode(403);
+		exit;
+	}
 	$com = str_replace(array("\r\n", "\r"), "\n", $com); $com = preg_replace("/\n((　| )*\n){3,}/", "\n", $com);
 	if(!BR_CHECK || substr_count($com,"\n") < BR_CHECK) $com = nl2br($com); // 換行字元用<br />代替
 	$com = str_replace("\n", '', $com); // 若還有\n換行字元則取消換行
