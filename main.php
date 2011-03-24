@@ -20,6 +20,7 @@ if(!isset($ARG[1])){sendStatusCode(400);exit;}//如果沒有要求看板名稱
 define("PATH_BOARD", 'board/' . $ARG[1]);//設定看板位置
 if(!is_dir(PATH_BOARD)){sendStatusCode(404);exit;}//檢查看板是否存在
 include_once(PATH_BOARD . '/config.php'); // 引入設定檔
+include_once(PATH_BOARD . '/config.php'); // 引入設定檔
 
 //if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
 //print_r($ARG);
@@ -83,6 +84,10 @@ switch($ACTION){
 		break;
 	case 'POSTS'  ://投稿,刪除,修改
 		{
+			
+			include_once('./lib/lib_language.php'); // 引入語系
+			
+			LoadLanguage('zh_TW');
 			require(PATH_ACTION_POSTS);
 			actPOSTS();
 		}
