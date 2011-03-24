@@ -3,7 +3,8 @@ define("PIXMICAT_VER", 'Pixmicat!-PIO 5th.Release (v100521)');
 define("SIZIHWANWEB_VER", '0.01'); // 版本資訊文字
 
 
-define("PATH_ACTION_SHOW", './action/show.php');//SHOW 模組
+define("PATH_ACTION_SHOW", './action/show.php');   //SHOW 模組
+define("PATH_ACTION_POSTS", './action/posts.php'); //POSTS 模組
 
 include_once('./lib/lib_common.php'); // 引入共通函式檔案
 //include_once('./lib/lib_pio.php'); // 引入PIO
@@ -81,8 +82,12 @@ switch($ACTION){
 		sendStatusCode(501);
 		break;
 	case 'POSTS'  ://投稿,刪除,修改
-		echo "IN";
+		{
+			require(PATH_ACTION_POSTS);
+			actPOSTS();
+		}
 		sendStatusCode(200);
+		break;
 	case 'STATUS' ://顯示系統狀態
 	case 'REMAKE' ://重新生成快取
 	case 'SEARCH' ://搜尋 
