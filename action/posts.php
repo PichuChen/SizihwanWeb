@@ -77,7 +77,12 @@ function actPOSTS(){
 			error(_T('regist_upload_direrror'));
 			break;
 		case 4: // 無上傳
-			if(!$resto && !isset($_POST['noimg'])) error(_T('regist_upload_noimg'));
+			if(!$resto && !isset($_POST['noimg'])){
+				echo json_encode('regist_upload_noimg');
+				sendStatusCode(403);
+				return ;
+				//error(_T('regist_upload_noimg'));
+			}
 			break;
 		case 0: // 上傳正常
 		default:
@@ -278,6 +283,7 @@ function actPOSTS(){
 			if(!MAX_AGE_TIME || (($time - $chktime) < (MAX_AGE_TIME * 60 * 60))) $age = true; // 討論串並無過期，推文
 		}
 	}
+
 
 }
 
