@@ -248,14 +248,14 @@ function actPOSTS(){
 //	}
 //exit;
 	// 附加圖檔容量限制功能啟動：刪除過大檔
-	if(STORAGE_LIMIT && STORAGE_MAX > 0){
-		$tmp_total_size = total_size(); // 取得目前附加圖檔使用量
-		if($tmp_total_size > STORAGE_MAX){
+//	if(STORAGE_LIMIT && STORAGE_MAX > 0){
+//		$tmp_total_size = total_size(); // 取得目前附加圖檔使用量
+//		($tmp_total_size > STORAGE_MAX){
 		//	$files = $PIO->delOldAttachments($tmp_total_size, STORAGE_MAX, false);
 		//	$FileIO->deleteImage($files);
-		}
-	}
-exit;
+//		}
+//	}
+//exit;
 	// 判斷欲回應的文章是不是剛剛被刪掉了
 	if($resto){
 		if($ThreadExistsBefore){ // 欲回應的討論串是否存在
@@ -291,7 +291,7 @@ exit;
 		}
 	}
 
-
+	echo "SUCCESS::";
 }
 
 

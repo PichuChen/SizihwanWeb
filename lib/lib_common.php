@@ -258,9 +258,9 @@ function getREMOTE_ADDR(){
 
 /* 計算目前附加圖檔使用容量 (單位：KB) */
 function total_size($isupdate=false){
- require("./lib/lib_pio.php");	
-
-	global $PIO, $FileIO;
+ 	//require("./lib/lib_pio.php");	
+	require("./lib/lib_fileio.php");
+	//global $PIO, $FileIO;
 
 	$size = 0; $all = 0;
 	$cache_file = "./sizecache.dat"; // 附加圖檔使用容量值快取檔案
