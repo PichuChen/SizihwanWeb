@@ -2,7 +2,9 @@
 function actPOSTS(){
 	print_r($_POST);
 //	print_r($_FILE);
-	global $PIO, $FileIO, $PMS, $language, $BAD_STRING, $BAD_FILEMD5, $BAD_IPADDR, $LIMIT_SENSOR;
+	require("./lib/lib_pio.php");
+
+	global $FileIO, $PMS, $language, $BAD_STRING, $BAD_FILEMD5, $BAD_IPADDR, $LIMIT_SENSOR;
 	$dest = ''; $mes = ''; $up_incomplete = 0; $is_admin = false;
 	$path = realpath('.').DIRECTORY_SEPARATOR; // 此目錄的絕對位置
 
@@ -235,25 +237,25 @@ function actPOSTS(){
 	if($resto) $ThreadExistsBefore = $PIO->isThread($resto);
 
 	// 舊文章刪除處理
-	if(PIOSensor::check('delete', $LIMIT_SENSOR)){
-		$delarr = PIOSensor::listee('delete', $LIMIT_SENSOR);
-		if(count($delarr)){
-			deleteCache($delarr);
-			$PMS->useModuleMethods('PostOnDeletion', array($delarr, 'recycle')); // "PostOnDeletion" Hook Point
-			$files = $PIO->removePosts($delarr);
-			if(count($files)) $FileIO->deleteImage($files);
-		}
-	}
-
+//	if(PIOSensor::check('delete', $LIMIT_SENSOR)){
+//		$delarr = PIOSensor::listee('delete', $LIMIT_SENSOR);
+//		if(count($delarr)){
+//			deleteCache($delarr);
+//			$PMS->useModuleMethods('PostOnDeletion', array($delarr, 'recycle')); // "PostOnDeletion" Hook Point
+//			$files = $PIO->removePosts($delarr);
+//			if(count($files)) $FileIO->deleteImage($files);
+//		}
+//	}
+//exit;
 	// 附加圖檔容量限制功能啟動：刪除過大檔
 	if(STORAGE_LIMIT && STORAGE_MAX > 0){
 		$tmp_total_size = total_size(); // 取得目前附加圖檔使用量
 		if($tmp_total_size > STORAGE_MAX){
-			$files = $PIO->delOldAttachments($tmp_total_size, STORAGE_MAX, false);
-			$FileIO->deleteImage($files);
+		//	$files = $PIO->delOldAttachments($tmp_total_size, STORAGE_MAX, false);
+		//	$FileIO->deleteImage($files);
 		}
 	}
-
+exit;
 	// 判斷欲回應的文章是不是剛剛被刪掉了
 	if($resto){
 		if($ThreadExistsBefore){ // 欲回應的討論串是否存在

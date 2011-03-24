@@ -256,6 +256,42 @@ function getREMOTE_ADDR(){
 }
 
 
+/* 計算目前附加圖檔使用容量 (單位：KB) */
+function total_size($isupdate=false){
+ require("./lib/lib_pio.php");	
+
+	global $PIO, $FileIO;
+
+	$size = 0; $all = 0;
+	$cache_file = "./sizecache.dat"; // 附加圖檔使用容量值快取檔案
+
+	if($isupdate){ // 刪除舊快取
+		if(is_file($cache_file)) unlink($cache_file);
+		return;
+	}
+	if(!is_file($cache_file)){ // 無快取，新增
+		$line = $PIO->fetchPostList(); // 取出所有文章編號
+		$posts = $PIO->fetchPosts($line,'tim,ext');
+		$linecount = count($posts);
+		for($i = 0; $i < $linecount; $i++){
+			extract($posts[$i]);
+			// 從記錄檔抽出計算附加圖檔使用量
+			if($ext && $FileIO->imageExists($tim.$ext)) $all += $FileIO->getImageFilesize($tim.$ext); // 附加圖檔合計計算
+			if($FileIO->imageExists($tim.'s.jpg')) $all += $FileIO->getImageFilesize($tim.'s.jpg'); // 預覽圖合計計算
+		}
+		$sp = fopen($cache_file, 'w');
+		stream_set_write_buffer($sp, 0);
+		fwrite($sp, $all); // 寫入目前使用容量值
+		fclose($sp);
+		@chmod($cache_file, 0666);
+	}else{ // 使用快取
+		$sp = file($cache_file);
+		$all = $sp[0];
+		unset($sp);
+	}
+	return (int)($all / 1024);
+}
+
 /*送出狀態碼*/
 function sendStatusCode($code = 200){
 	$codeList = array(
