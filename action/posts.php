@@ -4,14 +4,14 @@ function actPOSTS(){
 //	print_r($_FILE);
 	global $PIO, $FileIO, $PMS, $language, $BAD_STRING, $BAD_FILEMD5, $BAD_IPADDR, $LIMIT_SENSOR;
 	$dest = ''; $mes = ''; $up_incomplete = 0; $is_admin = false;
-	$path = realpath('.').DIRECTORY_SEPARATOR; // ¦¹¥Ø¿ıªºµ´¹ï¦ì¸m
+	$path = realpath('.').DIRECTORY_SEPARATOR; // æ­¤ç›®éŒ„çš„çµ•å°ä½ç½®
 
 	if($_SERVER['REQUEST_METHOD'] != 'POST'){
 		sendStatusCode(405);
 		return;
-		//error(_T('regist_notpost')); // «D¥¿³WPOST¤è¦¡
+		//error(_T('regist_notpost')); // éæ­£è¦POSTæ–¹å¼
 	}
-	// Äæ¦ì³´¨À
+	// æ¬„ä½é™·é˜±
 	$FTname = isset($_POST['name']) ? $_POST['name'] : '';
 	$FTemail = isset($_POST['email']) ? $_POST['email'] : '';
 	$FTsub = isset($_POST['sub']) ? $_POST['sub'] : '';
@@ -34,7 +34,7 @@ function actPOSTS(){
 	$ip = getREMOTE_ADDR(); $host = gethostbyaddr($ip);
 
 	//$PMS->useModuleMethods('RegistBegin', array(&$name, &$email, &$sub, &$com, array('file'=>&$upfile, 'path'=>&$upfile_path, 'name'=>&$upfile_name, 'status'=>&$upfile_status), array('ip'=>$ip, 'host'=>$host), $resto)); // "RegistBegin" Hook Point
-	// «ÊÂê¡GIP/Hostname/DNSBL ÀË¬d¾÷¯à
+	// å°é–ï¼šIP/Hostname/DNSBL æª¢æŸ¥æ©Ÿèƒ½
 	$baninfo = '';
 	if(BanIPHostDNSBLCheck($ip, $host, $baninfo)){
 		//error(_T('regist_ipfiltered', $baninfo));
@@ -42,7 +42,7 @@ function actPOSTS(){
 		return ;
 		//;
 	}
-	// «ÊÂê¡G­­¨î¥X²{¤§¤å¦r
+	// å°é–ï¼šé™åˆ¶å‡ºç¾ä¹‹æ–‡å­—
 	foreach($BAD_STRING as $value){
 		if(strpos($com, $value)!==false || strpos($sub, $value)!==false || strpos($name, $value)!==false || strpos($email, $value)!==false){
 			//error(_T('regist_wordfiltered'));
@@ -51,18 +51,18 @@ function actPOSTS(){
 		}
 	}
 
-	// ÀË¬d¬O§_¿é¤JÄåªá¤é¤å°²¦W
+	// æª¢æŸ¥æ˜¯å¦è¼¸å…¥æ«»èŠ±æ—¥æ–‡å‡å
 	foreach(array($name, $email, $sub, $com) as $anti) if(anti_sakura($anti)){
 		//error(_T('regist_sakuradetected'));
 		sendStatusCode(403);
 		return ;
 	}
 
-	// ®É¶¡
+	// æ™‚é–“
 	$time = time();
 	$tim = $time.substr(microtime(),2,3);
 
-	// §PÂ_¤W¶Çª¬ºA
+	// åˆ¤æ–·ä¸Šå‚³ç‹€æ…‹
 	switch($upfile_status){
 		case 1:
 			error(_T('regist_upload_exceedphp'));
@@ -76,7 +76,7 @@ function actPOSTS(){
 		case 6:
 			error(_T('regist_upload_direrror'));
 			break;
-		case 4: // µL¤W¶Ç
+		case 4: // ç„¡ä¸Šå‚³
 			if(!$resto && !isset($_POST['noimg'])){
 				 sendStatusCode(403);
 				echo json_encode('regist_upload_noimg');
@@ -85,50 +85,50 @@ function actPOSTS(){
 				//error(_T('regist_upload_noimg'));
 			}
 			break;
-		case 0: // ¤W¶Ç¥¿±`
+		case 0: // ä¸Šå‚³æ­£å¸¸
 		default:
 	}
 
-	// ¦pªG¦³¤W¶ÇÀÉ®×«h³B²zªş¥[¹ÏÀÉ
+	// å¦‚æœæœ‰ä¸Šå‚³æª”æ¡ˆå‰‡è™•ç†é™„åŠ åœ–æª”
 	if($upfile && (@is_uploaded_file($upfile) || @is_file($upfile))){
-		// ¤@¡E¥ıÀx¦sÀÉ®×
+		// ä¸€â€§å…ˆå„²å­˜æª”æ¡ˆ
 		$dest = $path.$tim.'.tmp';
 		@move_uploaded_file($upfile, $dest) or @copy($upfile, $dest);
 		@chmod($dest, 0666);
 		if(!is_file($dest)) error(_T('regist_upload_filenotfound'), $dest);
 
-		// ¤G¡E§PÂ_¤W¶Çªş¥[¹ÏÀÉ³~¤¤¬O§_¦³¤¤Â_
+		// äºŒâ€§åˆ¤æ–·ä¸Šå‚³é™„åŠ åœ–æª”é€”ä¸­æ˜¯å¦æœ‰ä¸­æ–·
 		$upsizeTTL = $_SERVER['CONTENT_LENGTH'];
-		if(isset($_FILES['upfile'])){ // ¦³¶Ç¿é¸ê®Æ¤~»İ­n­pºâ¡AÁ×§K§@¥Õ¤u
+		if(isset($_FILES['upfile'])){ // æœ‰å‚³è¼¸è³‡æ–™æ‰éœ€è¦è¨ˆç®—ï¼Œé¿å…ä½œç™½å·¥
 			$upsizeHDR = 0;
-			// ÀÉ®×¸ô®|¡GIEªş§¹¾ã¸ô®|¡A¬G±o±qÁôÂÃªí³æ¨ú±o
+			// æª”æ¡ˆè·¯å¾‘ï¼šIEé™„å®Œæ•´è·¯å¾‘ï¼Œæ•…å¾—å¾éš±è—è¡¨å–®å–å¾—
 			$tmp_upfile_path = $upfile_name;
 			if($upfile_path) $tmp_upfile_path = get_magic_quotes_gpc() ? stripslashes($upfile_path) : $upfile_path;
 			list(,$boundary) = explode('=', $_SERVER['CONTENT_TYPE']);
-			foreach($_POST as $header => $value){ // ªí³æÄæ¦ì¶Ç°e¸ê®Æ
+			foreach($_POST as $header => $value){ // è¡¨å–®æ¬„ä½å‚³é€è³‡æ–™
 				$upsizeHDR += strlen('--'.$boundary."\r\n");
 				$upsizeHDR += strlen('Content-Disposition: form-data; name="'.$header.'"'."\r\n\r\n".(get_magic_quotes_gpc()?stripslashes($value):$value)."\r\n");
 			}
-			// ªş¥[¹ÏÀÉÄæ¦ì¶Ç°e¸ê®Æ
+			// é™„åŠ åœ–æª”æ¬„ä½å‚³é€è³‡æ–™
 			$upsizeHDR += strlen('--'.$boundary."\r\n");
 			$upsizeHDR += strlen('Content-Disposition: form-data; name="upfile"; filename="'.$tmp_upfile_path."\"\r\n".'Content-Type: '.$_FILES['upfile']['type']."\r\n\r\n");
 			$upsizeHDR += strlen("\r\n--".$boundary."--\r\n");
-			$upsizeHDR += $_FILES['upfile']['size']; // ¶Ç°eªş¥[¹ÏÀÉ¸ê®Æ¶q
-			// ¤W¶Ç¦ì¤¸²Õ®t­È¶W¹L HTTP_UPLOAD_DIFF¡G¤W¶Çªş¥[¹ÏÀÉ¤£§¹¥ş
+			$upsizeHDR += $_FILES['upfile']['size']; // å‚³é€é™„åŠ åœ–æª”è³‡æ–™é‡
+			// ä¸Šå‚³ä½å…ƒçµ„å·®å€¼è¶…é HTTP_UPLOAD_DIFFï¼šä¸Šå‚³é™„åŠ åœ–æª”ä¸å®Œå…¨
 			if(($upsizeTTL - $upsizeHDR) > HTTP_UPLOAD_DIFF){
 				if(KILL_INCOMPLETE_UPLOAD){
 					unlink($dest);
-					die(_T('regist_upload_killincomp')); // µ¹ÂsÄı¾¹ªº´£¥Ü¡A°²¦p¨Ï¥ÎªÌÁÙ¬İªº¨ìªº¸Ü¤~¤£·|¯Ç´e
+					die(_T('regist_upload_killincomp')); // çµ¦ç€è¦½å™¨çš„æç¤ºï¼Œå‡å¦‚ä½¿ç”¨è€…é‚„çœ‹çš„åˆ°çš„è©±æ‰ä¸æœƒç´æ‚¶
 				}else $up_incomplete = 1;
 			}
 		}
 
-		// ¤T¡EÀË¬d¬O§_¬°¥i±µ¨üªºÀÉ®×
+		// ä¸‰â€§æª¢æŸ¥æ˜¯å¦ç‚ºå¯æ¥å—çš„æª”æ¡ˆ
 		$size = @getimagesize($dest);
-		if(!is_array($size)) error(_T('regist_upload_notimage'), $dest); // $size¤£¬°°}¦C´N¤£¬O¹ÏÀÉ
-		$imgsize = @filesize($dest); // ÀÉ®×¤j¤p
-		$imgsize = ($imgsize>=1024) ? (int)($imgsize/1024).' KB' : $imgsize.' B'; // KB©MBªº§P§O
-		switch($size[2]){ // §PÂ_¤W¶Çªş¥[¹ÏÀÉ¤§®æ¦¡
+		if(!is_array($size)) error(_T('regist_upload_notimage'), $dest); // $sizeä¸ç‚ºé™£åˆ—å°±ä¸æ˜¯åœ–æª”
+		$imgsize = @filesize($dest); // æª”æ¡ˆå¤§å°
+		$imgsize = ($imgsize>=1024) ? (int)($imgsize/1024).' KB' : $imgsize.' B'; // KBå’ŒBçš„åˆ¤åˆ¥
+		switch($size[2]){ // åˆ¤æ–·ä¸Šå‚³é™„åŠ åœ–æª”ä¹‹æ ¼å¼
 			case 1 : $ext = ".gif"; break;
 			case 2 : $ext = ".jpg"; break;
 			case 3 : $ext = ".png"; break;
@@ -138,13 +138,13 @@ function actPOSTS(){
 			case 13 : $ext = ".swf"; break;
 			default : $ext = ".xxx"; error(_T('regist_upload_notsupport'), $dest);
 		}
-		$allow_exts = explode('|', strtolower(ALLOW_UPLOAD_EXT)); // ±µ¨ü¤§ªş¥[¹ÏÀÉ°ÆÀÉ¦W
-		if(array_search(substr($ext, 1), $allow_exts)===false) error(_T('regist_upload_notsupport'), $dest); // ¨ÃµL¦b±µ¨ü°ÆÀÉ¦W¤§¦C
-		// «ÊÂê³]©w¡G­­¨î¤W¶Çªş¥[¹ÏÀÉ¤§MD5ÀË¬d½X
-		$md5chksum = md5_file($dest); // ÀÉ®×MD5
-		if(array_search($md5chksum, $BAD_FILEMD5)!==FALSE) error(_T('regist_upload_blocked'), $dest); // ¦b«ÊÂê³]©w¤º«hªı¾×
+		$allow_exts = explode('|', strtolower(ALLOW_UPLOAD_EXT)); // æ¥å—ä¹‹é™„åŠ åœ–æª”å‰¯æª”å
+		if(array_search(substr($ext, 1), $allow_exts)===false) error(_T('regist_upload_notsupport'), $dest); // ä¸¦ç„¡åœ¨æ¥å—å‰¯æª”åä¹‹åˆ—
+		// å°é–è¨­å®šï¼šé™åˆ¶ä¸Šå‚³é™„åŠ åœ–æª”ä¹‹MD5æª¢æŸ¥ç¢¼
+		$md5chksum = md5_file($dest); // æª”æ¡ˆMD5
+		if(array_search($md5chksum, $BAD_FILEMD5)!==FALSE) error(_T('regist_upload_blocked'), $dest); // åœ¨å°é–è¨­å®šå…§å‰‡é˜»æ“‹
 
-		// ¥|¡E­pºâªş¥[¹ÏÀÉ¹ÏÀÉÁY¹ÏÅã¥Ü¤Ø¤o
+		// å››â€§è¨ˆç®—é™„åŠ åœ–æª”åœ–æª”ç¸®åœ–é¡¯ç¤ºå°ºå¯¸
 		$W = $imgW = $size[0];
 		$H = $imgH = $size[1];
 		$MAXW = $resto ? MAX_RW : MAX_W;
@@ -159,78 +159,78 @@ function actPOSTS(){
 		$mes = _T('regist_uploaded', CleanStr($upfile_name));
 	}
 
-	// ÀË¬dªí³æÄæ¦ì¤º®e¨Ã­×¾ã
+	// æª¢æŸ¥è¡¨å–®æ¬„ä½å…§å®¹ä¸¦ä¿®æ•´
 	if(strlen($name) > 100) error(_T('regist_nametoolong'), $dest);
 	if(strlen($email) > 100) error(_T('regist_emailtoolong'), $dest);
 	if(strlen($sub) > 100) error(_T('regist_topictoolong'), $dest);
 	if(strlen($resto) > 10) error(_T('regist_longthreadnum'), $dest);
 
-	// E-mail / ¼ĞÃD­×¾ã
+	// E-mail / æ¨™é¡Œä¿®æ•´
 	$email = str_replace("\r\n", '', $email); $sub = str_replace("\r\n", '', $sub);
-	// ¦WºÙ­×¾ã
-	$name = str_replace(_T('trip_pre'), _T('trip_pre_fake'), $name); // ¨¾¤î????°°³y
-	$name = str_replace(CAP_SUFFIX, _T('cap_char_fake'), $name); // ¨¾¤îºŞ²z­û????°°³y
+	// åç¨±ä¿®æ•´
+	$name = str_replace(_T('trip_pre'), _T('trip_pre_fake'), $name); // é˜²æ­¢????å½é€ 
+	$name = str_replace(CAP_SUFFIX, _T('cap_char_fake'), $name); // é˜²æ­¢ç®¡ç†å“¡????å½é€ 
 	$name = str_replace("\r\n", '', $name);
-	$nameOri = $name; // ¦WºÙ
-	if(preg_match('/(.*?)[#¡­](.*)/u', $name, $regs)){ // ????(Trip)¾÷¯à
+	$nameOri = $name; // åç¨±
+	if(preg_match('/(.*?)[#ï¼ƒ](.*)/u', $name, $regs)){ // ????(Trip)æ©Ÿèƒ½
 		$name = $nameOri = $regs[1]; $cap = strtr($regs[2], array('&amp;'=>'&'));
 		$salt = preg_replace('/[^\.-z]/', '.', substr($cap.'H.', 1, 2));
 		$salt = strtr($salt, ':;<=>?@[\\]^_`', 'ABCDEFGabcdef');
 		$name = $name._T('trip_pre').substr(crypt($cap, $salt), -10);
 	}
-	if(CAP_ENABLE && preg_match('/(.*?)[#¡­](.*)/', $email, $aregs)){ // ºŞ²z­û????(Cap)¾÷¯à
+	if(CAP_ENABLE && preg_match('/(.*?)[#ï¼ƒ](.*)/', $email, $aregs)){ // ç®¡ç†å“¡????(Cap)æ©Ÿèƒ½
 		$acap_name = $nameOri; $acap_pwd = strtr($aregs[2], array('&amp;'=>'&'));
 		if($acap_name==CAP_NAME && $acap_pwd==CAP_PASS){
 			$name = '<span class="admin_cap">'.$name.CAP_SUFFIX.'</span>';
 			$is_admin = true;
-			$email = $aregs[1]; // ¥h°£ #xx ±K½X
+			$email = $aregs[1]; // å»é™¤ #xx å¯†ç¢¼
 		}
 	}
-	if(!$is_admin){ // «DºŞ²z­û
+	if(!$is_admin){ // éç®¡ç†å“¡
 		$name = str_replace(_T('admin'), '"'._T('admin').'"', $name);
 		$name = str_replace(_T('deletor'), '"'._T('deletor').'"', $name);
 	}
-	$name = str_replace('&'._T('trip_pre'), '&amp;'._T('trip_pre'), $name); // Á×§K &#xxxx; «á­±³Qµø¬° Trip ¯d¤U & ³y¦¨¸ÑªR¿ù»~
-	// ¤º¤å­×¾ã
+	$name = str_replace('&'._T('trip_pre'), '&amp;'._T('trip_pre'), $name); // é¿å… &#xxxx; å¾Œé¢è¢«è¦–ç‚º Trip ç•™ä¸‹ & é€ æˆè§£æéŒ¯èª¤
+	// å…§æ–‡ä¿®æ•´
 	if((strlen($com) > COMM_MAX) && !$is_admin) error(_T('regist_commenttoolong'), $dest);
-	$com = CleanStr($com, $is_admin); // ¤Ş¤J$is_admin°Ñ¼Æ¬O¦]¬°·íºŞ²z­û????±Ò°Ê®É¡A¤¹³\ºŞ²z­û¨Ìconfig³]©w¬O§_¨Ï¥ÎHTML
+	$com = CleanStr($com, $is_admin); // å¼•å…¥$is_adminåƒæ•¸æ˜¯å› ç‚ºç•¶ç®¡ç†å“¡????å•Ÿå‹•æ™‚ï¼Œå…è¨±ç®¡ç†å“¡ä¾configè¨­å®šæ˜¯å¦ä½¿ç”¨HTML
 	if(!$com && $upfile_status==4) error(_T('regist_withoutcomment'));
-	$com = str_replace(array("\r\n", "\r"), "\n", $com); $com = preg_replace("/\n((¡@| )*\n){3,}/", "\n", $com);
-	if(!BR_CHECK || substr_count($com,"\n") < BR_CHECK) $com = nl2br($com); // ´«¦æ¦r¤¸¥Î<br />¥N´À
-	$com = str_replace("\n", '', $com); // ­YÁÙ¦³\n´«¦æ¦r¤¸«h¨ú®ø´«¦æ
-	// ¹w³]ªº¤º®e
-	if(!$name || preg_match("/^[ |¡@|]*$/", $name)){
+	$com = str_replace(array("\r\n", "\r"), "\n", $com); $com = preg_replace("/\n((ã€€| )*\n){3,}/", "\n", $com);
+	if(!BR_CHECK || substr_count($com,"\n") < BR_CHECK) $com = nl2br($com); // æ›è¡Œå­—å…ƒç”¨<br />ä»£æ›¿
+	$com = str_replace("\n", '', $com); // è‹¥é‚„æœ‰\næ›è¡Œå­—å…ƒå‰‡å–æ¶ˆæ›è¡Œ
+	// é è¨­çš„å…§å®¹
+	if(!$name || preg_match("/^[ |ã€€|]*$/", $name)){
 		if(ALLOW_NONAME) $name = DEFAULT_NONAME;
 		else error(_T('regist_withoutname'), $dest);
 	}
-	if(!$sub || preg_match("/^[ |¡@|]*$/", $sub)) $sub = DEFAULT_NOTITLE;
-	if(!$com || preg_match("/^[ |¡@|\t]*$/", $com)) $com = DEFAULT_NOCOMMENT;
-	// ­×¾ã¼ĞÅÒ¼Ë¦¡
+	if(!$sub || preg_match("/^[ |ã€€|]*$/", $sub)) $sub = DEFAULT_NOTITLE;
+	if(!$com || preg_match("/^[ |ã€€|\t]*$/", $com)) $com = DEFAULT_NOCOMMENT;
+	// ä¿®æ•´æ¨™ç±¤æ¨£å¼
 	if($category && USE_CATEGORY){
-		$category = explode(',', $category); // §â¼ĞÅÒ©î¦¨°}¦C
-		$category = ','.implode(',', array_map('trim', $category)).','; // ¥hªÅ¥Õ¦A¦X¨Ö¬°³æ¤@¦r¦ê (¥ª¥k§t,«K¥i¥Hª½±µ¥H,XX,§Î¦¡·j´M)
+		$category = explode(',', $category); // æŠŠæ¨™ç±¤æ‹†æˆé™£åˆ—
+		$category = ','.implode(',', array_map('trim', $category)).','; // å»ç©ºç™½å†åˆä½µç‚ºå–®ä¸€å­—ä¸² (å·¦å³å«,ä¾¿å¯ä»¥ç›´æ¥ä»¥,XX,å½¢å¼æœå°‹)
 	}else{ $category = ''; }
-	if($up_incomplete) $com .= '<br /><br /><span class="warn_txt">'._T('notice_incompletefile').'</span>'; // ¤W¶Çªş¥[¹ÏÀÉ¤£§¹¥şªº´£¥Ü
+	if($up_incomplete) $com .= '<br /><br /><span class="warn_txt">'._T('notice_incompletefile').'</span>'; // ä¸Šå‚³é™„åŠ åœ–æª”ä¸å®Œå…¨çš„æç¤º
 
-	// ±K½X©M®É¶¡ªº¼Ë¦¡
+	// å¯†ç¢¼å’Œæ™‚é–“çš„æ¨£å¼
 	if($pwd=='') $pwd = ($pwdc=='') ? substr(rand(),0,8) : $pwdc;
-	$pass = $pwd ? substr(md5($pwd), 2, 8) : '*'; // ¥Í¦¨¯u¥¿Àx¦s§PÂ_¥Îªº±K½X
+	$pass = $pwd ? substr(md5($pwd), 2, 8) : '*'; // ç”ŸæˆçœŸæ­£å„²å­˜åˆ¤æ–·ç”¨çš„å¯†ç¢¼
 	$youbi = array(_T('sun'),_T('mon'),_T('tue'),_T('wed'),_T('thu'),_T('fri'),_T('sat'));
 	$yd = $youbi[gmdate('w', $time+TIME_ZONE*60*60)];
 	$now = gmdate('y/m/d', $time+TIME_ZONE*60*60).'('.(string)$yd.')'.gmdate('H:i', $time+TIME_ZONE*60*60);
-	if(DISP_ID){ // Åã¥ÜID
+	if(DISP_ID){ // é¡¯ç¤ºID
 		if($email && DISP_ID==1) $now .= ' ID:???';
 		else $now .= ' ID:'.substr(crypt(md5(getREMOTE_ADDR().IDSEED.gmdate('Ymd', $time+TIME_ZONE*60*60)),'id'), -8);
 	}
 
-	// ³sÄò§ë½Z / ¬Û¦Pªş¥[¹ÏÀÉÀË¬d
-	$checkcount = 50; // ¹w³]ÀË¬d50µ§¸ê®Æ
-	$pwdc = substr(md5($pwdc), 2, 8); // Cookies±K½X
-	if($PIO->isSuccessivePost($checkcount, $com, $time, $pass, $pwdc, $host, $upfile_name)) error(_T('regist_successivepost'), $dest); // ³sÄò§ë½ZÀË¬d
-	if($dest){ if($PIO->isDuplicateAttachment($checkcount, $md5chksum)) error(_T('regist_duplicatefile'), $dest); } // ¬Û¦Pªş¥[¹ÏÀÉÀË¬d
+	// é€£çºŒæŠ•ç¨¿ / ç›¸åŒé™„åŠ åœ–æª”æª¢æŸ¥
+	$checkcount = 50; // é è¨­æª¢æŸ¥50ç­†è³‡æ–™
+	$pwdc = substr(md5($pwdc), 2, 8); // Cookieså¯†ç¢¼
+	if($PIO->isSuccessivePost($checkcount, $com, $time, $pass, $pwdc, $host, $upfile_name)) error(_T('regist_successivepost'), $dest); // é€£çºŒæŠ•ç¨¿æª¢æŸ¥
+	if($dest){ if($PIO->isDuplicateAttachment($checkcount, $md5chksum)) error(_T('regist_duplicatefile'), $dest); } // ç›¸åŒé™„åŠ åœ–æª”æª¢æŸ¥
 	if($resto) $ThreadExistsBefore = $PIO->isThread($resto);
 
-	// ÂÂ¤å³¹§R°£³B²z
+	// èˆŠæ–‡ç« åˆªé™¤è™•ç†
 	if(PIOSensor::check('delete', $LIMIT_SENSOR)){
 		$delarr = PIOSensor::listee('delete', $LIMIT_SENSOR);
 		if(count($delarr)){
@@ -241,34 +241,34 @@ function actPOSTS(){
 		}
 	}
 
-	// ªş¥[¹ÏÀÉ®e¶q­­¨î¥\¯à±Ò°Ê¡G§R°£¹L¤jÀÉ
+	// é™„åŠ åœ–æª”å®¹é‡é™åˆ¶åŠŸèƒ½å•Ÿå‹•ï¼šåˆªé™¤éå¤§æª”
 	if(STORAGE_LIMIT && STORAGE_MAX > 0){
-		$tmp_total_size = total_size(); // ¨ú±o¥Ø«eªş¥[¹ÏÀÉ¨Ï¥Î¶q
+		$tmp_total_size = total_size(); // å–å¾—ç›®å‰é™„åŠ åœ–æª”ä½¿ç”¨é‡
 		if($tmp_total_size > STORAGE_MAX){
 			$files = $PIO->delOldAttachments($tmp_total_size, STORAGE_MAX, false);
 			$FileIO->deleteImage($files);
 		}
 	}
 
-	// §PÂ_±ı¦^À³ªº¤å³¹¬O¤£¬O­è­è³Q§R±¼¤F
+	// åˆ¤æ–·æ¬²å›æ‡‰çš„æ–‡ç« æ˜¯ä¸æ˜¯å‰›å‰›è¢«åˆªæ‰äº†
 	if($resto){
-		if($ThreadExistsBefore){ // ±ı¦^À³ªº°Q½×¦ê¬O§_¦s¦b
-			if(!$PIO->isThread($resto)){ // ³Q¦^À³ªº°Q½×¦ê¦s¦b¦ı¤w³Q§R
-				// ´£«e§ó·s¸ê®Æ¨Ó·½¡A¦¹µ§·s¼W¥ç¤£¬ö¿ı
+		if($ThreadExistsBefore){ // æ¬²å›æ‡‰çš„è¨è«–ä¸²æ˜¯å¦å­˜åœ¨
+			if(!$PIO->isThread($resto)){ // è¢«å›æ‡‰çš„è¨è«–ä¸²å­˜åœ¨ä½†å·²è¢«åˆª
+				// æå‰æ›´æ–°è³‡æ–™ä¾†æºï¼Œæ­¤ç­†æ–°å¢äº¦ä¸ç´€éŒ„
 				$PIO->dbCommit();
 				//updatelog();
 				error(_T('regist_threaddeleted'), $dest);
-			}else{ // ÀË¬d¬O§_°Q½×¦ê³Q³]¬°¸T¤î¦^À³ (¶¶«K¨ú¥X­ì°Q½×¦êªº¶K¤å®É¶¡)
-				$post = $PIO->fetchPosts($resto); // [¯S®í] ¨ú³æ½g¤å³¹¤º®e¡A¦ı¬O¦^¶Çªº$post¦P¼Ë¾a[$i]¤Á´«¤å³¹¡I
+			}else{ // æª¢æŸ¥æ˜¯å¦è¨è«–ä¸²è¢«è¨­ç‚ºç¦æ­¢å›æ‡‰ (é †ä¾¿å–å‡ºåŸè¨è«–ä¸²çš„è²¼æ–‡æ™‚é–“)
+				$post = $PIO->fetchPosts($resto); // [ç‰¹æ®Š] å–å–®ç¯‡æ–‡ç« å…§å®¹ï¼Œä½†æ˜¯å›å‚³çš„$poståŒæ¨£é [$i]åˆ‡æ›æ–‡ç« ï¼
 				list($chkstatus, $chktime) = array($post[0]['status'], $post[0]['tim']);
-				$chktime = substr($chktime, 0, -3); // ®³±¼·L¬í («á­±¤T­Ó¦r¤¸)
+				$chktime = substr($chktime, 0, -3); // æ‹¿æ‰å¾®ç§’ (å¾Œé¢ä¸‰å€‹å­—å…ƒ)
 				$flgh = $PIO->getPostStatus($chkstatus);
 				if($flgh->exists('TS')) error(_T('regist_threadlocked'), $dest);
 			}
-		}else error(_T('thread_not_found'), $dest); // ¤£¦s¦b
+		}else error(_T('thread_not_found'), $dest); // ä¸å­˜åœ¨
 	}
 
-	// ­pºâ¬Y¨ÇÄæ¦ì­È
+	// è¨ˆç®—æŸäº›æ¬„ä½å€¼
 	$no = $PIO->getLastPostNo('beforeCommit') + 1;
 	isset($ext) ? 0 : $ext = '';
 	isset($imgW) ? 0 : $imgW = 0;
@@ -281,7 +281,7 @@ function actPOSTS(){
 	$status = '';
 	if($resto){
 		if(!stristr($email, 'sage') && ($PIO->postCount($resto) <= MAX_RES || MAX_RES==0)){
-			if(!MAX_AGE_TIME || (($time - $chktime) < (MAX_AGE_TIME * 60 * 60))) $age = true; // °Q½×¦ê¨ÃµL¹L´Á¡A±À¤å
+			if(!MAX_AGE_TIME || (($time - $chktime) < (MAX_AGE_TIME * 60 * 60))) $age = true; // è¨è«–ä¸²ä¸¦ç„¡éæœŸï¼Œæ¨æ–‡
 		}
 	}
 
