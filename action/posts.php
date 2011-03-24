@@ -1,7 +1,7 @@
 <?php
 function actPOSTS(){
 	print_r($_POST);
-	print_r($_FILE);
+//	print_r($_FILE);
 	global $PIO, $FileIO, $PMS, $language, $BAD_STRING, $BAD_FILEMD5, $BAD_IPADDR, $LIMIT_SENSOR;
 	$dest = ''; $mes = ''; $up_incomplete = 0; $is_admin = false;
 	$path = realpath('.').DIRECTORY_SEPARATOR; // 此目錄的絕對位置
@@ -78,9 +78,10 @@ function actPOSTS(){
 			break;
 		case 4: // 無上傳
 			if(!$resto && !isset($_POST['noimg'])){
+				 sendStatusCode(403);
 				echo json_encode('regist_upload_noimg');
-				sendStatusCode(403);
-				return ;
+				//sendStatusCode(403);
+				exit;
 				//error(_T('regist_upload_noimg'));
 			}
 			break;
