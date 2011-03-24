@@ -139,6 +139,7 @@ $HOOKLINKS = '';
 var DEFINES = {};
 DEFINES['PHP_SELF'] = "<?php echo $SELF?>";
 DEFINES['BOARD']    = "<?php echo $BOARD?>";
+language = <?php require("lang_zh_TW.json" );?>;
 </script>
 <script type="text/javascript" src="../../resource/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="../../resource/SWClient.js?<?=time();?>"></script>
@@ -211,7 +212,7 @@ $(document).ready(function(){
 <hr />
 </div>
 </form>
-<iframe name="uploader" src="http://www.google.com"></iframe> 
+<iframe name="uploader" src=""></iframe> 
 
 <?php if(isset($FORMBOTTOM) ){echo $FORMBOTTOM;}?>
 <!--/&POSTFORM-->
