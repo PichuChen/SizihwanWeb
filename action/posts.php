@@ -3,7 +3,12 @@ function actPOSTS(){
 	print_r($_POST);
 //	print_r($_FILE);
 	require("./lib/lib_pio.php");
-
+	
+	
+	
+	
+	
+	exit;
 	global $FileIO, $PMS, $language, $BAD_STRING, $BAD_FILEMD5, $BAD_IPADDR, $LIMIT_SENSOR;
 	$dest = ''; $mes = ''; $up_incomplete = 0; $is_admin = false;
 	$path = realpath('.').DIRECTORY_SEPARATOR; // 此目錄的絕對位置
@@ -290,8 +295,70 @@ function actPOSTS(){
 			if(!MAX_AGE_TIME || (($time - $chktime) < (MAX_AGE_TIME * 60 * 60))) $age = true; // 討論串並無過期，推文
 		}
 	}
+// 正式寫入儲存
+	$PIO->addPost($no,$resto,$md5chksum,$category,$tim,$ext,$imgW,$imgH,$imgsize,$W,$H,$pass,$now,$name,$email,$sub,$com,$host,$age,$status);
+	$PIO->dbCommit();
+	$lastno = $PIO->getLastPostNo('afterCommit'); // 取得此新文章編號
+	$PMS->useModuleMethods('RegistAfterCommit', array($lastno, $resto, $name, $email, $sub, $com)); // "RegistAfterCommit" Hook Point
 
-	echo "SUCCESS::";
+	// Cookies儲存：密碼與E-mail部分，期限是一週
+	setcookie('pwdc', $pwd, time()+7*24*3600);
+	setcookie('emailc', $email, time()+7*24*3600);
+	total_size(true); // 刪除舊容量快取
+	if($dest && is_file($dest)){
+		$destFile = $path.IMG_DIR.$tim.$ext; // 圖檔儲存位置
+		$thumbFile = $path.THUMB_DIR.$tim.'s.jpg'; // 預覽圖儲存位置
+		rename($dest, $destFile);
+		if(USE_THUMB !== 0){ // 生成預覽圖
+			$thumbType = USE_THUMB; if(USE_THUMB==1){ $thumbType = 'gd'; } // 與舊設定相容
+			require('./lib/thumb/thumb.'.$thumbType.'.php');
+			$thObj = new ThumbWrapper($destFile, $imgW, $imgH);
+			$thObj->setThumbnailConfig($W, $H, THUMB_Q);
+			$thObj->makeThumbnailtoFile($thumbFile);
+			@chmod($thumbFile, 0666);
+			unset($thObj);
+		}
+		if($FileIO->uploadImage()){ // 支援上傳圖片至其他伺服器
+			if(file_exists($destFile)) $FileIO->uploadImage($tim.$ext, $destFile, filesize($destFile));
+			if(file_exists($thumbFile)) $FileIO->uploadImage($tim.'s.jpg', $thumbFile, filesize($thumbFile));
+		}
+	}
+	//updatelog();
+
+	// 引導使用者至新頁面
+	$RedirURL = PHP_SELF2.'?'.$tim; // 定義儲存資料後轉址目標
+	if(isset($_POST['up_series'])){ // 勾選連貼機能
+		if($resto) $RedirURL = PHP_SELF.'?res='.$resto.'&amp;upseries=1'; // 回應後繼續轉回此主題下
+		else{
+			$RedirURL = PHP_SELF.'?res='.$lastno.'&amp;upseries=1'; // 新增主題後繼續轉到此主題下
+		}
+	}
+	$RedirforJS = strtr($RedirURL, array("&amp;"=>"&")); // JavaScript用轉址目標
+
+	echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+	echo <<< _REDIR_
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw">
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Refresh" content="1;URL=$RedirURL" />
+<script type="text/javascript">
+// Redirection (use JS)
+// <![CDATA[
+function redir(){
+	location.href = "$RedirforJS";
+}
+setTimeout("redir()", 1000);
+// ]]>
+</script>
+</head>
+<body>
+<div>
+_REDIR_;
+echo _T('regist_redirect',$mes,$RedirURL).'</div>
+</body>
+</html>';
 }
 
 
