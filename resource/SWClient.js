@@ -9,7 +9,7 @@
 var _LANGLoader = function(data){
 	language = {};
 	
-	$.ajax({async:false,
+	$.ajax({//async:false,
 			dataType:'json',
 			url:"../../main.php/" + DEFINES['BOARD'] + "/LANG",
 			success:function(data){
@@ -28,8 +28,8 @@ var _LANGLoader = function(data){
  
  
 var _SWClient = function(data){
-	var LANGLoader = new _LANGLoader;
-	var language = LANGLoader.getLanguage();
+//	var LANGLoader = new _LANGLoader;
+//	var language = LANGLoader.getLanguage();
 	var $threads;
 	this.init = function(){
 		//alert('init');
@@ -90,11 +90,11 @@ var _SWClient = function(data){
 		_THREAD = '<li class="threadpost" id="r{$NO}">{$IMG_BAR}{$IMG_SRC}' +
 				'<input type="checkbox" name="{$NO}" value="delete" />' +
 				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}&nbsp;{$REPLYBTN}' +
-				'<div class="quote">{$COM}</div>{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul></li>';
+				'<div class="quote">{$COM}</div>{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul><hr/></li>';
 		/*
 		array('{$NO}'=>$no, '{$SUB}'=>$sub, '{$NAME}'=>$name, '{$NOW}'=>$now, '{$CATEGORY}'=>$category, '{/li}'=>/li, '{$IMG_BAR}'=>$IMG_BAR, '{$IMG_SRC}'=>$imgsrc, '{$WARN_BEKILL}'=>$WARN_BEKILL, '{$NAME_TEXT}'=>_T('post_name'), '{$CATEGORY_TEXT}'=>_T('post_category'), '{$SELF}'=>PHP_SELF, '{$COM}'=>$com);
 		*/
-		_IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s{$EXT}"></a>';
+		_IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s.jpg"></a>';
 		_IMG_SRC = _STEReplace({
 								$TIM	  :data.tim,
 								$EXT	  :data.ext,
