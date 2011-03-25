@@ -2,7 +2,7 @@
 function actPOSTS(){
 	print_r($_POST);
 //	print_r($_FILE);
-//	require("./lib/lib_pio.php");
+	require("./lib/lib_pio.php");
 //require("./lib/lib_fileio.php");
 	
 	

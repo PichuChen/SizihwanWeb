@@ -83,7 +83,7 @@ define("ModuleList",json_encode(array()));
 define("BAN_CHECK", 0); // 綜合性封鎖檢查功能 (關閉：0, 開啟：1)
 define("BANPATTERN",json_encode( array())); // IP/Hostname封鎖黑名單
 define("DNSBLservers",json_encode( array(0, 'sbl-xbl.spamhaus.org', 'list.dsbl.org', 'bl.blbl.org', 'bl.spamcop.net'))); // DNSBL伺服器列表 (首項：使用伺服器個數)
-define("DNSBLWHlist",json_encode( array()); // DNSBL白名單 (請輸入IP位置)
+define("DNSBLWHlist",json_encode( array())); // DNSBL白名單 (請輸入IP位置)
 define("BAD_STRING", json_encode(array("dummy_string","dummy_string2"))); // 限制出現之文字
 define("BAD_FILEMD5",json_encode( array("dummy","dummy2"))); // 限制上傳附加圖檔之MD5檢查碼
 
