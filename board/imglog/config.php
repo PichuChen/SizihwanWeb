@@ -106,7 +106,7 @@ define("THUMB_Q", 75); // 預覽圖片之品質 (1-100, 建議預設75，越高�
 
 // 外觀設定
 define("ADDITION_INFO", ""); // 可在表單下顯示額外文字
-define("LIMIT_SENSOR", array('ByPostCountCondition'=>500)); // 文章自動刪除機制設定
+define("LIMIT_SENSOR",json_encode( array('ByPostCountCondition'=>500))); // 文章自動刪除機制設定
 define("TEMPLATE_FILE", 'inc_pixmicat.tpl'); // 樣板位置
 define("PAGE_DEF", 15); // 一頁顯示幾篇討論串
 define("ADMIN_PAGE_DEF", 20); // 管理模式下，一頁顯示幾筆資料
