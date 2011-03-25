@@ -75,17 +75,17 @@ define("USE_RE_CACHE", 1); // 是否使用回應頁面顯示快取功能 (是：
 define("USE_XHTML", 1); // 是否回傳 XHTML 檔頭讓瀏覽器以更嚴格的方式解析 [僅限瀏覽器支援者] (是：1 否：0)
 
 // 模組載入
-$ModuleList = array();
+define("ModuleList",json_encode(array()));
 //$ModuleList[] = 'mod_rss';
 //$ModuleList[] = 'mod_catalog';
 
 // 封鎖設定
 define("BAN_CHECK", 0); // 綜合性封鎖檢查功能 (關閉：0, 開啟：1)
-$BANPATTERN = array(); // IP/Hostname封鎖黑名單
-$DNSBLservers = array(0, 'sbl-xbl.spamhaus.org', 'list.dsbl.org', 'bl.blbl.org', 'bl.spamcop.net'); // DNSBL伺服器列表 (首項：使用伺服器個數)
-$DNSBLWHlist = array(); // DNSBL白名單 (請輸入IP位置)
-$BAD_STRING = array("dummy_string","dummy_string2"); // 限制出現之文字
-$BAD_FILEMD5 = array("dummy","dummy2"); // 限制上傳附加圖檔之MD5檢查碼
+define("BANPATTERN",json_encode( array())); // IP/Hostname封鎖黑名單
+define("DNSBLservers",json_encode( array(0, 'sbl-xbl.spamhaus.org', 'list.dsbl.org', 'bl.blbl.org', 'bl.spamcop.net'))); // DNSBL伺服器列表 (首項：使用伺服器個數)
+define("DNSBLWHlist",json_encode( array()); // DNSBL白名單 (請輸入IP位置)
+define("BAD_STRING", json_encode(array("dummy_string","dummy_string2"))); // 限制出現之文字
+define("BAD_FILEMD5",json_encode( array("dummy","dummy2"))); // 限制上傳附加圖檔之MD5檢查碼
 
 // 附加圖檔限制
 define("MAX_KB", 2000); // 附加圖檔上傳容量限制KB (php內定為最高2MB)
@@ -105,8 +105,8 @@ define("MAX_RH", 125); // 討論串回應預覽圖片高度
 define("THUMB_Q", 75); // 預覽圖片之品質 (1-100, 建議預設75，越高品質越好但檔案也越大)
 
 // 外觀設定
-$ADDITION_INFO = ""; // 可在表單下顯示額外文字
-$LIMIT_SENSOR = array('ByPostCountCondition'=>500); // 文章自動刪除機制設定
+define("ADDITION_INFO", ""); // 可在表單下顯示額外文字
+define("LIMIT_SENSOR", array('ByPostCountCondition'=>500)); // 文章自動刪除機制設定
 define("TEMPLATE_FILE", 'inc_pixmicat.tpl'); // 樣板位置
 define("PAGE_DEF", 15); // 一頁顯示幾篇討論串
 define("ADMIN_PAGE_DEF", 20); // 管理模式下，一頁顯示幾筆資料

@@ -2,14 +2,13 @@
 function actPOSTS(){
 	print_r($_POST);
 //	print_r($_FILE);
-	require("./lib/lib_pio.php");
-	require("./lib/lib_fileio.php");
+//	require("./lib/lib_pio.php");
+//require("./lib/lib_fileio.php");
 	
 	
 	
 	
-//	exit;
-	global  $language, $BAD_STRING, $BAD_FILEMD5, $BAD_IPADDR, $LIMIT_SENSOR;
+echo __LINE__ . '\n';
 	$dest = ''; $mes = ''; $up_incomplete = 0; $is_admin = false;
 	$path = realpath('.').DIRECTORY_SEPARATOR; // 此目錄的絕對位置
 
@@ -26,6 +25,13 @@ function actPOSTS(){
 	$FTreply = isset($_POST['reply']) ? $_POST['reply'] : '';
 	if($FTname != 'spammer' || $FTemail != 'foo@foo.bar' || $FTsub != 'DO NOT FIX THIS' || $FTcom != 'EID OG SMAPS' || $FTreply != '') error(_T('regist_nospam'));
 
+
+echo __LINE__ . '<br/>';
+
+
+echo __LINE__ . '\n';
+
+
 	$name = isset($_POST[FT_NAME]) ? CleanStr($_POST[FT_NAME]) : '';
 	$email = isset($_POST[FT_EMAIL]) ? CleanStr($_POST[FT_EMAIL]) : '';
 	$sub = isset($_POST[FT_SUBJECT]) ? CleanStr($_POST[FT_SUBJECT]) : '';
@@ -39,6 +45,7 @@ function actPOSTS(){
 	$upfile_status = isset($_FILES['upfile']['error']) ? $_FILES['upfile']['error'] : 4;
 	$pwdc = isset($_COOKIE['pwdc']) ? $_COOKIE['pwdc'] : '';
 	$ip = getREMOTE_ADDR(); $host = gethostbyaddr($ip);
+echo __LINE__ . '<br/>';
 
 	//$PMS->useModuleMethods('RegistBegin', array(&$name, &$email, &$sub, &$com, array('file'=>&$upfile, 'path'=>&$upfile_path, 'name'=>&$upfile_name, 'status'=>&$upfile_status), array('ip'=>$ip, 'host'=>$host), $resto)); // "RegistBegin" Hook Point
 	// 封鎖：IP/Hostname/DNSBL 檢查機能
@@ -46,17 +53,23 @@ function actPOSTS(){
 	if(BanIPHostDNSBLCheck($ip, $host, $baninfo)){
 		//error(_T('regist_ipfiltered', $baninfo));
 		sendStatusCode(403);
+		echo json_encode(array('statusCode' => 403,'message' => 'regist_ipfiltered' ,'extra' => array( $baninfo)));
 		return ;
 		//;
 	}
+echo BAN_CHECK;
 	// 封鎖：限制出現之文字
-	foreach($BAD_STRING as $value){
+	$tmparr = json_decode(BAD_STRING);
+
+	foreach($tmparr as $value){
 		if(strpos($com, $value)!==false || strpos($sub, $value)!==false || strpos($name, $value)!==false || strpos($email, $value)!==false){
 			//error(_T('regist_wordfiltered'));
 			sendStatusCode(403);
+			echo json_encode(array('statusCode' => 403,'message' => 'regist_wordfiltered' ));
 			return ;
 		}
 	}
+echo __LINE__ . '<br/>';
 
 	// 檢查是否輸入櫻花日文假名
 	foreach(array($name, $email, $sub, $com) as $anti) if(anti_sakura($anti)){
@@ -68,8 +81,8 @@ function actPOSTS(){
 	// 時間
 	$time = time();
 	$tim = $time.substr(microtime(),2,3);
-
-	// 判斷上傳狀態
+echo __LINE__ . '<br/>';
+// 判斷上傳狀態
 	switch($upfile_status){
 		case 1:
 			error(_T('regist_upload_exceedphp'));
@@ -95,6 +108,7 @@ function actPOSTS(){
 		case 0: // 上傳正常
 		default:
 	}
+echo __LINE__ . '<br/>';
 
 	// 如果有上傳檔案則處理附加圖檔
 	if($upfile && (@is_uploaded_file($upfile) || @is_file($upfile))){
@@ -130,10 +144,12 @@ function actPOSTS(){
 			}
 		}
 
+echo __LINE__ . '<br/>';
 		// 三‧檢查是否為可接受的檔案
-		$size = @getimagesize($dest);
+		$size = getimagesize($dest);
+echo __LINE__ . '<br/>';
 		if(!is_array($size)) error(_T('regist_upload_notimage'), $dest); // $size不為陣列就不是圖檔
-		$imgsize = @filesize($dest); // 檔案大小
+		$imgsize = filesize($dest); // 檔案大小
 		$imgsize = ($imgsize>=1024) ? (int)($imgsize/1024).' KB' : $imgsize.' B'; // KB和B的判別
 		switch($size[2]){ // 判斷上傳附加圖檔之格式
 			case 1 : $ext = ".gif"; break;
@@ -145,12 +161,14 @@ function actPOSTS(){
 			case 13 : $ext = ".swf"; break;
 			default : $ext = ".xxx"; error(_T('regist_upload_notsupport'), $dest);
 		}
+echo __LINE__ . '<br/>';
 		$allow_exts = explode('|', strtolower(ALLOW_UPLOAD_EXT)); // 接受之附加圖檔副檔名
 		if(array_search(substr($ext, 1), $allow_exts)===false) error(_T('regist_upload_notsupport'), $dest); // 並無在接受副檔名之列
 		// 封鎖設定：限制上傳附加圖檔之MD5檢查碼
 		$md5chksum = md5_file($dest); // 檔案MD5
-		if(array_search($md5chksum, $BAD_FILEMD5)!==FALSE) error(_T('regist_upload_blocked'), $dest); // 在封鎖設定內則阻擋
-
+		$tmparr = json_decode(BAD_FILEMD5);
+		if(array_search($md5chksum, $tmparr)!==FALSE) error(_T('regist_upload_blocked'), $dest); // 在封鎖設定內則阻擋
+echo __LINE__ . '<br/>';
 		// 四‧計算附加圖檔圖檔縮圖顯示尺寸
 		$W = $imgW = $size[0];
 		$H = $imgH = $size[1];
@@ -165,7 +183,7 @@ function actPOSTS(){
 		}
 		$mes = _T('regist_uploaded', CleanStr($upfile_name));
 	}
-
+echo __LINE__ . '<br/>';
 	// 檢查表單欄位內容並修整
 	if(strlen($name) > 100) error(_T('regist_nametoolong'), $dest);
 	if(strlen($email) > 100) error(_T('regist_emailtoolong'), $dest);
@@ -335,30 +353,6 @@ echo "fF";
 	}
 	$RedirforJS = strtr($RedirURL, array("&amp;"=>"&")); // JavaScript用轉址目標
 
-	echo '<?xml version="1.0" encoding="UTF-8"?>'."\n";
-	echo <<< _REDIR_
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw">
-<head>
-<title></title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="Refresh" content="1;URL=$RedirURL" />
-<script type="text/javascript">
-// Redirection (use JS)
-// <![CDATA[
-function redir(){
-	location.href = "$RedirforJS";
-}
-setTimeout("redir()", 1000);
-// ]]>
-</script>
-</head>
-<body>
-<div>
-_REDIR_;
-echo _T('regist_redirect',$mes,$RedirURL).'</div>
-</body>
-</html>';
 }
 
 
