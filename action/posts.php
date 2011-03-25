@@ -3,13 +3,13 @@ function actPOSTS(){
 	print_r($_POST);
 //	print_r($_FILE);
 	require("./lib/lib_pio.php");
+	require("./lib/lib_fileio.php");
 	
 	
 	
 	
-	
-	exit;
-	global $FileIO, $PMS, $language, $BAD_STRING, $BAD_FILEMD5, $BAD_IPADDR, $LIMIT_SENSOR;
+//	exit;
+	global  $language, $BAD_STRING, $BAD_FILEMD5, $BAD_IPADDR, $LIMIT_SENSOR;
 	$dest = ''; $mes = ''; $up_incomplete = 0; $is_admin = false;
 	$path = realpath('.').DIRECTORY_SEPARATOR; // 此目錄的絕對位置
 
@@ -233,14 +233,14 @@ function actPOSTS(){
 		if($email && DISP_ID==1) $now .= ' ID:???';
 		else $now .= ' ID:'.substr(crypt(md5(getREMOTE_ADDR().IDSEED.gmdate('Ymd', $time+TIME_ZONE*60*60)),'id'), -8);
 	}
-
+echo __LINE__;
 	// 連續投稿 / 相同附加圖檔檢查
 	$checkcount = 50; // 預設檢查50筆資料
 	$pwdc = substr(md5($pwdc), 2, 8); // Cookies密碼
 	if($PIO->isSuccessivePost($checkcount, $com, $time, $pass, $pwdc, $host, $upfile_name)) error(_T('regist_successivepost'), $dest); // 連續投稿檢查
 	if($dest){ if($PIO->isDuplicateAttachment($checkcount, $md5chksum)) error(_T('regist_duplicatefile'), $dest); } // 相同附加圖檔檢查
 	if($resto) $ThreadExistsBefore = $PIO->isThread($resto);
-
+echo __LINE__;
 	// 舊文章刪除處理
 //	if(PIOSensor::check('delete', $LIMIT_SENSOR)){
 //		$delarr = PIOSensor::listee('delete', $LIMIT_SENSOR);
@@ -278,7 +278,7 @@ function actPOSTS(){
 			}
 		}else error(_T('thread_not_found'), $dest); // 不存在
 	}
-
+echo __LINE__;
 	// 計算某些欄位值
 	$no = $PIO->getLastPostNo('beforeCommit') + 1;
 	isset($ext) ? 0 : $ext = '';
@@ -295,16 +295,16 @@ function actPOSTS(){
 			if(!MAX_AGE_TIME || (($time - $chktime) < (MAX_AGE_TIME * 60 * 60))) $age = true; // 討論串並無過期，推文
 		}
 	}
-// 正式寫入儲存
+echo "aa";// 正式寫入儲存
 	$PIO->addPost($no,$resto,$md5chksum,$category,$tim,$ext,$imgW,$imgH,$imgsize,$W,$H,$pass,$now,$name,$email,$sub,$com,$host,$age,$status);
 	$PIO->dbCommit();
 	$lastno = $PIO->getLastPostNo('afterCommit'); // 取得此新文章編號
-	$PMS->useModuleMethods('RegistAfterCommit', array($lastno, $resto, $name, $email, $sub, $com)); // "RegistAfterCommit" Hook Point
-
+//	$PMS->useModuleMethods('RegistAfterCommit', array($lastno, $resto, $name, $email, $sub, $com)); // "RegistAfterCommit" Hook Point
+echo "fF";
 	// Cookies儲存：密碼與E-mail部分，期限是一週
 	setcookie('pwdc', $pwd, time()+7*24*3600);
 	setcookie('emailc', $email, time()+7*24*3600);
-	total_size(true); // 刪除舊容量快取
+//	total_size(true); // 刪除舊容量快取
 	if($dest && is_file($dest)){
 		$destFile = $path.IMG_DIR.$tim.$ext; // 圖檔儲存位置
 		$thumbFile = $path.THUMB_DIR.$tim.'s.jpg'; // 預覽圖儲存位置
