@@ -128,7 +128,7 @@ var _SWClient = function(data){
 								$IMG_SRC  :(data.ext == '' ? '': _IMG_SRC),
 								$IMG_BAR  :(data.ext == '' ? '': _IMG_BAR),
 								$COM	  :data.com,	
-								$QUOTEBTN :'<a href="'.PHP_SELF.'?res='.$tree.'&amp;page_num=all#r'.data.no.'" class="qlink">No.'.data.no.'</a>',
+								$QUOTEBTN :'<a href="main.php?res='.$tree.'&amp;page_num=all#r'.data.no.'" class="qlink">No.'.data.no.'</a>',
 								$REPLYBTN :'[<a href="'.PHP_SELF.'?res='.data.no.'">'.language['reply_btn'].'</a>]',
 								$NAME_TEXT:language['post_name'],
 								$WARN_OLD :'<span class="warn_txt">'.language['warn_oldthread'].'</span><br />',
