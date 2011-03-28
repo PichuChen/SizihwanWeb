@@ -130,11 +130,11 @@ var _SWClient = function(data){
 								$COM	  :data.com,	
 								$QUOTEBTN :'<a href="main.php?res=2&amp;page_num=all#r' + data.no + '" class="qlink">No.' + data.no + '</a>',
 								$REPLYBTN :'[<a href="main.php?res=' + data.no + '">' + language['reply_btn'] + '</a>]',
-								$NAME_TEXT:language['post_name']
-								$WARN_OLD :'<span class="warn_txt">'.language['warn_oldthread'].'</span><br />',
-								$WARN_BEKILL:'<span class="warn_txt">'.language['warn_sizelimit'].'</span><br />',
-								$WARN_ENDREPLY: '<span class="warn_txt">'.language['warn_locked'].'</span><br />',
-								$WARN_HIDEPOST: '<span class="warn_txt2">'.printf(language['notice_omitted'],/*$hiddenReply*/ 3).'</span><br />'."\n"
+								$NAME_TEXT:language['post_name'],
+								$WARN_OLD :'<span class="warn_txt">' + language['warn_oldthread'] + '</span><br />',
+								$WARN_BEKILL:'<span class="warn_txt">' + language['warn_sizelimit'] + '</span><br />',
+								$WARN_ENDREPLY: '<span class="warn_txt">' + language['warn_locked'] + '</span><br />',
+								$WARN_HIDEPOST: '<span class="warn_txt2">' + printf(language['notice_omitted'],/*$hiddenReply*/ 3) + '</span><br />'
 								},
 								_THREAD);
 		return _THREAD;
