@@ -87,7 +87,7 @@ var _SWClient = function(data){
 		if('undefined' == typeof(data.name_text)){data.name_text = "" ;}
 		if('undefined' == typeof(data.now)){data.now = "" ;}
 		if('undefined' == typeof(data.now)){data.now = "" ;}
-		_THREAD = '<li class="threadpost" id="r{$NO}">{$IMG_BAR}{$IMG_SRC}' +
+		_THREAD = '<li class="threadpost" id="r{$NO}">{$IMG_BAR}{$IMG_SRC}<br/>' +
 				'<input type="checkbox" name="{$NO}" value="delete" />' +
 				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}&nbsp;{$REPLYBTN}' +
 				'<div class="quote">{$COM}</div>{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul><hr/></li>';
@@ -128,9 +128,9 @@ var _SWClient = function(data){
 								$IMG_SRC  :(data.ext == '' ? '': _IMG_SRC),
 								$IMG_BAR  :(data.ext == '' ? '': _IMG_BAR),
 								$COM	  :data.com,	
-								$QUOTEBTN :'<a href="'.PHP_SELF.'?res='.$tree.'&amp;page_num=all#r'.data.no.'" class="qlink">No.'.data.no.'</a>',
-								$REPLYBTN :'[<a href="'.PHP_SELF.'?res='.data.no.'">'.language['reply_btn'].'</a>]',
-								$NAME_TEXT:language['post_name'],
+								$QUOTEBTN :'<a href="main.php?res=2&amp;page_num=all#r' + data.no + '" class="qlink">No.' + data.no + '</a>',
+								$REPLYBTN :'[<a href="main.php?res=' + data.no + '">' + language['reply_btn'] + '</a>]',
+								$NAME_TEXT:language['post_name']
 								$WARN_OLD :'<span class="warn_txt">'.language['warn_oldthread'].'</span><br />',
 								$WARN_BEKILL:'<span class="warn_txt">'.language['warn_sizelimit'].'</span><br />',
 								$WARN_ENDREPLY: '<span class="warn_txt">'.language['warn_locked'].'</span><br />',
