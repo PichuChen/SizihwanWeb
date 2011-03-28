@@ -131,7 +131,10 @@ var _SWClient = function(data){
 								$QUOTEBTN :'<a href="'.PHP_SELF.'?res='.$tree.'&amp;page_num=all#r'.data.no.'" class="qlink">No.'.data.no.'</a>',
 								$REPLYBTN :'[<a href="'.PHP_SELF.'?res='.data.no.'">'.language['reply_btn'].'</a>]',
 								$NAME_TEXT:language['post_name'],
-								$REPLYBTN :language['reply_btn']
+								$WARN_OLD :'<span class="warn_txt">'.language['warn_oldthread'].'</span><br />',
+								$WARN_BEKILL:'<span class="warn_txt">'.language['warn_sizelimit'].'</span><br />',
+								$WARN_ENDREPLY: '<span class="warn_txt">'.language['warn_locked'].'</span><br />',
+								$WARN_HIDEPOST: '<span class="warn_txt2">'.printf(language['notice_omitted'],/*$hiddenReply*/ 3).'</span><br />'."\n"
 								},
 								_THREAD);
 		return _THREAD;
