@@ -134,7 +134,7 @@ var _SWClient = function(data){
 								$WARN_OLD :'<span class="warn_txt">' + language['warn_oldthread'] + '</span><br />',
 								$WARN_BEKILL:'<span class="warn_txt">' + language['warn_sizelimit'] + '</span><br />',
 								$WARN_ENDREPLY: '<span class="warn_txt">' + language['warn_locked'] + '</span><br />',
-								$WARN_HIDEPOST: '<span class="warn_txt2">' + printf(language['notice_omitted'],/*$hiddenReply*/ 3) + '</span><br />'
+								$WARN_HIDEPOST: '<span class="warn_txt2">' + sprintf(language['notice_omitted'],/*$hiddenReply*/ 3) + '</span><br />'
 								},
 								_THREAD);
 		return _THREAD;

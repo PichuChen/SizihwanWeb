@@ -142,7 +142,9 @@ DEFINES['BOARD']    = "<?php echo $BOARD?>";
 language = <?php require("lang_zh_TW.json" );?>;
 </script>
 <script type="text/javascript" src="../../resource/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="../../resource/sprintf.js"></script>
 <script type="text/javascript" src="../../resource/SWClient.js?<?=time();?>"></script>
+
 <script type="text/javascript">
 
 $(document).ready(function(){
