@@ -10,7 +10,7 @@ require("./lib/lib_fileio.php");
 	
 echo __LINE__ . '\n';
 	$dest = ''; $mes = ''; $up_incomplete = 0; $is_admin = false;
-	$path = realpath('.').DIRECTORY_SEPARATOR.BOARD.DIRECTORY_SEPARATOR; // 此目錄的絕對位置
+	$path = realpath('.').DIRECTORY_SEPARATOR.PATH_BOARD.DIRECTORY_SEPARATOR; // 此目錄的絕對位置
 
 	if($_SERVER['REQUEST_METHOD'] != 'POST'){
 		sendStatusCode(405);

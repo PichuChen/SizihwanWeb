@@ -408,7 +408,7 @@ class PIOmysql{
 		$result = $this->_mysql_call('SELECT tim,ext FROM '.$this->tablename." WHERE ext <> '' AND md5chksum = '$md5hash' ORDER BY no DESC",
 			array('Get the post to check the duplicate attachment failed', __LINE__));
 		while(list($ltim, $lext) = mysql_fetch_row($result)){
-			if($FileIO->imageExists($ltim.$lext)) return true; // 有相同檔案
+		//	if($FileIO->imageExists($ltim.$lext)) return true; // 有相同檔案
 		}
 		return false;
 	}
