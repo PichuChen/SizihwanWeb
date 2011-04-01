@@ -168,7 +168,32 @@ var _SWClient = function(data){
 {$WARN_BEKILL}<div class="quote">{$COM}</div>
 <!--&IF($CATEGORY,'<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>','')-->
 </div>
-*/		
+*/				
+		_IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s.jpg"></a>';
+		_IMG_SRC = _STEReplace({
+								$TIM	  :data.tim,
+								$EXT	  :data.ext,
+								$IMG_SIZE :data.imgsize,
+								$TW       :data.tw,
+								$TH       :data.th
+								
+								},
+								_IMG_SRC);
+		_IMG_BAR = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank">{$TIM}{$EXT}</a>-({$IMG_SIZE}, {$IMGW}x{$IMGH}) <small>{$IMG_SIMPLE}</small>';
+		
+		
+		_IMG_BAR = _STEReplace({
+								$TIM	  :data.tim,
+								$EXT	  :data.ext,
+								$IMG_SIZE :data.imgsize,
+								$TW       :data.tw,
+								$TH       :data.th,
+								$IMGW	  :data.imgw,
+								$IMGH	  :data.imgh,
+								$IMG_SIMPLE:language['img_sample']
+								
+								},
+								_IMG_BAR);
 		_THREAD = _STEReplace({
 								$NO 	  :data.no,
 								
