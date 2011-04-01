@@ -11,7 +11,7 @@ sprintfWrapper = {
 	init : function () {
  
 		if (typeof arguments == "undefined") { return null; }
-		if (arguments.length &lt; 1) { return null; }
+		if (arguments.length < 1) { return null; }
 		if (typeof arguments[0] != "string") { return null; }
 		if (typeof RegExp == "undefined") { return null; }
  
@@ -42,20 +42,20 @@ sprintfWrapper = {
 				min: match[6] || 0,
 				precision: match[8],
 				code: match[9] || '%',
-				negative: parseInt(arguments[convCount]) &lt; 0 ? true : false,
+				negative: parseInt(arguments[convCount]) < 0 ? true : false,
 				argument: String(arguments[convCount])
 			};
 		}
 		strings[strings.length] = string.substring(matchPosEnd);
  
 		if (matches.length == 0) { return string; }
-		if ((arguments.length - 1) &lt; convCount) { return null; }
+		if ((arguments.length - 1) < convCount) { return null; }
  
 		var code = null;
 		var match = null;
 		var i = null;
  
-		for (i=0; i&lt;matches.length; i++) {
+		for (i=0; i<matches.length; i++) {
  
 			if (matches[i].code == '%') { substitution = '%' }
 			else if (matches[i].code == 'b') {
@@ -111,7 +111,7 @@ sprintfWrapper = {
 			match.sign = match.negative ? '-' : match.sign;
 		}
 		var l = match.min - match.argument.length + 1 - match.sign.length;
-		var pad = new Array(l &lt; 0 ? 0 : l).join(match.pad);
+		var pad = new Array(l < 0 ? 0 : l).join(match.pad);
 		if (!match.left) {
 			if (match.pad == "0" || nosign) {
 				return match.sign + pad + match.argument;

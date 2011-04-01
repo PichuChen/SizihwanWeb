@@ -120,6 +120,12 @@ var _SWClient = function(data){
 								},
 								_IMG_BAR);
 		
+		_QUOTEBTN = '<a href="main.php?res=2&amp;page_num=all#r' + data.no + '" class="qlink">No.' + data.no + '</a>';		
+		_REQLYBTN = '[<a href="main.php?res=' + data.no + '">' + language['reply_btn'] + '</a>]';
+		_WARN_OLD = '<span class="warn_txt">' + language['warn_oldthread'] + '</span><br />';
+		_WARN_BEKILL='<span class="warn_txt">' + language['warn_sizelimit'] + '</span><br />';
+		_WARN_ENDREPLY= '<span class="warn_txt">' + language['warn_locked'] + '</span><br />';
+		_WARN_HIDEPOST= '<span class="warn_txt2">' + language['notice_omitted'].replace("%1$s",/*$hiddenReply*/ 3) + '</span><br />';
 		_THREAD = _STEReplace({
 								$NO 	  :data.no,
 								$SUB	  :data.sub,
@@ -128,13 +134,13 @@ var _SWClient = function(data){
 								$IMG_SRC  :(data.ext == '' ? '': _IMG_SRC),
 								$IMG_BAR  :(data.ext == '' ? '': _IMG_BAR),
 								$COM	  :data.com,	
-								$QUOTEBTN :'<a href="main.php?res=2&amp;page_num=all#r' + data.no + '" class="qlink">No.' + data.no + '</a>',
-								$REPLYBTN :'[<a href="main.php?res=' + data.no + '">' + language['reply_btn'] + '</a>]',
+								$QUOTEBTN :_QUOTEBTN,
+								$REPLYBTN :_REQLYBTN,
 								$NAME_TEXT:language['post_name'],
-								$WARN_OLD :'<span class="warn_txt">' + language['warn_oldthread'] + '</span><br />',
-								$WARN_BEKILL:'<span class="warn_txt">' + language['warn_sizelimit'] + '</span><br />',
-								$WARN_ENDREPLY: '<span class="warn_txt">' + language['warn_locked'] + '</span><br />',
-								$WARN_HIDEPOST: '<span class="warn_txt2">' + sprintf(language['notice_omitted'],/*$hiddenReply*/ 3) + '</span><br />'
+								$WARN_OLD :_WARN_OLD,
+								$WARN_BEKILL:_WARN_BEKILL,
+								$WARN_ENDREPLY:_WARN_ENDREPLY,
+								$WARN_HIDEPOST:_WARN_HIDEPOST
 								},
 								_THREAD);
 		return _THREAD;
