@@ -81,12 +81,11 @@ var _SWClient = function(data){
 		if('undefined' == typeof(data.name)){data.name = "" ;}
 		if('undefined' == typeof(data.now)){data.now = "" ;}
 		if('undefined' == typeof(data.category)){data.category = "" ;}
+		if('undefined' == typeof(data.com)){data.com = "" ;}
 		if('undefined' == typeof(data.img_bar)){data.img_bar = "" ;}
 		if('undefined' == typeof(data.img_src)){data.img_src = "" ;}
 		if('undefined' == typeof(data.warn_bekill)){data.warn_bekill = "" ;}
 		if('undefined' == typeof(data.name_text)){data.name_text = "" ;}
-		if('undefined' == typeof(data.now)){data.now = "" ;}
-		if('undefined' == typeof(data.now)){data.now = "" ;}
 		_THREAD = '<li class="threadpost" id="r{$NO}">{$IMG_BAR}{$IMG_SRC}<br/>' +
 				'<input type="checkbox" name="{$NO}" value="delete" />' +
 				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}&nbsp;{$REPLYBTN}' +
@@ -142,16 +141,36 @@ var _SWClient = function(data){
 	
 	var _mkREPLY = function(data){
 	    if('undefined' == typeof(data)){data ={};}
-	    if('undefined' == typeof(data.NO)){data.NO = 0 ;}
-		if('undefined' == typeof(data.SUB)){data.SUB = "" ;}
-		if('undefined' == typeof(data.SUB)){data.SUB = "" ;}
-		if('undefined' == typeof(data.SUB)){data.SUB = "" ;}
+	    if('undefined' == typeof(data.no)){data.no = 0 ;}
+		if('undefined' == typeof(data.sub)){data.sub = "" ;}
+		if('undefined' == typeof(data.name)){data.name = "" ;}
+		if('undefined' == typeof(data.now)){data.now = "" ;}
+		if('undefined' == typeof(data.com)){data.com = "" ;}		
+		if('undefined' == typeof(data.warn_bekill)){data.warn_bekill = "" ;}
+		if('undefined' == typeof(data.name_text)){data.name_text = "" ;}
 		
 
-		_THREAD = '<li class="reply" id="r{$NO}"><input type="checkbox" name="{$NO}" value="delete" /><span class="title">{$SUB}</span> {$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}<div class="quote">{$COM}</div>{$WARN_BEKILL}</li>';
-		
+		_THREAD = '<li class="reply" id="r{$NO}">' +
+				  '<input type="checkbox" name="{$NO}" value="delete" />' +
+				  '<span class="title">{$SUB}</span>' +
+				  '{$NAME_TEXT} ' +
+				  '<span class="name">{$NAME}</span>' +
+				  '[{$NOW}] ' +
+				  (($IMG_BAR != '') ? '<br/>&nbsp' : '' ) +
+				  '{$IMG_BAR} {$IMG_SRC}' +
+				  '<div class="quote">{$COM}</div>' +
+				  ($IMG_BAR != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +
+				  '{$WARN_BEKILL}</li>';
+/*
+<div class="reply" id="r{$NO}">
+<input type="checkbox" name="{$NO}" value="delete" onclick="boxclicked=1;" /><span class="title">{$SUB}</span> {$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {/li}&nbsp;
+<!--&IF($IMG_BAR,'<br />&nbsp;','')-->{$IMG_BAR} {$IMG_SRC}
+{$WARN_BEKILL}<div class="quote">{$COM}</div>
+<!--&IF($CATEGORY,'<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>','')-->
+</div>
+*/		
 		_THREAD = _STEReplace({
-								$NO 	  :data.NO,
+								$NO 	  :data.no,
 								
 								$NAME_TEXT:language['post_name'],
 								$REPLYBTN :language['reply_btn']
