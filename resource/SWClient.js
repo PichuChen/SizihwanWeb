@@ -31,6 +31,35 @@ var _SWClient = function(data){
 //	var LANGLoader = new _LANGLoader;
 //	var language = LANGLoader.getLanguage();
 	var $threads;
+	var _IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s.jpg"></a>';
+	var _IMG_SRC = _STEReplace({
+								$TIM	  :data.tim,
+								$EXT	  :data.ext,
+								$IMG_SIZE :data.imgsize,
+								$TW       :data.tw,
+								$TH       :data.th
+								
+								},
+								_IMG_SRC);
+	var _IMG_BAR = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank">{$TIM}{$EXT}</a>-({$IMG_SIZE}, {$IMGW}x{$IMGH}) <small>{$IMG_SIMPLE}</small>';
+		
+		
+		_IMG_BAR = _STEReplace({
+								$TIM	  :data.tim,
+								$EXT	  :data.ext,
+								$IMG_SIZE :data.imgsize,
+								$TW       :data.tw,
+								$TH       :data.th,
+								$IMGW	  :data.imgw,
+								$IMGH	  :data.imgh,
+								$IMG_SIMPLE:language['img_sample']
+								
+								},
+								_IMG_BAR);
+	
+	
+	
+	
 	this.init = function(){
 		//alert('init');
 		$threads = $(".threads");
@@ -41,6 +70,10 @@ var _SWClient = function(data){
 //		$threads.append(_mkTHREAD({NO:4}));
 		this.getPage();
 	}
+	
+	
+	
+	
 	var _mkForm = function(){
 		$('#POSTFORM').attr('action',DEFINES['PHP_SELF']);
 
