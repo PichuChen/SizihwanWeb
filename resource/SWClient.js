@@ -32,32 +32,9 @@ var _SWClient = function(data){
 //	var language = LANGLoader.getLanguage();
 	var $threads;
 	var _IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s.jpg"></a>';
-	var _IMG_SRC = _STEReplace({
-								$TIM	  :data.tim,
-								$EXT	  :data.ext,
-								$IMG_SIZE :data.imgsize,
-								$TW       :data.tw,
-								$TH       :data.th
-								
-								},
-								_IMG_SRC);
 	var _IMG_BAR = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank">{$TIM}{$EXT}</a>-({$IMG_SIZE}, {$IMGW}x{$IMGH}) <small>{$IMG_SIMPLE}</small>';
 		
 		
-		_IMG_BAR = _STEReplace({
-								$TIM	  :data.tim,
-								$EXT	  :data.ext,
-								$IMG_SIZE :data.imgsize,
-								$TW       :data.tw,
-								$TH       :data.th,
-								$IMGW	  :data.imgw,
-								$IMGH	  :data.imgh,
-								$IMG_SIMPLE:language['img_sample']
-								
-								},
-								_IMG_BAR);
-	
-	
 	
 	
 	this.init = function(){
@@ -190,17 +167,8 @@ var _SWClient = function(data){
 		if('undefined' == typeof(data.name_text)){data.name_text = "" ;}
 		
 
-		_THREAD = '<li class="reply" id="r{$NO}">' +
-				  '<input type="checkbox" name="{$NO}" value="delete" />' +
-				  '<span class="title">{$SUB}</span>' +
-				  '{$NAME_TEXT} ' +
-				  '<span class="name">{$NAME}</span>' +
-				  '[{$NOW}] ' +
-				  (($IMG_BAR != '') ? '<br/>&nbsp' : '' ) +
-				  '{$IMG_BAR} {$IMG_SRC}' +
-				  '<div class="quote">{$COM}</div>' +
-				  ($IMG_BAR != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +
-				  '{$WARN_BEKILL}</li>';
+
+
 /*
 <div class="reply" id="r{$NO}">
 <input type="checkbox" name="{$NO}" value="delete" onclick="boxclicked=1;" /><span class="title">{$SUB}</span> {$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {/li}&nbsp;
@@ -210,7 +178,7 @@ var _SWClient = function(data){
 </div>
 */				
 		_IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s.jpg"></a>';
-		_IMG_SRC = _STEReplace({
+		$IMG_SRC = _STEReplace({
 								$TIM	  :data.tim,
 								$EXT	  :data.ext,
 								$IMG_SIZE :data.imgsize,
@@ -222,7 +190,7 @@ var _SWClient = function(data){
 		_IMG_BAR = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank">{$TIM}{$EXT}</a>-({$IMG_SIZE}, {$IMGW}x{$IMGH}) <small>{$IMG_SIMPLE}</small>';
 		
 		
-		_IMG_BAR = _STEReplace({
+		$IMG_BAR = _STEReplace({
 								$TIM	  :data.tim,
 								$EXT	  :data.ext,
 								$IMG_SIZE :data.imgsize,
@@ -234,6 +202,20 @@ var _SWClient = function(data){
 								
 								},
 								_IMG_BAR);
+
+		_THREAD = '<li class="reply" id="r{$NO}">' +
+				  '<input type="checkbox" name="{$NO}" value="delete" />' +
+				  '<span class="title">{$SUB}</span>' +
+				  '{$NAME_TEXT} ' +
+				  '<span class="name">{$NAME}</span>' +
+				  '[{$NOW}] ' +
+				  (($IMG_BAR != '') ? '<br/>&nbsp' : '' ) +
+				  '{$IMG_BAR} {$IMG_SRC}' +
+				  '<div class="quote">{$COM}</div>' +
+				  (($IMG_BAR != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +
+				  '{$WARN_BEKILL}</li>';
+
+
 		_THREAD = _STEReplace({
 								$NO 	  :data.no,
 								

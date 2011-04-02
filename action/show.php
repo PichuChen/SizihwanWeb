@@ -8,13 +8,13 @@ function actSHOW(){
 //print_r($PIO->fetchPostList());
 	$resno = 0;$page_num=-1;
 	$threads = array();
-	if(!$resno){echo "d";
+	if(!$resno){
 		if($page_num==-1){ // remake模式 (PHP動態輸出多頁份)
 			$threads = $PIO->fetchThreadList(); // 取得全討論串列表
 			$threads_count = count($threads);
 			$inner_for_count = $threads_count > PAGE_DEF ? PAGE_DEF : $threads_count;
 			$page_end = ceil($threads_count / PAGE_DEF) - 1; // 頁面編號最後值
-			echo "ff";
+			
 	
 		}else{ // 討論串分頁模式 (PHP動態輸出一頁份)
 			$threads_count = $PIO->threadCount(); // 討論串個數
@@ -41,7 +41,7 @@ function actSHOW(){
 		$tree_cut = array_slice($tree, $RES_start, $RES_amount); array_unshift($tree_cut, $tID); // 取出特定範圍回應
 		$posts = $PIO->fetchPosts($tree_cut); // 取得文章架構內容
 		$threads[$i]['reply'] = $posts;
-		print_r($posts);
+//		print_r($posts);
 //		$pte_vals['{$THREADS}'] .= arrangeThread($PTE, $tree, $tree_cut, $posts, $hiddenReply, $resno, $arr_kill, $arr_old, $kill_sensor, $old_sensor, true, $adminMode); // 交給這個函式去搞討論串印出
 	}
 //	print_r($inner_for_count);
