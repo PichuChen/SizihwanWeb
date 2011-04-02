@@ -99,7 +99,7 @@ $FORM_DELETE_PASSWORD_NOTICE = _T('form_delete_password_notice');
 $FORM_EXTRA_COLUMN = '';
 $FORM_NOTICE   = _T('form_notice',str_replace('|',',',ALLOW_UPLOAD_EXT),MAX_KB,(/*$resno*/1? MAX_RW : MAX_W),(/*$resno*/1 ? MAX_RH : MAX_H));
 $HOOKPOSTINFO  = '';
-$ADDITION_INFO = $ADDITION_INFO;
+$ADDITION_INFO = ADDITION_INFO;
 $FORM_NOTICE_NOSCRIPT = _T('form_notice_noscript');
 //$PMS->useModuleMethods('PostForm', array(&$pte_vals['{$FORM_EXTRA_COLUMN}'])); // "PostForm" Hook Point
 	if((RESIMG || !$resno)){
@@ -124,6 +124,7 @@ $ADMIN = '<li>[<a href="'.PHP_SELF.'?mode=admin">'._T('head_admin').'</a>]</li>'
 $REFRESH = '<li>[<a href="'.PHP_SELF2.'?">'._T('head_refresh').'</a>]</li>';
 $SEARCH = (USE_SEARCH) ? '<li>[<a href="'.PHP_SELF.'?mode=search">'._T('head_search').'</a>]</li>' : '';
 $HOOKLINKS = '';
+$FOOTER    ='';
 ?><!DOCTYP HTML>
 <html>
 <head>
@@ -142,7 +143,9 @@ DEFINES['BOARD']    = "<?php echo $BOARD?>";
 language = <?php require("lang_zh_TW.json" );?>;
 </script>
 <script type="text/javascript" src="../../resource/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="../../resource/sprintf.js"></script>
 <script type="text/javascript" src="../../resource/SWClient.js?<?=time();?>"></script>
+
 <script type="text/javascript">
 
 $(document).ready(function(){
