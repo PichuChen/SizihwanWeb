@@ -101,10 +101,17 @@ var _SWClient = function(data){
 		if('undefined' == typeof(data.img_src)){data.img_src = "" ;}
 		if('undefined' == typeof(data.warn_bekill)){data.warn_bekill = "" ;}
 		if('undefined' == typeof(data.name_text)){data.name_text = "" ;}
-		_THREAD = '<li class="threadpost" id="r{$NO}">{$IMG_BAR}{$IMG_SRC}<br/>' +
+		_THREAD = 
+				'<li class="threadpost" id="r{$NO}">' +
+				'{$IMG_BAR}' +
+				($IMG_BAR != "" ? '<br />': '') +
+				'{$IMG_SRC}' +
 				'<input type="checkbox" name="{$NO}" value="delete" />' +
-				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}] {$QUOTEBTN}&nbsp;{$REPLYBTN}' +
-				'<div class="quote">{$COM}</div>{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul><hr/></li>';
+				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}]' +
+				'{$QUOTEBTN}&nbsp;{$REPLYBTN}' +
+				'<div class="quote">{$COM}</div>' +
+				($CATEGORY != "" ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '') +
+				'{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul><hr/></li>';
 		/*
 		array('{$NO}'=>$no, '{$SUB}'=>$sub, '{$NAME}'=>$name, '{$NOW}'=>$now, '{$CATEGORY}'=>$category, '{/li}'=>/li, '{$IMG_BAR}'=>$IMG_BAR, '{$IMG_SRC}'=>$imgsrc, '{$WARN_BEKILL}'=>$WARN_BEKILL, '{$NAME_TEXT}'=>_T('post_name'), '{$CATEGORY_TEXT}'=>_T('post_category'), '{$SELF}'=>PHP_SELF, '{$COM}'=>$com);
 		*/
@@ -152,6 +159,8 @@ var _SWClient = function(data){
 								$QUOTEBTN :_QUOTEBTN,
 								$REPLYBTN :_REQLYBTN,
 								$NAME_TEXT:language['post_name'],
+								$CATEGORY:data.category,
+								$CATEGORY_TEXT:language['post_category'],
 								$WARN_OLD :_WARN_OLD,
 								$WARN_BEKILL:_WARN_BEKILL,
 								$WARN_ENDREPLY:_WARN_ENDREPLY,
@@ -217,7 +226,7 @@ var _SWClient = function(data){
 				  (($IMG_BAR != '') ? '<br/>&nbsp' : '' ) +
 				  '{$IMG_BAR} {$IMG_SRC}' +
 				  '<div class="quote">{$COM}</div>' +
-				  (($IMG_BAR != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +
+				  (($CATEGORY != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +
 				  '{$WARN_BEKILL}</li>';
 
 		_THREAD = _STEReplace({
@@ -231,6 +240,8 @@ var _SWClient = function(data){
 								$QUOTEBTN :_QUOTEBTN,
 								$REPLYBTN :_REQLYBTN,
 								$NAME_TEXT:language['post_name'],
+								$CATEGORY:data.category,
+								$CATEGORY_TEXT:language['post_category'],
 								$WARN_OLD :_WARN_OLD,
 								$WARN_BEKILL:_WARN_BEKILL,
 								$WARN_ENDREPLY:_WARN_ENDREPLY,
