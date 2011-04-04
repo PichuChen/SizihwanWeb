@@ -70,11 +70,16 @@ var _SWClient = function(data){
 				statusCode:{
 					200:function(data){
 						$.each(data,function(i,v){
-							if(v['resto'] == '0'){//首PO
-								$threads.append(_mkTHREAD(v));
-							}else{//回應
-								$threads.find(' > li#r' + v['resto']).append(_mkREPLY(v));
-							}
+							$.each(v,function(vin,vvn){
+								if(vvn['resto'] == '0'){//首PO
+									$threads.append(_mkTHREAD(vvn));
+								}else{
+									 $threads.find(' > li#r' + vvn['resto'] + ' ul.reply').append(_mkREPLY(vvn));
+								}
+												
+
+
+							});
 						});
 						
 					},
@@ -215,12 +220,21 @@ var _SWClient = function(data){
 				  (($IMG_BAR != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +
 				  '{$WARN_BEKILL}</li>';
 
-
 		_THREAD = _STEReplace({
 								$NO 	  :data.no,
-								
+								$SUB	  :data.sub,
+								$NAME     :data.name,
+								$NOW      :data.now,
+								$IMG_SRC  :(data.ext == '' ? '': _IMG_SRC),
+								$IMG_BAR  :(data.ext == '' ? '': _IMG_BAR),
+								$COM	  :data.com,	
+								$QUOTEBTN :_QUOTEBTN,
+								$REPLYBTN :_REQLYBTN,
 								$NAME_TEXT:language['post_name'],
-								$REPLYBTN :language['reply_btn']
+								$WARN_OLD :_WARN_OLD,
+								$WARN_BEKILL:_WARN_BEKILL,
+								$WARN_ENDREPLY:_WARN_ENDREPLY,
+								$WARN_HIDEPOST:_WARN_HIDEPOST
 								},
 								_THREAD);
 		return _THREAD;
