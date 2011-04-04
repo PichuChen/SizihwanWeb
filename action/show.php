@@ -6,8 +6,10 @@ function actSHOW(){
 	//$SelectArgv = "no,sub";
 //	print_r($PIO->threadCount());
 //print_r($PIO->fetchPostList());
-	$resno = 0;$page_num=-1;
+	$resno = 0;$page_num=-1;$page = 1;
+	$page_start =1;
 	$threads = array();
+	$out = array();
 	if(!$resno){
 		if($page_num==-1){ // remake模式 (PHP動態輸出多頁份)
 			$threads = $PIO->fetchThreadList(); // 取得全討論串列表
@@ -25,6 +27,8 @@ function actSHOW(){
 			$inner_for_count = count($threads); // 討論串個數就是迴圈次數
 		}
 	}
+//print_r($threads_count);
+//print_r($threads);
 	for($i = 0; $i < $inner_for_count; $i++){
 		// 取出討論串編號
 		if($resno) $tID = $resno; // 單討論串輸出 (回應模式)
@@ -40,14 +44,17 @@ function actSHOW(){
 		$tree = $PIO->fetchPostList($tID); // 整個討論串樹狀結構
 		$tree_cut = array_slice($tree, $RES_start, $RES_amount); array_unshift($tree_cut, $tID); // 取出特定範圍回應
 		$posts = $PIO->fetchPosts($tree_cut); // 取得文章架構內容
-		$threads[$i]['reply'] = $posts;
-//		print_r($posts);
+		$out[$i] = $posts;
+	//	$out[$i] = $tree;
+		//print_r($threads);
+//	print_r($posts);
+//echo "<br>";
 //		$pte_vals['{$THREADS}'] .= arrangeThread($PTE, $tree, $tree_cut, $posts, $hiddenReply, $resno, $arr_kill, $arr_old, $kill_sensor, $old_sensor, true, $adminMode); // 交給這個函式去搞討論串印出
 	}
 //	print_r($inner_for_count);
 //	print_r($threads);
-
-   	echo json_encode($PIO->fetchPosts($PIO->fetchThreadList(),$SelectArgv));
+	echo json_encode($out);
+//   	echo json_encode($PIO->fetchPosts($PIO->fetchThreadList(),$SelectArgv));
 		
 //	require("")
 
