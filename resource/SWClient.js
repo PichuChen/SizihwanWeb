@@ -33,12 +33,12 @@ var _SWClient = function(data){
 	var $threads;
 	var _IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s.jpg"></a>';
 	var _IMG_BAR = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank">{$TIM}{$EXT}</a>-({$IMG_SIZE}, {$IMGW}x{$IMGH}) <small>{$IMG_SIMPLE}</small>';
-	var _QUOTEBTN = '<a href="main.php?res=2&amp;page_num=all#r{$NO}" class="qlink">No.' + data.no + '</a>';		
+	var _QUOTEBTN = '<a href="main.php?res=2&amp;page_num=all#r{$NO}" class="qlink">No.{$NO}</a>';		
 	var	_REQLYBTN = '[<a href="main.php?res={$NO}">' + language['reply_btn'] + '</a>]';
 	var	_WARN_OLD = '<span class="warn_txt">' + language['warn_oldthread'] + '</span><br />';
 	var	_WARN_BEKILL='<span class="warn_txt">' + language['warn_sizelimit'] + '</span><br />';
 	var	_WARN_ENDREPLY= '<span class="warn_txt">' + language['warn_locked'] + '</span><br />';
-	var	_WARN_HIDEPOST= '<span class="warn_txt2">' + language['notice_omitted'].replace("%1$s",/*$hiddenReply*/ 3) + '</span><br />';
+	var	_WARN_HIDEPOST= '<span class="warn_txt2">' + language['notice_omitted'] + '</span><br />';
 			
 		
 	
@@ -168,7 +168,7 @@ var _SWClient = function(data){
 								$WARN_OLD :_WARN_OLD,
 								$WARN_BEKILL:_WARN_BEKILL,
 								$WARN_ENDREPLY:_WARN_ENDREPLY,
-								$WARN_HIDEPOST:_WARN_HIDEPOST
+								$WARN_HIDEPOST:_WARN_HIDEPOST.replace("%1$s",/*$hiddenReply*/ 3) 
 								},
 								_THREAD);
 		return _THREAD;
