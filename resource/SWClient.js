@@ -107,17 +107,6 @@ var _SWClient = function(data){
 		if('undefined' == typeof(data.img_src)){data.img_src = "" ;}
 		if('undefined' == typeof(data.warn_bekill)){data.warn_bekill = "" ;}
 		if('undefined' == typeof(data.name_text)){data.name_text = "" ;}
-		_THREAD = 
-				'<li class="threadpost" id="r{$NO}">' +
-				'{$IMG_BAR}' +
-				($IMG_BAR != "" ? '<br />': '') +
-				'{$IMG_SRC}' +
-				'<input type="checkbox" name="{$NO}" value="delete" />' +
-				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}]' +
-				'{$QUOTEBTN}&nbsp;{$REPLYBTN}' +
-				'<div class="quote">{$COM}</div>' +
-				($CATEGORY != "" ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '') +
-				'{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul><hr/></li>';
 		/*
 		array('{$NO}'=>$no, '{$SUB}'=>$sub, '{$NAME}'=>$name, '{$NOW}'=>$now, '{$CATEGORY}'=>$category, '{/li}'=>/li, '{$IMG_BAR}'=>$IMG_BAR, '{$IMG_SRC}'=>$imgsrc, '{$WARN_BEKILL}'=>$WARN_BEKILL, '{$NAME_TEXT}'=>_T('post_name'), '{$CATEGORY_TEXT}'=>_T('post_category'), '{$SELF}'=>PHP_SELF, '{$COM}'=>$com);
 		*/
@@ -144,6 +133,25 @@ var _SWClient = function(data){
 								_IMG_BAR);
 		
 		$hiddenReply = data.hiddenreply;
+	
+		_THREAD = 
+				'<li class="threadpost" id="r{$NO}">' +
+				'{$IMG_BAR}' +
+				((data.ext != "") ? '<br />': '') +
+				'{$IMG_SRC}' +
+				'<input type="checkbox" name="{$NO}" value="delete" />' +
+				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}]' +
+				'{$QUOTEBTN}&nbsp;{$REPLYBTN}' +
+				'<div class="quote">{$COM}</div>' +
+				((data.category != "") ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '') +
+				'{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul><hr/></li>';
+
+
+	
+
+
+
+
 		_THREAD = _STEReplace({
 								$NO 	  :data.no,
 								$SUB	  :data.sub,
@@ -219,10 +227,10 @@ var _SWClient = function(data){
 				  '{$NAME_TEXT} ' +
 				  '<span class="name">{$NAME}</span>' +
 				  '[{$NOW}] ' +
-				  (($IMG_BAR != '') ? '<br/>&nbsp' : '' ) +
+				  ((data.ext != '') ? '<br/>&nbsp' : '' ) +
 				  '{$IMG_BAR} {$IMG_SRC}' +
 				  '<div class="quote">{$COM}</div>' +
-				  (($CATEGORY != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +
+				  ((data.category != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +
 				  '{$WARN_BEKILL}</li>';
 
 		_THREAD = _STEReplace({
