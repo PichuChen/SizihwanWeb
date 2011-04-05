@@ -33,7 +33,13 @@ var _SWClient = function(data){
 	var $threads;
 	var _IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s.jpg"></a>';
 	var _IMG_BAR = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank">{$TIM}{$EXT}</a>-({$IMG_SIZE}, {$IMGW}x{$IMGH}) <small>{$IMG_SIMPLE}</small>';
-		
+	var _QUOTEBTN = '<a href="main.php?res=2&amp;page_num=all#r{$NO}" class="qlink">No.' + data.no + '</a>';		
+	var	_REQLYBTN = '[<a href="main.php?res={$NO}">' + language['reply_btn'] + '</a>]';
+	var	_WARN_OLD = '<span class="warn_txt">' + language['warn_oldthread'] + '</span><br />';
+	var	_WARN_BEKILL='<span class="warn_txt">' + language['warn_sizelimit'] + '</span><br />';
+	var	_WARN_ENDREPLY= '<span class="warn_txt">' + language['warn_locked'] + '</span><br />';
+	var	_WARN_HIDEPOST= '<span class="warn_txt2">' + language['notice_omitted'].replace("%1$s",/*$hiddenReply*/ 3) + '</span><br />';
+			
 		
 	
 	
@@ -115,8 +121,7 @@ var _SWClient = function(data){
 		/*
 		array('{$NO}'=>$no, '{$SUB}'=>$sub, '{$NAME}'=>$name, '{$NOW}'=>$now, '{$CATEGORY}'=>$category, '{/li}'=>/li, '{$IMG_BAR}'=>$IMG_BAR, '{$IMG_SRC}'=>$imgsrc, '{$WARN_BEKILL}'=>$WARN_BEKILL, '{$NAME_TEXT}'=>_T('post_name'), '{$CATEGORY_TEXT}'=>_T('post_category'), '{$SELF}'=>PHP_SELF, '{$COM}'=>$com);
 		*/
-		_IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s.jpg"></a>';
-		_IMG_SRC = _STEReplace({
+		$IMG_SRC = _STEReplace({
 								$TIM	  :data.tim,
 								$EXT	  :data.ext,
 								$IMG_SIZE :data.imgsize,
@@ -125,10 +130,7 @@ var _SWClient = function(data){
 								
 								},
 								_IMG_SRC);
-		_IMG_BAR = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank">{$TIM}{$EXT}</a>-({$IMG_SIZE}, {$IMGW}x{$IMGH}) <small>{$IMG_SIMPLE}</small>';
-		
-		
-		_IMG_BAR = _STEReplace({
+		$IMG_BAR = _STEReplace({
 								$TIM	  :data.tim,
 								$EXT	  :data.ext,
 								$IMG_SIZE :data.imgsize,
@@ -141,23 +143,17 @@ var _SWClient = function(data){
 								},
 								_IMG_BAR);
 		
-		_QUOTEBTN = '<a href="main.php?res=2&amp;page_num=all#r' + data.no + '" class="qlink">No.' + data.no + '</a>';		
-		_REQLYBTN = '[<a href="main.php?res=' + data.no + '">' + language['reply_btn'] + '</a>]';
-		_WARN_OLD = '<span class="warn_txt">' + language['warn_oldthread'] + '</span><br />';
-		_WARN_BEKILL='<span class="warn_txt">' + language['warn_sizelimit'] + '</span><br />';
-		_WARN_ENDREPLY= '<span class="warn_txt">' + language['warn_locked'] + '</span><br />';
-		_WARN_HIDEPOST= '<span class="warn_txt2">' + language['notice_omitted'].replace("%1$s",/*$hiddenReply*/ 3) + '</span><br />';
 		$hiddenReply = data.hiddenreply;
 		_THREAD = _STEReplace({
 								$NO 	  :data.no,
 								$SUB	  :data.sub,
 								$NAME     :data.name,
 								$NOW      :data.now,
-								$IMG_SRC  :(data.ext == '' ? '': _IMG_SRC),
-								$IMG_BAR  :(data.ext == '' ? '': _IMG_BAR),
+								$IMG_SRC  :(data.ext == '' ? '': $IMG_SRC),
+								$IMG_BAR  :(data.ext == '' ? '': $IMG_BAR),
 								$COM	  :data.com,	
-								$QUOTEBTN :_QUOTEBTN,
-								$REPLYBTN :_REQLYBTN,
+								$QUOTEBTN :_STEReplace({$NO:data.no},_QUOTEBTN),
+								$REPLYBTN :_STEReplace({$NO:data.no},_REQLYBTN),
 								$NAME_TEXT:language['post_name'],
 								$CATEGORY:data.category,
 								$CATEGORY_TEXT:language['post_category'],
@@ -234,8 +230,8 @@ var _SWClient = function(data){
 								$SUB	  :data.sub,
 								$NAME     :data.name,
 								$NOW      :data.now,
-								$IMG_SRC  :(data.ext == '' ? '': _IMG_SRC),
-								$IMG_BAR  :(data.ext == '' ? '': _IMG_BAR),
+								$IMG_SRC  :(data.ext == '' ? '': $IMG_SRC),
+								$IMG_BAR  :(data.ext == '' ? '': $IMG_BAR),
 								$COM	  :data.com,	
 								$QUOTEBTN :_QUOTEBTN,
 								$REPLYBTN :_REQLYBTN,
