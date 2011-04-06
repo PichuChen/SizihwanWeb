@@ -185,7 +185,7 @@ var _SWClient = function(data){
 								},
 				 _STEReplace({
 								$IFDATAEXT1:((data.ext != "") ? '<br />': '') ,
-								$IFDATACATE1:((data.category != "") ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '') +
+								$IFDATACATE1:((data.category != "") ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '') 
 								},
 								_THREAD_TPL));
 		return $THREAD;
@@ -260,7 +260,7 @@ var _SWClient = function(data){
 								},
 				_STEReplace({
 								$IFDATAEXT1:((data.ext != '') ? '<br/>&nbsp' : '' ),
-								$IFDATACATE1:((data.category != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +			
+								$IFDATACATE1:((data.category != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) 			
 								},
 								_REPLY_TPL));
 		return $REPLY;
