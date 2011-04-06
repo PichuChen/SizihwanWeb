@@ -238,7 +238,7 @@ var _SWClient = function(data){
 								},
 								_IMG_BAR);
 
-		
+		$WARN_BEKILL = 0 ? _WARN_BEKILL : '';	
 
 		$REPLY = _STEReplace({
 								$NO 	  :data.no,
@@ -253,10 +253,8 @@ var _SWClient = function(data){
 								$NAME_TEXT:language['post_name'],
 								$CATEGORY:data.category,
 								$CATEGORY_TEXT:language['post_category'],
-								$WARN_OLD :_WARN_OLD,
-								$WARN_BEKILL:_WARN_BEKILL,
-								$WARN_ENDREPLY:_WARN_ENDREPLY,
-								$WARN_HIDEPOST:_WARN_HIDEPOST
+								$WARN_BEKILL:$WARN_BEKILL
+							//	$WARN_HIDEPOST:_WARN_HIDEPOST
 								},
 				_STEReplace({
 								$IFDATAEXT1:((data.ext != '') ? '<br/>&nbsp' : '' ),
