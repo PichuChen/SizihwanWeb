@@ -39,10 +39,30 @@ var _SWClient = function(data){
 	var	_WARN_BEKILL='<span class="warn_txt">' + language['warn_sizelimit'] + '</span><br />';
 	var	_WARN_ENDREPLY= '<span class="warn_txt">' + language['warn_locked'] + '</span><br />';
 	var	_WARN_HIDEPOST= '<span class="warn_txt2">' + language['notice_omitted'] + '</span><br />';
-			
+	var	_THREAD_TPL = 
+				'<li class="threadpost" id="r{$NO}">' +
+				'{$IMG_BAR}' +
+				'{$IFDATAEXT1}'+
+				'{$IMG_SRC}' +
+				'<input type="checkbox" name="{$NO}" value="delete" />' +
+				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}]' +
+				'{$QUOTEBTN}&nbsp;{$REPLYBTN}' +
+				'<div class="quote">{$COM}</div>' +
+				'{$IFDATACATE1}' +
+				'{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul><hr/></li>';			
+	var _REPLY_TPL = 
+				'<li class="reply" id="r{$NO}">' +
+				'<input type="checkbox" name="{$NO}" value="delete" />' +
+				'<span class="title">{$SUB}</span>' +
+				'{$NAME_TEXT} ' +
+				'<span class="name">{$NAME}</span>' +
+				'[{$NOW}] ' +
+				'{$IFDATAEXT1}'+
+				'{$IMG_BAR} {$IMG_SRC}' +
+				'<div class="quote">{$COM}</div>' +
+				'{$IFDATACATE1}' +
+				'{$WARN_BEKILL}</li>';	
 		
-	
-	
 	this.init = function(){
 		//alert('init');
 		$threads = $(".threads");
@@ -107,6 +127,7 @@ var _SWClient = function(data){
 		if('undefined' == typeof(data.img_src)){data.img_src = "" ;}
 		if('undefined' == typeof(data.warn_bekill)){data.warn_bekill = "" ;}
 		if('undefined' == typeof(data.name_text)){data.name_text = "" ;}
+		if('undefined' == typeof(data.hiddenReply)){data.hiddenReply = 0;}
 		/*
 		array('{$NO}'=>$no, '{$SUB}'=>$sub, '{$NAME}'=>$name, '{$NOW}'=>$now, '{$CATEGORY}'=>$category, '{/li}'=>/li, '{$IMG_BAR}'=>$IMG_BAR, '{$IMG_SRC}'=>$imgsrc, '{$WARN_BEKILL}'=>$WARN_BEKILL, '{$NAME_TEXT}'=>_T('post_name'), '{$CATEGORY_TEXT}'=>_T('post_category'), '{$SELF}'=>PHP_SELF, '{$COM}'=>$com);
 		*/
@@ -134,25 +155,17 @@ var _SWClient = function(data){
 		
 		$hiddenReply = data.hiddenreply;
 	
-		_THREAD = 
-				'<li class="threadpost" id="r{$NO}">' +
-				'{$IMG_BAR}' +
-				((data.ext != "") ? '<br />': '') +
-				'{$IMG_SRC}' +
-				'<input type="checkbox" name="{$NO}" value="delete" />' +
-				'<span class="title">{$SUB}</span>{$NAME_TEXT}<span class="name">{$NAME}</span> [{$NOW}]' +
-				'{$QUOTEBTN}&nbsp;{$REPLYBTN}' +
-				'<div class="quote">{$COM}</div>' +
-				((data.category != "") ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '') +
-				'{$WARN_OLD}{$WARN_BEKILL}{$WARN_ENDREPLY}{$WARN_HIDEPOST}<ul class="reply"></ul><hr/></li>';
+
 
 
 	
 
+		$WARN_OLD 		= 0 ? (_WARN_OLD) 		: '';
+		$WARN_BEKILL 	= 0 ? (_WARN_BEKILL) 	: '';
+		$WARN_ENDREPLY  = 0 ? (_WARN_ENDREPLY)  : '';
+		$WARN_HIDEPOST  = 0 ? (_WARN_HIDEPOST.replace("%1$s",data.hiddenReply)) : '';
 
-
-
-		_THREAD = _STEReplace({
+		$THREAD = _STEReplace({
 								$NO 	  :data.no,
 								$SUB	  :data.sub,
 								$NAME     :data.name,
@@ -165,13 +178,17 @@ var _SWClient = function(data){
 								$NAME_TEXT:language['post_name'],
 								$CATEGORY:data.category,
 								$CATEGORY_TEXT:language['post_category'],
-								$WARN_OLD :_WARN_OLD,
-								$WARN_BEKILL:_WARN_BEKILL,
-								$WARN_ENDREPLY:_WARN_ENDREPLY,
-								$WARN_HIDEPOST:_WARN_HIDEPOST.replace("%1$s",/*$hiddenReply*/ 3) 
+								$WARN_OLD :$WARN_OLD,
+								$WARN_BEKILL:$WARN_BEKILL,
+								$WARN_ENDREPLY:$WARN_ENDREPLY,
+								$WARN_HIDEPOST:$WARN_HIDEPOST 
 								},
-								_THREAD);
-		return _THREAD;
+				 _STEReplace({
+								$IFDATAEXT1:((data.ext != "") ? '<br />': '') ,
+								$IFDATACATE1:((data.category != "") ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '') +
+								},
+								_THREAD_TPL));
+		return $THREAD;
 	}
 	
 	var _mkREPLY = function(data){
@@ -221,19 +238,9 @@ var _SWClient = function(data){
 								},
 								_IMG_BAR);
 
-		_THREAD = '<li class="reply" id="r{$NO}">' +
-				  '<input type="checkbox" name="{$NO}" value="delete" />' +
-				  '<span class="title">{$SUB}</span>' +
-				  '{$NAME_TEXT} ' +
-				  '<span class="name">{$NAME}</span>' +
-				  '[{$NOW}] ' +
-				  ((data.ext != '') ? '<br/>&nbsp' : '' ) +
-				  '{$IMG_BAR} {$IMG_SRC}' +
-				  '<div class="quote">{$COM}</div>' +
-				  ((data.category != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +
-				  '{$WARN_BEKILL}</li>';
+		
 
-		_THREAD = _STEReplace({
+		$REPLY = _STEReplace({
 								$NO 	  :data.no,
 								$SUB	  :data.sub,
 								$NAME     :data.name,
@@ -251,8 +258,12 @@ var _SWClient = function(data){
 								$WARN_ENDREPLY:_WARN_ENDREPLY,
 								$WARN_HIDEPOST:_WARN_HIDEPOST
 								},
-								_THREAD);
-		return _THREAD;
+				_STEReplace({
+								$IFDATAEXT1:((data.ext != '') ? '<br/>&nbsp' : '' ),
+								$IFDATACATE1:((data.category != '') ? '<div class="category">{$CATEGORY_TEXT}{$CATEGORY}</div>' : '' ) +			
+								},
+								_REPLY_TPL));
+		return $REPLY;
 	}
 	
 	var _mkReplyBtn = function(data){
