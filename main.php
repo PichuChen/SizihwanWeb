@@ -64,7 +64,7 @@ switch($ACTION){
 	case 'SHOW':
 		{
 			require(PATH_ACTION_SHOW);
-			actSHOW();
+			actSHOW($ARG);
 		}
 		break;	
 	case 'LANG':
