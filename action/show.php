@@ -7,7 +7,7 @@ function actSHOW(){
 //	print_r($PIO->threadCount());
 //print_r($PIO->fetchPostList());
 	$resno = 0;$page_num=-1;$page = 1;
-	$page_start =1;
+	$page_start = 0;
 	$threads = array();
 	$out = array();
 	if(!$resno){
