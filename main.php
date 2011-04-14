@@ -5,6 +5,7 @@ define("SIZIHWANWEB_VER", '0.02'); // 版本資訊文字
 
 $DEFINE['PATH_ACTION_POSTS'] = './action/posts.php'; //POSTS 模組
 $DEFINE['PATH_ACTION_SHOW']  = './action/show.php' ; //SHOW 模組
+$DEFINE['PATH_ACTION_THREAD']  = './action/thread.php' ; //THREAD 模組
 define("PATH_ACTION_SHOW", './action/show.php');   //SHOW 模組
 define("PATH_ACTION_POSTS", './action/posts.php'); //POSTS 模組
 
@@ -21,8 +22,8 @@ $ARG = explode("/",$_SERVER['PATH_INFO']);
 if(!isset($ARG[1])){sendStatusCode(400);exit;}//如果沒有要求看板名稱
 define("PATH_BOARD", 'board/' . $ARG[1]);//設定看板位置
 if(!is_dir(PATH_BOARD)){sendStatusCode(404);exit;}//檢查看板是否存在
-include_once('../config.php'); // 引入設定檔
-include_once(PATH_BOARD . '/config.php'); // 引入設定檔
+//include_once('config.php');               // 引入site設定檔
+include_once(PATH_BOARD . '/config.php'); // 引入board設定檔
 
 //if(GZIP_COMPRESS_LEVEL && ($Encoding = CheckSupportGZip())){ ob_start(); ob_implicit_flush(0); } // 支援且開啟Gzip壓縮就設緩衝區
 //print_r($ARG);
@@ -67,13 +68,17 @@ switch($ACTION){
 		header('Location: '.fullURL().'lang_zh_TW.json'.'?');
 		break;
 		}
-	case 'THREADS'://取得特定討論串
+	case 'THREAD'://取得特定討論串
 		{
 		
-			if(!isset($ARG[3]) || $ARG[3] == "")$ARG[3] = 1;
-			require(PATH_ACTION_SHOW);
-		getTHREAD();
-		sendStatusCode(501);
+			if(!isset($ARG[3])) {
+				 sendStatusCode(501);
+				exit;//參數不足
+			}
+			if(!isset($ARG[4]) || $ARG[4] == "")$ARG[4] = 1;
+			require($DEFINE['PATH_ACTION_THREAD']);
+			getTHREAD(intval($ARG[3]),intval($ARG[4]));
+			sendStatusCode(501);
 		}
 		break;
 	case 'POSTS'  ://投稿,刪除,修改
