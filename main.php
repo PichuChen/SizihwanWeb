@@ -72,13 +72,13 @@ switch($ACTION){
 		{
 		
 			if(!isset($ARG[3])) {
-				 sendStatusCode(501);
+				 sendStatusCode(405);
 				exit;//參數不足
 			}
 			if(!isset($ARG[4]) || $ARG[4] == "")$ARG[4] = 1;
 			require($DEFINE['PATH_ACTION_THREAD']);
 			getTHREAD(intval($ARG[3]),intval($ARG[4]));
-			sendStatusCode(501);
+		//	ddsendStatusCode(501);
 		}
 		break;
 	case 'POSTS'  ://投稿,刪除,修改

@@ -148,8 +148,6 @@ language = <?php echo json_encode($Language) ?>;
 <script type="text/javascript">
 
 $(document).ready(function(){
-	var LANGLoader = new _LANGLoader
-	language = LANGLoader.getLanguage();
 	var SWClient = new _SWClient;
 	SWClient.init();
 

@@ -9,7 +9,7 @@
 var _LANGLoader = function(data){
 	language = {};
 	
-	$.ajax({//async:false,
+	$.ajax({async:false,
 			dataType:'json',
 			url:"../../main.php/" + DEFINES['BOARD'] + "/LANG",
 			success:function(data){
@@ -28,8 +28,8 @@ var _LANGLoader = function(data){
  
  
 var _SWClient = function(data){
-//	var LANGLoader = new _LANGLoader;
-//	var language = LANGLoader.getLanguage();
+	var LANGLoader = new _LANGLoader;
+	var language = LANGLoader.getLanguage();
 	var $threads;
 	var _IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s.jpg"></a>';
 	var _IMG_BAR = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank">{$TIM}{$EXT}</a>-({$IMG_SIZE}, {$IMGW}x{$IMGH}) <small>{$IMG_SIMPLE}</small>';
