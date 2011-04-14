@@ -54,41 +54,34 @@ function getThread($thread_num,$page_num){
 	//	$old_sensor = true; // 標記打開
 	//	$arr_old = array_flip(PIOSensor::listee('predict', $LIMIT_SENSOR)); // 過舊文章陣列
 	//}
-echo __LINE__ . "<br/>";
 //	$tmp_total_size = total_size(); // 目前附加圖檔使用量
 //	$tmp_STORAGE_MAX = STORAGE_MAX * (($tmp_total_size >= STORAGE_MAX) ? 1 : 0.95); // 預估上限值
 //	if(STORAGE_LIMIT && STORAGE_MAX > 0 && ($tmp_total_size >= $tmp_STORAGE_MAX)){
 //		$kill_sensor = true; // 標記打開
 //		$arr_kill = $PIO->delOldAttachments($tmp_total_size, $tmp_STORAGE_MAX); // 過舊附檔陣列
 //	}
-echo __LINE__ . "<br/>";
 	//$PMS->useModuleMethods('ThreadFront', array(&$pte_vals['{$THREADFRONT}'], $resno)); // "ThreadFront" Hook Point
 	//$PMS->useModuleMethods('ThreadRear', array(&$pte_vals['{$THREADREAR}'], $resno)); // "ThreadRear" Hook Point
-echo __LINE__ . "<br/>";
 	// 生成靜態頁面一頁份內容
-	for($page = $page_start; $page <= $page_end; $page++){
+	$out = array();
+	//for($page = $page_start; $page <= $page_end; $page++){
 		//$dat = ''; $pte_vals['{$THREADS}'] = '';
 		//head($dat, $resno);
 		//form($dat, $resno);
 		// 輸出討論串內容
-		for($i = 0; $i < $inner_for_count; $i++){
+		//for($i = 0; $i < $inner_for_count; $i++){
 			// 取出討論串編號
-			if($resno) $tID = $resno; // 單討論串輸出 (回應模式)
-			else{
-				if($page_num == -1 && ($page * PAGE_DEF + $i) >= $threads_count) break; // remake 超出索引代表已全部完成
-				$tID = ($page_start==$page_end) ? $threads[$i] : $threads[$page * PAGE_DEF + $i]; // 一頁內容 (一般模式) / 多頁內容 (remake模式)
-				$tree_count = $PIO->postCount($tID) - 1; // 討論串回應個數
-				$RES_start = $tree_count - RE_DEF + 1; if($RES_start < 1) $RES_start = 1; // 開始
-				$RES_amount = RE_DEF; // 取幾個
-				$hiddenReply = $RES_start - 1; // 被隱藏回應數
-			}
-echo __LINE__ . "<br/>";
+			$tID = $resno; // 單討論串輸出 (回應模式)
+//print_r($tID);
 			// $RES_start, $RES_amount 拿去算新討論串結構 (分頁後, 部分回應隱藏)
 			$tree = $PIO->fetchPostList($tID); // 整個討論串樹狀結構
+//print_r($tree);
 			$tree_cut = array_slice($tree, $RES_start, $RES_amount); array_unshift($tree_cut, $tID); // 取出特定範圍回應
 			$posts = $PIO->fetchPosts($tree_cut); // 取得文章架構內容
 			//$pte_vals['{$THREADS}'] .= arrangeThread($PTE, $tree, $tree_cut, $posts, $hiddenReply, $resno, $arr_kill, $arr_old, $kill_sensor, $old_sensor, true, $adminMode); // 交給這個函式去搞討論串印出
-		}
+//print_r($posts);
+			echo json_encode($posts);
+		//}
 		//$pte_vals['{$PAGENAV}'] = '<div id="page_switch">';
 
 		// 換頁判斷
@@ -141,7 +134,7 @@ echo __LINE__ . "<br/>";
 			}
 			break;
 */		}
-	}
+	//}
 }
 
 
