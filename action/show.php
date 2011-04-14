@@ -1,13 +1,12 @@
 <?php
-function actSHOW($ARG){ 
+function actSHOW($page_num){ 
 	require("./lib/lib_pio.php");
 	//print_r($PIO->fetchThreadList());
 	$SelectArgv = 'no,resto,sub,name,com,now,category,tim,ext,imgsize,tw,th,imgw,imgh';
 	//$SelectArgv = "no,sub";
 //	print_r($PIO->threadCount());
 //print_r($PIO->fetchPostList());
-	if(!isset($ARG[3]) || $ARG[3] == "") $ARG[3] = 1;
-	$resno = 0;$page_num=intval($ARG[3]) -1;$page = 1;
+	$resno = 0;$page = 1;
 	$page_start = 0;
 	$threads = array();
 	$out = array();
