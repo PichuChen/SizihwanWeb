@@ -1,8 +1,9 @@
 <?php
 function getThread($thread_num,$page_num){
 	require("./lib/lib_pio.php");
-	global $PIO, $FileIO, $language, $LIMIT_SENSOR;
-
+	//global $PIO, $FileIO, $language, $LIMIT_SENSOR;
+	$LIMIT_SENSOR = array('ByPostCountCondition'=>500);
+	$page_num--;
 	$resno = intval($thread_num); // 編號數字化
 	$page_start = $page_end = 0; // 靜態頁面編號
 	$inner_for_count = 1; // 內部迴圈執行次數
@@ -26,7 +27,7 @@ function getThread($thread_num,$page_num){
 			$RES_start = $page_num * RE_PAGE_DEF + 1; // 開始
 			$RES_amount = RE_PAGE_DEF; // 取幾個
 		}
-	}else if($page_num > 0) error(_T('page_not_found')); // 沒有回應的情況只允許page_num = 0 或負數
+	}else if($page_num > 0){ /*error(_T('page_not_found'))*/ echo 'd';exit;} // 沒有回應的情況只允許page_num = 0 或負數
 	else{ $RES_start = 1; $RES_amount = $tree_count; $page_num = 0; } // 輸出全部回應
 /*
 	if(USE_RE_CACHE && !$adminMode){ // 檢查快取是否仍可使用 / 頁面有無更動
@@ -49,20 +50,21 @@ function getThread($thread_num,$page_num){
 	}*/
 
 	// 預測過舊文章和將被刪除檔案
-	if(PIOSensor::check('predict', $LIMIT_SENSOR)){ // 是否需要預測
-		$old_sensor = true; // 標記打開
-		$arr_old = array_flip(PIOSensor::listee('predict', $LIMIT_SENSOR)); // 過舊文章陣列
-	}
-	$tmp_total_size = total_size(); // 目前附加圖檔使用量
-	$tmp_STORAGE_MAX = STORAGE_MAX * (($tmp_total_size >= STORAGE_MAX) ? 1 : 0.95); // 預估上限值
-	if(STORAGE_LIMIT && STORAGE_MAX > 0 && ($tmp_total_size >= $tmp_STORAGE_MAX)){
-		$kill_sensor = true; // 標記打開
-		$arr_kill = $PIO->delOldAttachments($tmp_total_size, $tmp_STORAGE_MAX); // 過舊附檔陣列
-	}
-
+	//if(PIOSensor::check('predict', $LIMIT_SENSOR)){ // 是否需要預測
+	//	$old_sensor = true; // 標記打開
+	//	$arr_old = array_flip(PIOSensor::listee('predict', $LIMIT_SENSOR)); // 過舊文章陣列
+	//}
+echo __LINE__ . "<br/>";
+//	$tmp_total_size = total_size(); // 目前附加圖檔使用量
+//	$tmp_STORAGE_MAX = STORAGE_MAX * (($tmp_total_size >= STORAGE_MAX) ? 1 : 0.95); // 預估上限值
+//	if(STORAGE_LIMIT && STORAGE_MAX > 0 && ($tmp_total_size >= $tmp_STORAGE_MAX)){
+//		$kill_sensor = true; // 標記打開
+//		$arr_kill = $PIO->delOldAttachments($tmp_total_size, $tmp_STORAGE_MAX); // 過舊附檔陣列
+//	}
+echo __LINE__ . "<br/>";
 	//$PMS->useModuleMethods('ThreadFront', array(&$pte_vals['{$THREADFRONT}'], $resno)); // "ThreadFront" Hook Point
 	//$PMS->useModuleMethods('ThreadRear', array(&$pte_vals['{$THREADREAR}'], $resno)); // "ThreadRear" Hook Point
-
+echo __LINE__ . "<br/>";
 	// 生成靜態頁面一頁份內容
 	for($page = $page_start; $page <= $page_end; $page++){
 		//$dat = ''; $pte_vals['{$THREADS}'] = '';
@@ -80,7 +82,7 @@ function getThread($thread_num,$page_num){
 				$RES_amount = RE_DEF; // 取幾個
 				$hiddenReply = $RES_start - 1; // 被隱藏回應數
 			}
-
+echo __LINE__ . "<br/>";
 			// $RES_start, $RES_amount 拿去算新討論串結構 (分頁後, 部分回應隱藏)
 			$tree = $PIO->fetchPostList($tID); // 整個討論串樹狀結構
 			$tree_cut = array_slice($tree, $RES_start, $RES_amount); array_unshift($tree_cut, $tID); // 取出特定範圍回應
@@ -94,20 +96,20 @@ function getThread($thread_num,$page_num){
 		$next = $page_num + 1;
 		if($resno){ // 回應分頁
 			if(RE_PAGE_DEF > 0){ // 回應分頁開啟
-				$pte_vals['{$PAGENAV}'] .= '<table border="1"><tr><td style="white-space: nowrap;">';
-				$pte_vals['{$PAGENAV}'] .= ($prev >= 0) ? '<a href="'.PHP_SELF.'?res='.$resno.'&amp;page_num='.$prev.'">'._T('prev_page').'</a>' : _T('first_page');
-				$pte_vals['{$PAGENAV}'] .= "</td><td>";
-				if($tree_count==0) $pte_vals['{$PAGENAV}'] .= '[<b>0</b>] '; // 無回應
-				else{
-					for($i = 0, $len = $tree_count / RE_PAGE_DEF; $i < $len; $i++){
-						if(!$AllRes && $page_num==$i) $pte_vals['{$PAGENAV}'] .= '[<b>'.$i.'</b>] ';
-						else $pte_vals['{$PAGENAV}'] .= '[<a href="'.PHP_SELF.'?res='.$resno.'&amp;page_num='.$i.'">'.$i.'</a>] ';
-					}
-					$pte_vals['{$PAGENAV}'] .= $AllRes ? '[<b>'._T('all_pages').'</b>] ' : ($tree_count > RE_PAGE_DEF ? '[<a href="'.PHP_SELF.'?res='.$resno.'&amp;page_num=all">'._T('all_pages').'</a>] ' : '');
-				}
-				$pte_vals['{$PAGENAV}'] .= '</td><td style="white-space: nowrap;">';
-				$pte_vals['{$PAGENAV}'] .= (!$AllRes && $tree_count > $next * RE_PAGE_DEF) ? '<a href="'.PHP_SELF.'?res='.$resno.'&amp;page_num='.$next.'">'._T('next_page').'</a>' : _T('last_page');
-				$pte_vals['{$PAGENAV}'] .= '</td></tr></table>'."\n";
+			//	$pte_vals['{$PAGENAV}'] .= '<table border="1"><tr><td style="white-space: nowrap;">';
+			//	$pte_vals['{$PAGENAV}'] .= ($prev >= 0) ? '<a href="'.PHP_SELF.'?res='.$resno.'&amp;page_num='.$prev.'">'._T('prev_page').'</a>' : _T('first_page');
+			//	$pte_vals['{$PAGENAV}'] .= "</td><td>";
+			//	if($tree_count==0) $pte_vals['{$PAGENAV}'] .= '[<b>0</b>] '; // 無回應
+		//		else{
+		//			for($i = 0, $len = $tree_count / RE_PAGE_DEF; $i < $len; $i++){
+		//				if(!$AllRes && $page_num==$i) $pte_vals['{$PAGENAV}'] .= '[<b>'.$i.'</b>] ';
+		//				else $pte_vals['{$PAGENAV}'] .= '[<a href="'.PHP_SELF.'?res='.$resno.'&amp;page_num='.$i.'">'.$i.'</a>] ';
+		//			}
+		//			$pte_vals['{$PAGENAV}'] .= $AllRes ? '[<b>'._T('all_pages').'</b>] ' : ($tree_count > RE_PAGE_DEF ? '[<a href="'.PHP_SELF.'?res='.$resno.'&amp;page_num=all">'._T('all_pages').'</a>] ' : '');
+		//		}
+		//		$pte_vals['{$PAGENAV}'] .= '</td><td style="white-space: nowrap;">';
+		//		$pte_vals['{$PAGENAV}'] .= (!$AllRes && $tree_count > $next * RE_PAGE_DEF) ? '<a href="'.PHP_SELF.'?res='.$resno.'&amp;page_num='.$next.'">'._T('next_page').'</a>' : _T('last_page');
+		//		$pte_vals['{$PAGENAV}'] .= '</td></tr></table>'."\n";
 			}
 		}else{
 		}
@@ -117,7 +119,7 @@ function getThread($thread_num,$page_num){
 
 		// 存檔 / 輸出
 		if($single_page){ // 靜態快取頁面生成
-			if($page==0) $logfilename = PHP_SELF2;
+/*			if($page==0) $logfilename = PHP_SELF2;
 			else $logfilename = $page.PHP_EXT;
 			$fp = fopen($logfilename, 'w');
 			stream_set_write_buffer($fp, 0);
@@ -125,8 +127,8 @@ function getThread($thread_num,$page_num){
 			fclose($fp);
 			@chmod($logfilename, 0666);
 			if(STATIC_HTML_UNTIL != -1 && STATIC_HTML_UNTIL==$page) break; // 頁面數目限制
-		}else{ // PHP 輸出 (回應模式/一般動態輸出)
-			if(USE_RE_CACHE && $resno && !isset($_GET['upseries'])){ // 更新快取
+*/		}else{ // PHP 輸出 (回應模式/一般動態輸出)
+		/*	if(USE_RE_CACHE && $resno && !isset($_GET['upseries'])){ // 更新快取
 				if($oldCaches = glob($cacheFile.'*')){
 					foreach($oldCaches as $o) unlink($o); // 刪除舊快取
 				}
@@ -138,7 +140,7 @@ function getThread($thread_num,$page_num){
 				header('Connection: close');
 			}
 			break;
-		}
+*/		}
 	}
 }
 
