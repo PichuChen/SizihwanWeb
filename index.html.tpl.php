@@ -59,7 +59,6 @@
 {$QUOTEBTN} - 文章引用系統功能按鈕 (可以按的 No.XXX)
 {$REFRESH}
 {$REPLYBTN} - (一般瀏覽時) 進入回應連結
-{$RESTO}
 {$RETURN_TEXT}
 {$SEARCH} - (BODYHEAD用) 「搜尋」連結
 {$SELF2}
@@ -140,7 +139,7 @@ $FOOTER    ='';
 var DEFINES = {};
 DEFINES['PHP_SELF'] = "<?php echo $SELF?>";
 DEFINES['BOARD']    = "<?php echo $BOARD?>";
-language = <?php require("lang_zh_TW.json" );?>;
+language = <?php echo json_encode($Language) ?>;
 </script>
 <script type="text/javascript" src="../../resource/jquery-1.5.1.min.js"></script>
 <script type="text/javascript" src="../../resource/sprintf.js"></script>
@@ -175,7 +174,7 @@ $(document).ready(function(){
 <input type="hidden" name="mode" value="<?php //echo $MODE;?>" />
 <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $MAX_FILE_SIZE?>" />
 <input type="hidden" name="upfile_path" value="" />
-<?php if(isset($RESTO) ){echo $RESTO;}?>
+<input type="hidden" name="resto" value="0"/>
 <div style="text-align: center;">
 <table cellpadding="1" cellspacing="1" id="postform_tbl" style="margin: 0px auto; text-align: left;">
 	<tr><td class="Form_bg"><b><?php echo $FORM_NAME_TEXT?>   </b></td><td><?php echo $FORM_NAME_FIELD?></td></tr>
