@@ -33,8 +33,8 @@ var _SWClient = function(data){
 	var $threads;
 	var _IMG_SRC = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank"><img title="{$IMG_SIZE}" alt="{$IMG_SIZE}" class="img" style="width: {$TW}px; height: {$TH}px;" src="thumb/{$TIM}s.jpg"></a>';
 	var _IMG_BAR = '<a rel="_blank" href="src/{$TIM}{$EXT}" target="_blank">{$TIM}{$EXT}</a>-({$IMG_SIZE}, {$IMGW}x{$IMGH}) <small>{$IMG_SIMPLE}</small>';
-	var _QUOTEBTN = '<a href="main.php?res=2&amp;page_num=all#r{$NO}" class="qlink">No.{$NO}</a>';		
-	var	_REQLYBTN = '[<a href="main.php?res={$NO}">' + language['reply_btn'] + '</a>]';
+	var _QUOTEBTN = '<a href="index.html?res={$NO}#r{$NO}" class="qlink">No.{$NO}</a>';		
+	var	_REQLYBTN = '[<a href="index.html?res={$NO}">' + language['reply_btn'] + '</a>]';
 	var	_WARN_OLD = '<span class="warn_txt">' + language['warn_oldthread'] + '</span><br />';
 	var	_WARN_BEKILL='<span class="warn_txt">' + language['warn_sizelimit'] + '</span><br />';
 	var	_WARN_ENDREPLY= '<span class="warn_txt">' + language['warn_locked'] + '</span><br />';
@@ -71,7 +71,22 @@ var _SWClient = function(data){
 //		$(".threads > li#r3").append(_mkREPLY({NO:3}));
 		
 //		$threads.append(_mkTHREAD({NO:4}));
-		this.getPage();
+		argv = location.href.split("?");
+		if(argv.length == 2){
+			argv = argv[1].split('&');
+			datas = []
+			$.each(argv,function(i,v){
+				tmp = v.split('=');
+				datas[tmp[0]] = (tmp.length > 1) ? tmp[1] : true;		
+			});
+			if(typeof datas['mode'] != 'undefined'){
+
+			}else if(typeof datas['res'] != 'undefined'){
+				this.getPage({pageType:'THREAD',res:datas['res']});	
+			}	
+		}else{	
+			this.getPage();
+		}
 	}
 	
 	
@@ -88,33 +103,58 @@ var _SWClient = function(data){
 		return data;
 	}
 	this.getPage = function(data){
-	    if('undefined' == typeof(data)){data ={};}
-	    if('undefined' == typeof(data.pageNo)){data.pageNo = 1 ;}
-		$.ajax({
+		if('undefined' == typeof(data)){data ={};}
+		if('undefined' == typeof(data.pageNo)){data.pageNo = 1 ;}
+	    	if('undefined' == typeof(data.pageType)){data.pageType = "SHOW" ;}
+	    	
+		
+		url = "";
+		switch(data.pageType){
+			case 'SHOW'  :
+				url = "../../main.php/" + DEFINES['BOARD'] + "/SHOW/" + data.pageNo;
+				break;		
+			case 'THREAD':
+				if('undefined' == typeof(data.res))return ;
+				url = "../../main.php/" + DEFINES['BOARD'] + "/THREAD/" + data.res + "/" + data.pageNo;
+				break;
+			default      :
+				alert("dataType not support");
+				return;
+
+		}
+
+		functions = [];
+	    	functions['SHOW'] = function(data){
+                                                $.each(data,function(i,v){
+                                                        $.each(v,function(vin,vvn){_mkThreadList(vvn);});
+                                                });
+                                        };
+		
+	    	functions['THREAD'] = function(data){
+                                                $.each(data,function(i,v){_mkThreadList(v);});
+
+                                        };
+		
+	   // functions[]
+
+	    $.ajax({
 				dataType:'json',
-				url:"../../main.php/" + DEFINES['BOARD'] + "/SHOW/" + data.pageNo,
+				url:url,
 				statusCode:{
-					200:function(data){
-						$.each(data,function(i,v){
-							$.each(v,function(vin,vvn){
-								if(vvn['resto'] == '0'){//首PO
-									$threads.append(_mkTHREAD(vvn));
-								}else{
-									 $threads.find(' > li#r' + vvn['resto'] + ' ul.reply').append(_mkREPLY(vvn));
-								}
-												
-
-
-							});
-						});
-						
-					},
+					200:functions[data.pageType],
 					501:function(){alert('尚未支援');}
 					
 				}
 				});
 	}
-	
+	var _mkThreadList = function(data){
+		if(data['resto'] == '0'){//首PO
+			$threads.append(_mkTHREAD(data));
+		}else{
+			$threads.find(' > li#r' + data['resto'] + ' ul.reply').append(_mkREPLY(data));
+		}
+
+	}	
 	var _mkTHREAD = function(data){
 	    if('undefined' == typeof(data)){data ={};}
 	    if('undefined' == typeof(data.no)){data.no = 0 ;}
@@ -262,7 +302,7 @@ var _SWClient = function(data){
 	}
 	
 	var _mkReplyBtn = function(data){
-		_DATA = '[' + '<a href="' + DEFINES['PHP_SELF']  + '?res="></a>' + ']';
+		_DATA = '[' + '<a href="index.html?res="></a>' + ']';
 
 	}	
 
