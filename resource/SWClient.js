@@ -153,8 +153,6 @@ var _SWClient = function(data){
 								},
 								_IMG_BAR);
 		
-		$hiddenReply = data.hiddenreply;
-	
 
 
 
@@ -163,8 +161,7 @@ var _SWClient = function(data){
 		$WARN_OLD 		= 0 ? (_WARN_OLD) 		: '';
 		$WARN_BEKILL 	= 0 ? (_WARN_BEKILL) 	: '';
 		$WARN_ENDREPLY  = 0 ? (_WARN_ENDREPLY)  : '';
-		$WARN_HIDEPOST  = 0 ? (_WARN_HIDEPOST.replace("%1$s",data.hiddenReply)) : '';
-
+		$WARN_HIDEPOST  = (data.hiddenReply!= 0) ? (_WARN_HIDEPOST.replace("%1$s",data.hiddenReply)) : '';
 		$THREAD = _STEReplace({
 								$NO 	  :data.no,
 								$SUB	  :data.sub,

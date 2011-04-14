@@ -1,13 +1,14 @@
 <?php
-function actSHOW(){ 
+function actSHOW($ARG){ 
 	require("./lib/lib_pio.php");
 	//print_r($PIO->fetchThreadList());
 	$SelectArgv = 'no,resto,sub,name,com,now,category,tim,ext,imgsize,tw,th,imgw,imgh';
 	//$SelectArgv = "no,sub";
 //	print_r($PIO->threadCount());
 //print_r($PIO->fetchPostList());
-	$resno = 0;$page_num=-1;$page = 1;
-	$page_start =1;
+	if(!isset($ARG[3]) || $ARG[3] == "") $ARG[3] = 1;
+	$resno = 0;$page_num=intval($ARG[3]) -1;$page = 1;
+	$page_start = 0;
 	$threads = array();
 	$out = array();
 	if(!$resno){
@@ -33,8 +34,11 @@ function actSHOW(){
 		// 取出討論串編號
 		if($resno) $tID = $resno; // 單討論串輸出 (回應模式)
 		else{
+		//	print_r($threads_count);
 			if($page_num == -1 && ($page * PAGE_DEF + $i) >= $threads_count) break; // remake 超出索引代表已全部完成
 			$tID = ($page_start==$page_end) ? $threads[$i] : $threads[$page * PAGE_DEF + $i]; // 一頁內容 (一般模式) / 多頁內容 (remake模式)
+	//	print_r($threads);
+		//	print_r($tID);
 			$tree_count = $PIO->postCount($tID) - 1; // 討論串回應個數
 			$RES_start = $tree_count - RE_DEF + 1; if($RES_start < 1) $RES_start = 1; // 開始
 			$RES_amount = RE_DEF; // 取幾個
@@ -45,6 +49,7 @@ function actSHOW(){
 		$tree_cut = array_slice($tree, $RES_start, $RES_amount); array_unshift($tree_cut, $tID); // 取出特定範圍回應
 		$posts = $PIO->fetchPosts($tree_cut); // 取得文章架構內容
 		$out[$i] = $posts;
+		$out[$i][0]['hiddenReply'] = $hiddenReply;
 	//	$out[$i] = $tree;
 		//print_r($threads);
 //	print_r($posts);

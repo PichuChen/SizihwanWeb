@@ -215,7 +215,7 @@ $(document).ready(function(){
 <hr />
 </div>
 </form>
-<iframe name="uploader" src=""></iframe> 
+<iframe name="uploader" src="" style="display:none;"></iframe> 
 
 <?php if(isset($FORMBOTTOM) ){echo $FORMBOTTOM;}?>
 <!--/&POSTFORM-->
