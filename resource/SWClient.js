@@ -116,6 +116,7 @@ var _SWClient = function(data){
 			case 'THREAD':
 				if('undefined' == typeof(data.res))return ;
 				url = "../../main.php/" + DEFINES['BOARD'] + "/THREAD/" + data.res + "/" + data.pageNo;
+				$('form#postform_main input[name=resto]').val(data.res);
 				break;
 			default      :
 				alert("dataType not support");
