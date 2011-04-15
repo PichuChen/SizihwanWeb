@@ -81,11 +81,17 @@ var _SWClient = function(data){
 			});
 			if(typeof datas['mode'] != 'undefined'){
 
-			}else if(typeof datas['res'] != 'undefined'){
+			}else if(typeof datas['res'] != 'undefined'){//response mode
 				this.getPage({pageType:'THREAD',res:datas['res']});	
-			}	
+				this.getPageNum({pageNo:datas['No']});
+			}else{//normal mode
+				this.getPage({pageNo:datas['No']});
+				this.getPageNum({pageNo:datas['No']});
+			}
+
 		}else{	
 			this.getPage();
+			this.getPageNum();
 		}
 	}
 	
@@ -101,6 +107,65 @@ var _SWClient = function(data){
 			data = data.replace(new RegExp("{\\" + i + "}","g"),v);
 		});
 		return data;
+	}
+
+
+	this.getPageNum = function(data){
+		if('undefined' == typeof(data)){data ={};}
+		if('undefined' == typeof(data.pageNo)){data.pageNo = 1 ;}
+	    	if('undefined' == typeof(data.pageType)){data.pageType = "SHOW" ;}
+	    	
+		
+		url = "";
+		switch(data.pageType){
+			case 'SHOW'  :
+				url = "../../main.php/" + DEFINES['BOARD'] + "/SHOW/PAGENUM";
+				break;		
+			case 'THREAD':
+				if('undefined' == typeof(data.res))return ;
+				url = "../../main.php/" + DEFINES['BOARD'] + "/THREAD/" + data.res + "/PAGENUM";
+				$('form#postform_main input[name=resto]').val(data.res);
+				break;
+			default      :
+				alert("dataType not support");
+				return;
+
+		}
+
+		functions = [];
+	    	functions['SHOW'] = function(res){
+						//$("#pagenav").html("<input type='button'value='" + language['prev_page'] + "'/><ul></ul>");
+                                                $("#pagenav >  ul").each(function(){
+							for(i = 1;i <= res; ++i){
+								$(this).append("<li class='" + ((data.pageNo == i) ? 'currentPage':'')  + "'>" + i + "</li>");
+							}
+                                                });
+						$("#pagenav >  ul").each(function(){
+								
+							$(this).find("li").each(function(){
+								if($(this).hasClass('currentPage')){
+									$(this).html("[" + $(this).html() + "]");
+								}else{
+									$(this).html("[<a href='index.html?No=" + $(this).html()+ "'>" + $(this).html() + "</a>]");
+								}
+							});
+
+						});
+
+                                        };
+		
+	    	functions['THREAD'] = functions['SHOW'];
+		
+	   // functions[]
+
+	    	$.ajax({dataType:'json',url:url,
+				statusCode:{
+					200:functions[data.pageType],
+					501:function(){alert('尚未支援');}
+					
+				}
+				});
+	
 	}
 	this.getPage = function(data){
 		if('undefined' == typeof(data)){data ={};}
@@ -138,16 +203,18 @@ var _SWClient = function(data){
 		
 	   // functions[]
 
-	    $.ajax({
-				dataType:'json',
-				url:url,
+	    	$.ajax({dataType:'json',url:url,
 				statusCode:{
 					200:functions[data.pageType],
 					501:function(){alert('尚未支援');}
 					
 				}
 				});
+	
 	}
+
+
+	
 	var _mkThreadList = function(data){
 		if(data['resto'] == '0'){//首PO
 			$threads.append(_mkTHREAD(data));

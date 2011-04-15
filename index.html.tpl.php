@@ -222,9 +222,8 @@ $(document).ready(function(){
 <!--/&POSTFORM-->
 </header>
 
-<ul class="threads">
-</ul>
-
+<ul class="threads"></ul>
+<div id="pagenav"></div>
 
 <!--&FOOTER-->
 <footer id="footer">
