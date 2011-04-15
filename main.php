@@ -52,8 +52,13 @@ switch($ACTION){
 	case 'SHOW':
 		{
 			require(PATH_ACTION_SHOW);
-			if(!isset($ARG[3]) || $ARG[3] != "")$ARG[3] == 1;
-			actSHOW($ARG[3] - 1);
+			if(!isset($ARG[3]) || $ARG[3] == ""){
+				$ARG[3] = 1;
+			}else if($ARG[3] == "PAGENUM"){
+				echo json_encode(actShowPageNum());
+				break;
+			}
+			echo json_encode(actSHOW($ARG[3] - 1));
 		}
 		break;	
 	case 'LANG':
