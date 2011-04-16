@@ -224,7 +224,7 @@ $(document).ready(function(){
 
 <ul class="threads"></ul>
 <div id="pagenav"></div>
-
+<div id="deletepanel"></div>
 <!--&FOOTER-->
 <footer id="footer">
 <?php echo "{$FOOTER}"?>

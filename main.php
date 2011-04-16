@@ -75,7 +75,8 @@ switch($ACTION){
 		}
 	case 'THREAD'://取得特定討論串
 		{
-		
+		switch ($_SERVER['REQUEST_METHOD']){
+		case 'GET' :
 			if(!isset($ARG[3])) {
 				 sendStatusCode(405);
 				exit;//參數不足
@@ -84,6 +85,23 @@ switch($ACTION){
 			require($DEFINE['PATH_ACTION_THREAD']);
 			getTHREAD(intval($ARG[3]),intval($ARG[4]));
 		//	ddsendStatusCode(501);
+			break;
+		case 'DELETE' :
+			if(!isset($_SERVER['PHP_AUTH_USER'])) {
+				Header('WWW-Authenticate: Basic realm="please input your account."');
+				Header("HTTP/1.0 401 Unauthorized"); 
+				echo '"fob"';
+			}else{
+				if(!isset($ARG[3])) {
+        	                        sendStatusCode(405);
+	                                exit;//參數不足
+	                        }
+        	                if(!isset($ARG[4]) || $ARG[4] == "")$ARG[4] = 1;
+                	        require($DEFINE['PATH_ACTION_THREAD']);
+				deleteThread();
+			}
+			break;	
+		}
 		}
 		break;
 	case 'POSTS'  ://投稿,刪除,修改

@@ -62,7 +62,13 @@ var _SWClient = function(data){
 				'<div class="quote">{$COM}</div>' +
 				'{$IFDATACATE1}' +
 				'{$WARN_BEKILL}</li>';	
-		
+	var 	_DELPANEL_TPL = language['del_head'] + '[' +
+				'<input type="checkbox" name="onlyimgdel" id="onlyimgdel" value="on" /><label for="onlyimgdel">' +
+				language['del_img_only'] + '</label>]<br />' +
+				language['del_pass'] +
+				'<input type="password" name="pwd" size="8" value="" />' +
+				'<input type="button" value="' + language['del_btn'] + '" />';
+	
 	this.init = function(){
 		//alert('init');
 		$threads = $(".threads");
@@ -93,9 +99,24 @@ var _SWClient = function(data){
 			this.getPage();
 			this.getPageNum();
 		}
+		$("#deletepanel").each(function(){ _initDelPanel($(this))});
 	}
 	
-	
+	var _initDelPanel = function($obj){
+		$obj.html(_DELPANEL_TPL);
+		$obj.find('input[type=button]').click(function(){
+			$.ajax({
+				type:'delete',
+				username: 'users',
+				password: 'pass',
+				dataType:'json',url:"../../main.php/" + DEFINES['BOARD'] + "/THREAD/",
+				statusCode:{
+					200:function(res){alert(res)},
+				}
+				
+				});
+		});
+	};	
 	
 	
 	var _mkForm = function(){
@@ -135,7 +156,8 @@ var _SWClient = function(data){
 		functions = [];
 	    	functions['SHOW'] = function(res){
 						//$("#pagenav").html("<input type='button'value='" + language['prev_page'] + "'/><ul></ul>");
-                                                $("#pagenav >  ul").each(function(){
+                                                $("#pagenav").html("<ul></ul>");
+						$("#pagenav >  ul").each(function(){
 							for(i = 1;i <= res; ++i){
 								$(this).append("<li class='" + ((data.pageNo == i) ? 'currentPage':'')  + "'>" + i + "</li>");
 							}
